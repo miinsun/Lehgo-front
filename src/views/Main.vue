@@ -35,7 +35,7 @@
       </v-row>
       <v-row>
         <v-col cols="6 mx-auto" class="text-right">
-          <router-link to="/signUp">회원 가입</router-link>
+          <router-link to="/signUp" class="link">회원 가입</router-link>
         </v-col>
       </v-row>
   </v-container>
@@ -67,6 +67,7 @@ const userStore = 'userStore'
     },
     methods: {
       submit: function () {
+        this.$refs.form.validate()
         this.$validate()
           .then(success => {
             if(success){
@@ -94,4 +95,8 @@ const userStore = 'userStore'
 </script>
 
 <style scoped>
+.link{
+  text-decoration: none;
+  color : gray;
+}
 </style>
