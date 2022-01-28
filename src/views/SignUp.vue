@@ -88,7 +88,11 @@ import userInfoService from '@/services/userInfoService';
         });
       },
       pw : function (value) {
-        return this.$Validator.value(value).required().maxLength(20).minLength(8)
+        return this.$Validator.value(value).required().maxLength(20).minLength(8).custom(function(){
+          if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)){
+            return '하나 이상의 문자와 숫자를 포함하세요.'
+          }
+        })
       },
       'pwCheck, pw' : function (pwcheck, pw) {
         return this.$Validator.value(pw).match(pwcheck);
