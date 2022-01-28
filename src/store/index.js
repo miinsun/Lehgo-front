@@ -10,6 +10,7 @@ export default new Vuex.Store({
     domain : 'http://localhost:8080'
   },
   getters : {
+    getAccessToken : state => state.domain,
   },
   mutations: {
   },

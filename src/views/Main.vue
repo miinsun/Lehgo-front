@@ -76,8 +76,14 @@ const userStore = 'userStore'
       },
       login : function(){
         const loginUser = { id : this.userId, password : this.userPw };
-        this.postLogin(loginUser);
-        console.log(this.loginError);
+        this.postLogin(loginUser).
+        then(success => {
+          if(success){
+            this.$router.push({
+              name: 'Home'
+            })
+          }
+        })
       },
       ...mapActions(userStore, ['postLogin', 'initLogin'])
     },

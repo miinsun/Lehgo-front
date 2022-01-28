@@ -41,23 +41,26 @@ const userStore = {
             commit('setUserName', payload)
         },
         postLogin: ({ commit, rootState }, payload) => {
-            let api = rootState.domain + '/user'
-            axios.post(api, JSON.stringify({
-              id : payload.id,
-              password : payload.password
-            }), {
-              headers: { "Content-Type": 'application/json'
-              }
-            }).then(res => {
-                console.log("Login Success");
-                commit('setLoginResult', true);
-                commit('setToken', res.headers.authorization);
-                commit('setErrorMessage', '');
-            }).catch(function(error){
-                console.log("Login Fail");
-                commit('setLoginResult', false);
-                commit('setErrorMessage', error.response.data.message);
-            });
+                return new Promise((resolve) => {
+                    let api = rootState.domain + '/user'
+                    axios.post(api, JSON.stringify({
+                    id : payload.id,
+                    password : payload.password
+                    }), {
+                    headers: { "Content-Type": 'application/json'
+                    }
+                    }).then(res => {
+                        console.log("Login Success");
+                        commit('setLoginResult', true);
+                        commit('setToken', res.headers.authorization);
+                        commit('setErrorMessage', '');
+                        resolve(true);
+                    }).catch(function(error){
+                        console.log("Login Fail");
+                        commit('setLoginResult', false);
+                        commit('setErrorMessage', error.response.data.message);
+                    });
+            })
         },
         initLogin: ({ commit }) => {
             commit('setLoginResult', true);

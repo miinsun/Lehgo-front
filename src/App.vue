@@ -1,16 +1,14 @@
 <template>
   <v-app>
-    <Main></Main>
+    <router-view></router-view>
+    <div class="my-10"></div>
   </v-app>
 </template>
 
 <script>
-import Main from '@/components/Main.vue'
-
 export default {
   name: 'App',
   components: {
-    'Main' : Main,
   },
   data() {
     return {
