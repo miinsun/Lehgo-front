@@ -5,9 +5,11 @@ import vuetify from './plugins/vuetify'
 import store from './store'
 import router from './router'
 import Validator from './plugins/validator';
+import VueCookie from 'vue-cookie'
 
 Vue.config.productionTip = false
 Vue.use(Validator);
+Vue.use(VueCookie);
 
 new Vue({
   vuetify,

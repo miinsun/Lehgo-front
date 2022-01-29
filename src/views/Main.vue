@@ -63,7 +63,7 @@ const userStore = 'userStore'
       }
     },
     computed :{
-      ...mapGetters(userStore, ['getAccessToken', 'getLoginResult', 'getErrorMessage'])
+      ...mapGetters(userStore, ['getLoginResult', 'getErrorMessage'])
     },
     methods: {
       submit: function () {

@@ -1,5 +1,8 @@
 import axios from 'axios'
-const domain = 'http://localhost:8080'
+import store from '../store';
+import VueCookie from 'vue-cookie'
+
+const domain = store.state.domain
 
 class userInfoService{
     checkId(userId) {
@@ -72,6 +75,27 @@ class userInfoService{
             }).catch(function(error) {
                 console.log(error.response.data.message);
             })
+        })
+    }
+    
+    getUserInfo(userId) {
+        return new Promise(function(resolve) {
+            let api = domain + '/users/' + userId
+            axios.get(api, {
+                    headers: { 
+                        "Content-Type": 'application/json',
+                }
+            }).then(res => {
+                resolve(res.data)
+            }).catch(function(error){
+                console.log('setErrorMessage', error.response.data.message);
+            });
+        })
+    }
+
+    setHeader(){
+        return new Promise(function() {
+            axios.defaults.headers.common["authorization"] = VueCookie.get('accessToken');
         })
     }
 }

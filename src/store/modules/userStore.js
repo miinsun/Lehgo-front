@@ -1,30 +1,26 @@
 import axios from 'axios'
+import VueCookie from 'vue-cookie'
 
 const userStore = {
     namespaced: true,
     state: {
-        token : '',
         userId : '',
         userName: '',
         loginResult : false,
         errorMessage: ''
     },
     getters: {
-        getAccessToken : state => state.token,
         getUserId : state => state.userId,
         getUserName: state => state.userName,
         getLoginResult : state => state.loginResult,
         getErrorMessage: state => state.errorMessage
     },
     mutations: {
-        setToken: (state, payload) => {
-            state.token = payload
-        },
         setUserId: (state, payload) => {
-            state.userId = payload.userId
+            state.userId = payload
         },
         setUserName: (state, payload) => {
-            state.userName = payload.userName
+            state.userName = payload
         },
         setLoginResult : (state, payload) => {
             state.loginResult = payload
@@ -34,12 +30,6 @@ const userStore = {
         }
     },
     actions: {
-        setUserId: ({ commit }, payload) => {
-            commit('setUserId', payload)
-        },
-        setUserName: ({ commit }, payload) => {
-            commit('setUserName', payload)
-        },
         postLogin: ({ commit, rootState }, payload) => {
                 return new Promise((resolve) => {
                     let api = rootState.domain + '/user'
@@ -52,8 +42,10 @@ const userStore = {
                     }).then(res => {
                         console.log("Login Success");
                         commit('setLoginResult', true);
-                        commit('setToken', res.headers.authorization);
                         commit('setErrorMessage', '');
+                        commit('setUserId', res.data);
+                        VueCookie.set('accessToken', res.headers.authorization);
+                        axios.defaults.headers.common["authorization"] = res.headers.authorization;
                         resolve(true);
                     }).catch(function(error){
                         console.log("Login Fail");
