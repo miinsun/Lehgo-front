@@ -81,7 +81,7 @@ const userStore = 'userStore'
         then(success => {
           if(success){
             this.$router.push({
-              name: 'Home'
+              name: 'MyPage'
             })
           }
         })

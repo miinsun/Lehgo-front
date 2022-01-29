@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <router-view></router-view>
-    <div class="my-10"></div>
   </v-app>
 </template>
 
@@ -16,3 +15,15 @@ export default {
   }
 }
 </script>
+
+<style>
+  body {
+    margin: 0;
+  }
+  #app {
+    width : 100vw;
+    height : 90vh;
+    min-height: 100%;
+    position: relative;
+  }
+</style>

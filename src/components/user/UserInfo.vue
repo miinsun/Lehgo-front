@@ -1,5 +1,5 @@
 <template>
-  <v-container class="my-10">
+  <v-container>
       <v-form ref="form" v-model="isFormValid">
       <v-row>
         <v-col cols="11 mx-auto">
@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
       </v-form>
-      <v-row>
+      <v-row v-if="updateError || updateSuccess">
         <v-col cols="11 mx-auto">
           <v-alert text type="error" v-if="updateError">
             {{ resultMessage }}
@@ -176,7 +176,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
         })
     },
     computed: {
-      ...mapGetters(['getUserId', 'getLoginResult', 'getErrorMessage']),
+      ...mapGetters(['getUserId']),
     },
     watch:{
       email : function() {

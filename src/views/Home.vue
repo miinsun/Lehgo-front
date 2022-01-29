@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import UserInfo from '../components/UserInfo'
+  import UserInfo from '../components/user/UserInfo'
   import TestBar from '../components/TestBar'
 
   export default {
