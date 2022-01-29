@@ -1,5 +1,5 @@
 <template>
-  <v-container class="my-10">
+  <v-container class="container my-10">
       <v-row class="text-center">
       <v-col cols="12" class="my-10">
         <h1 class="display-2 font-weight-bold">
@@ -186,4 +186,7 @@ import userInfoService from '@/services/userInfoService';
 </script>
 
 <style scoped>
+.container{
+  padding-bottom: 150px;
+}
 </style>
