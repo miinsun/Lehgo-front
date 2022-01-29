@@ -1,21 +1,12 @@
 <template>
   <v-container class="my-10">
-      <v-row class="text-center">
-      <v-col cols="12" class="my-10">
-        <h1 class="display-2 font-weight-bold">
-          Sign Up
-        </h1>
-      </v-col>
-      </v-row>
       <v-form ref="form" v-model="isFormValid">
       <v-row>
-        <v-col cols="6 mx-auto">
+        <v-col cols="11 mx-auto">
         <v-text-field class="mb-5" color="orange lighten-1" hide-details="auto" maxlength="20" required
-          label="아이디" v-model="id" :rules="[validation.firstError('id'), validation.firstError('existId')]"></v-text-field>
+          label="아이디" v-model="printId" :readonly="true" :disabled="true"></v-text-field>
         <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
             label="비밀번호" v-model="pw" :type="'password'" :rules="[validation.firstError('pw')]"></v-text-field>
-        <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
-            label="비밀번호 확인" v-model="pwCheck" :type="'password'" :rules="[validation.firstError('pwCheck')]"></v-text-field>
         <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
             label="이름" v-model="name" :rules="[validation.firstError('name')]"></v-text-field>
         <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="50" required
@@ -26,8 +17,8 @@
           <v-col cols="2 my-auto">성별</v-col>
           <v-col cols="10">
           <v-radio-group row class="justify-space-between" v-model="gender" :rules="[validation.firstError('gender')]">
-            <v-radio label="여성" color="orange" value="female" class="mr-10"></v-radio>
-            <v-radio label="남성" color="orange" value="male"></v-radio>
+            <v-radio label="여성" color="orange" value="female" class="mr-10" :checked="isFemale()"></v-radio>
+            <v-radio label="남성" color="orange" value="male" :checked="isMale()"></v-radio>
           </v-radio-group>
           </v-col>
         </v-row>
@@ -43,9 +34,19 @@
       </v-row>
       </v-form>
       <v-row>
+        <v-col cols="11 mx-auto">
+          <v-alert text type="error" v-if="updateError">
+            {{ resultMessage }}
+          </v-alert>
+          <v-alert text type="success" v-if="updateSuccess">
+            {{ resultMessage }}
+          </v-alert>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="6 mx-auto">
           <v-btn block elevation="3" color="orange lighten-1" x-large @click="submit" 
-            :disabled="!isFormValid" class="font-weight-bold">SIGN UP</v-btn>
+            :disabled="!isFormValid" class="font-weight-bold">UPDATE</v-btn>
         </v-col>
       </v-row>
   </v-container>
@@ -53,49 +54,33 @@
 
 <script>
 import userInfoService from '@/services/userInfoService';
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 
   export default {
-    name: 'Main',
+    name: 'UserInfo',
+
     data: () => ({
       id : '',
+      printId : '',
       pw : '',
-      pwCheck: '',
       name : '',
       email : '',
+      origEmail : '',
       nickname : '',
+      origNickname : '',
       gender : '',
-      age : '2003',
+      age : '',
       ageList: Array(100).fill().map((v,i)=> new Date().getFullYear() - i),
-      loginError : false,
+      updateError : false,
+      updateSuccess : false,
       errorMessage : '',
-      isFormValid: false,
-      existId : false,
       existEmail : false,
       existNickname : false
     }),
     validators: {
-      id : function (value) {
-        return this.$Validator.value(value).required().maxLength(20).custom(function(){
-          if(!/^[a-zA-Z0-9]*$/.test(value)){
-            return '아이디는 영문 또는 숫자만 입력 가능합니다'
-          }
-        })
-      },
-      'existId, id' : function(existId, id){
-        return this.$Validator.value(id).custom(function(){
-          if(existId) { 
-            return '이미 존재하는 아이디입니다' } 
-        });
-      },
       pw : function (value) {
-        return this.$Validator.value(value).required().maxLength(20).minLength(8).custom(function(){
-          if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value)){
-            return '하나 이상의 문자와 숫자를 포함하세요.'
-          }
-        })
-      },
-      'pwCheck, pw' : function (pwcheck, pw) {
-        return this.$Validator.value(pw).match(pwcheck);
+        return this.$Validator.value(value).required()
       },
       name : function (value) {
         return this.$Validator.value(value).required().maxLength(20)
@@ -126,9 +111,15 @@ import userInfoService from '@/services/userInfoService';
       },
     },
     methods: {
+      testBtn() {
+        userInfoService.getUserInfo(this.getUserId)
+        .then(resInfo => {
+          this.userInfo = resInfo
+        })
+      },
       submit: function () {
         this.$refs.form.validate()
-        const signUpUser = { 
+        const updateUser = { 
           id : this.id, 
           password : this.pw,
           name : this.name,
@@ -140,33 +131,56 @@ import userInfoService from '@/services/userInfoService';
         this.$validate()
           .then(success => {
             if(success){
-              console.log(signUpUser)
-              userInfoService.signUp(signUpUser)
-              .then(success => {
-                if(success){
-                  this.$router.push({
-                    name: 'Main'
-                  })
-                }
+              userInfoService.checkIdPw(updateUser)
+              .then(() => {
+                userInfoService.updateUserInfo(updateUser)
+                .then(res => {
+                  console.log(res)
+                  this.updateSuccess = res.status
+                  this.updateError = !res.status
+                  this.resultMessage = res.message
+                })
+              }).catch(err =>{
+                this.updateSuccess = err.status
+                this.updateError = !err.status
+                this.resultMessage = err.message
               })
             }
         })
-      }
-    },
-    created(){
-      this.initLogin();
-    },
-    watch:{
-      id : function() {
-        if(this.id != ''){
-          userInfoService.checkId(this.id)
-          .then(checkResult => {
-              this.existId = checkResult
-          })
+      },
+      isFemale() {
+        if(this.gender == 'female'){
+          return true
         }
       },
+      isMale() {
+        if(this.gender == 'male'){
+          return true
+        }
+      },
+      ...mapActions(['postLogin'])
+    },
+    created() {
+      userInfoService.setHeader();
+      userInfoService.getUserInfo(this.getUserId)
+        .then(userInfo => {
+          this.id = userInfo.id
+          this.printId = this.id
+          this.name = userInfo.name
+          this.email = userInfo.email
+          this.origEmail = this.email
+          this.nickname = userInfo.nickname
+          this.origNickname = this.nickname
+          this.gender = (userInfo.gender == 0)? 'female' : 'male'
+          this.age = (new Date().getFullYear() - Number(userInfo.age) + 1)
+        })
+    },
+    computed: {
+      ...mapGetters(['getUserId', 'getLoginResult', 'getErrorMessage']),
+    },
+    watch:{
       email : function() {
-        if(this.nickname != ''){
+        if(this.email != '' & this.email != this.origEmail){
           userInfoService.checkEmail(this.email)
           .then(checkResult => {
               this.existEmail = checkResult
@@ -174,16 +188,13 @@ import userInfoService from '@/services/userInfoService';
         }
       },
       nickname : function() {
-        if(this.nickname != ''){
+        if(this.nickname != '' & this.nickname != this.origNickname){
           userInfoService.checkNickname(this.nickname)
           .then(checkResult => {
               this.existNickname = checkResult
           })
         }
-      }        
+      }
     }
   }
 </script>
-
-<style scoped>
-</style>

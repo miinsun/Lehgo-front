@@ -57,14 +57,13 @@ class userInfoService{
     signUp(newUser){
         return new Promise(function(resolve) {
             let api = domain + '/users/new'
-            console.log(newUser)
             axios.post(api, JSON.stringify({
                 id : newUser.id, 
                 password : newUser.password,
                 name : newUser.name,
                 email : newUser.email,
                 nickname : newUser.nickname,
-                gender : (newUser.gender == 'femail') ? 0 : 1,
+                gender : (newUser.gender == 'female') ? 0 : 1,
                 age : new Date().getFullYear() - newUser.age + 1
             }),{
                 headers: { "Content-Type": 'application/json'
@@ -74,6 +73,49 @@ class userInfoService{
                 resolve(true);
             }).catch(function(error) {
                 console.log(error.response.data.message);
+            })
+        })
+    }
+
+    checkIdPw(user){
+        return new Promise(function(resolve, reject) {
+            let api = domain + '/user'
+            axios.post(api, JSON.stringify({
+                id : user.id, 
+                password : user.password,
+            }),{
+                headers: { "Content-Type": 'application/json'
+                }
+            })
+            .then(() => {
+                resolve({status : false, message : '비밀번호가 일치하지 않습니다.'});
+            }).catch(function() {
+                reject({status : false, message : '비밀번호가 일치하지 않습니다.'});
+            })
+        })
+    }
+    
+    updateUserInfo(updateUser){
+        return new Promise(function(resolve) {
+            let api = domain + '/users/' + updateUser.id
+            axios.post(api, JSON.stringify({
+                id : updateUser.id,
+                password : updateUser.password,
+                name : updateUser.name,
+                email : updateUser.email,
+                nickname : updateUser.nickname,
+                gender : (updateUser.gender == 'female') ? 0 : 1,
+                age : new Date().getFullYear() - updateUser.age + 1
+            }),{
+                headers: { "Content-Type": 'application/json'
+            }
+            })
+            .then(res => {
+                console.log(res)
+                resolve({status : true, message : '정보가 변경되었습니다.'});
+            }).catch(function(error) {
+                console.log(error.response.data.message);
+                resolve({status : false, message : '정보 변경에 실패했습니다.'});
             })
         })
     }

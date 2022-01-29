@@ -40,7 +40,6 @@ const userStore = {
                     headers: { "Content-Type": 'application/json'
                     }
                     }).then(res => {
-                        console.log("Login Success");
                         commit('setLoginResult', true);
                         commit('setErrorMessage', '');
                         commit('setUserId', res.data);
@@ -48,11 +47,15 @@ const userStore = {
                         axios.defaults.headers.common["authorization"] = res.headers.authorization;
                         resolve(true);
                     }).catch(function(error){
-                        console.log("Login Fail");
                         commit('setLoginResult', false);
                         commit('setErrorMessage', error.response.data.message);
                     });
             })
+        },
+        postLogout:({ commit }) => {
+            commit('setUserId', '');
+            VueCookie.set('accessToken', null);
+            delete axios.defaults.headers.common["authorization"];
         },
         initLogin: ({ commit }) => {
             commit('setLoginResult', true);
