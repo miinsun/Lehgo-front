@@ -1,10 +1,8 @@
 <template>
   <v-container fluid>
-      <v-row class="text-center top">
-          <v-col cols="2"><h1>LEHGO</h1></v-col>
-          <v-col cols="8"></v-col>
-          <v-col cols="2"><TestBar/></v-col>
-      </v-row>
+      <div class="top">
+          <TestBar/>
+      </div>
       <v-row class="text-center body" >
           <v-col cols="3" class="sibal">
               <ProfileCard @openSideArea="openSideArea"/>

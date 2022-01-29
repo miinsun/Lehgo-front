@@ -158,7 +158,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
           return true
         }
       },
-      ...mapActions(['postLogin'])
+      ...mapActions(['postLogout'])
     },
     created() {
       userInfoService.setHeader();
@@ -173,6 +173,13 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
           this.origNickname = this.nickname
           this.gender = (userInfo.gender == 0)? 'female' : 'male'
           this.age = (new Date().getFullYear() - Number(userInfo.age) + 1)
+        }).catch(error => {
+            if(error == 500){
+              this.postLogout();
+              this.$router.push({
+                name: 'Main'
+              })
+            }
         })
     },
     computed: {

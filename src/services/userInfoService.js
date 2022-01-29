@@ -121,7 +121,7 @@ class userInfoService{
     }
     
     getUserInfo(userId) {
-        return new Promise(function(resolve) {
+        return new Promise(function(resolve, reject) {
             let api = domain + '/users/' + userId
             axios.get(api, {
                     headers: { 
@@ -130,7 +130,8 @@ class userInfoService{
             }).then(res => {
                 resolve(res.data)
             }).catch(function(error){
-                console.log('setErrorMessage', error.response.data.message);
+                console.log(error.response.data.status)
+                reject(error.response.data.status)
             });
         })
     }
