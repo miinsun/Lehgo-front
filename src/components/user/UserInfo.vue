@@ -13,7 +13,7 @@
             label="이메일" v-model="email" :type="'email'" :rules="[validation.firstError('email'), validation.firstError('existEmail')]"></v-text-field>
         <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
             label="닉네임" v-model="nickname" :rules="[validation.firstError('nickname'), validation.firstError('existNickname')]"></v-text-field>
-        <v-row>
+        <v-row class="selectField">
           <v-col cols="2 my-auto">성별</v-col>
           <v-col cols="10">
           <v-radio-group row class="justify-space-between" v-model="gender" :rules="[validation.firstError('gender')]">
@@ -22,7 +22,7 @@
           </v-radio-group>
           </v-col>
         </v-row>
-        <v-row class="my-auto">
+        <v-row class="selectField my-auto">
           <v-col cols="2 my-5">생년</v-col>
           <v-col cols="6">
             <v-combobox color="orange lighten-1" hide-details="auto" maxlength="4" required
@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
       </v-form>
-      <v-row v-if="updateError || updateSuccess">
+      <v-row class="notiArea" v-if="updateError || updateSuccess">
         <v-col cols="11 mx-auto">
           <v-alert text type="error" v-if="updateError">
             {{ resultMessage }}
@@ -205,3 +205,13 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
     }
   }
 </script>
+
+<style scoped>
+.selectField{
+  height: 80px;
+  margin-top: -20px;
+}
+.notiArea{
+  height: 80px;
+}
+</style>

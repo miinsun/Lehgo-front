@@ -4,12 +4,12 @@
           <TestBar/>
       </div>
       <v-row class="text-center body" >
-          <v-col cols="3" class="sibal">
+          <v-col cols="3">
               <ProfileCard @openSideArea="openSideArea"/>
               <MyPageList @openSideArea="openSideArea"/>
           </v-col>
           <v-col v-if="openSide" cols="3">
-              <div v-if="openSide" class="sideArea">
+              <div v-if="openSide" class="sideArea" v-bar>
                 <UserInfo v-if="sideArea == 'userInfo'"/>
                 <SearchList v-if="sideArea == 'searchList'"/>
               </div>
@@ -69,7 +69,7 @@
     height:80vh;
 }
 .sideArea{
-    height:80vh;
+    height:90vh;
     width:25vw;
     background-color: white;
     overflow: auto;

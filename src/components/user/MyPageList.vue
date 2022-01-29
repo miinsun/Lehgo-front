@@ -69,7 +69,7 @@
 
 <style scoped>
 .myPageList{
-    height:50vh;
+    height:60vh;
     overflow-y: scroll;
 }
 </style>
