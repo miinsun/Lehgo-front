@@ -2,6 +2,14 @@
     <v-row>
         <v-col cols="2" class="text-center"><h1 @click="goToMain">LEHGO</h1></v-col>
         <v-col cols="9">
+            
+        <draggable class="list-group" :list="list">
+            <!-- <transition-group type="transition" > -->
+            <v-btn text class="list-group-item" v-for="(e, i) in list" :key="i">
+                {{e}}
+            </v-btn>
+            <!-- </transition-group> -->
+        </draggable>
         </v-col>
         <v-col cols="1">
             <v-speed-dial id="menu" top right open-on-hover direction="bottom" transition="slide-y-transition" >
@@ -16,12 +24,18 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import { createNamespacedHelpers } from "vuex";
 const { mapActions } = createNamespacedHelpers("userStore");
 
   export default {
-    name: 'TestBar',
+    name: 'MainNav',
+    components:{
+        draggable
+    },
     data: () => ({
+      userInfo : '',
+      list : ['장소1', '장소2', '장소3', '장소4', '장소5',]
     }),
     methods: {
       logout() {

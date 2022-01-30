@@ -1,5 +1,6 @@
 <template>
-  <div>
+<transition name="map">
+  <div v-if="loaded">
     <naver-maps
       :height="height"
       :width="width"
@@ -15,6 +16,7 @@
       <naver-marker :lat="35.11527763852661" :lng="129.04223978515628" @click="onMarkerClicked" @load="onMarkerLoaded"/>
     </naver-maps>
   </div>
+</transition>
 </template>
 
 <script>
@@ -23,6 +25,7 @@
     name: 'Map',
     data() {
       return {
+        loaded : false,
         width: window.innerWidth * 0.75,
         height: window.innerHeight - 100,
         info: false,
@@ -33,7 +36,7 @@
         mapOptions: {
           lat: 35.11527763852661, 
           lng: 129.04223978515628,
-          zoom: 17,
+          zoom: 13,
           mapTypeControl: true,
         },
         initLayers: ['BACKGROUND', 'BACKGROUND_DETAIL', 'POI_KOREAN', 'TRANSIT', 'ENGLISH', 'CHINESE', 'JAPANESE']
@@ -53,6 +56,7 @@
     },
     mounted() {
       setInterval(() => this.count++, 1000);
+      this.loaded = true;
     },
   }
 </script>
@@ -62,4 +66,10 @@
     width: 300px;
     height: 100px;
   }
+  .map-enter-active, .map-leave-active {
+  transition: opacity .5s;
+}
+.map-enter, .map-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

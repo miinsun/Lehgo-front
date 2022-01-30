@@ -1,102 +1,73 @@
 <template>
-  <v-container>
-      <v-row class="text-center my-10">
-      <v-col cols="12" class="my-10">
-        <h1 class="display-2 font-weight-bold">
-          LEHGO
-        </h1>
-      </v-col>
+  <v-container fluid>
+      <div class="top">
+          <MainNav/>
+      </div>
+      <v-row class="text-center body" >
+          <v-col cols="5">
+            <MainCategory/>
+          </v-col>
+          <v-col cols="7">
+              <div class="mapArea">
+                <Map/>
+              </div>
+          </v-col>
       </v-row>
-      <v-form ref="form">
-      <v-row>
-        <v-col cols="6 mx-auto">
-        <v-text-field color="orange lighten-1" label="ID" hide-details="auto" v-model="userId" ref="id"
-          :rules="[validation.firstError('userId')]" required></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6 mx-auto">
-        <v-text-field color="orange lighten-1" label="PW" hide-details="auto" v-model="userPw" :type="'password'"
-            :rules="[validation.firstError('userPw')]" required></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6 mx-auto">
-          <v-alert text type="error" v-if="!getLoginResult">
-            {{ getErrorMessage }}
-          </v-alert>
-        </v-col>
-      </v-row>
-      </v-form>
-      <v-row>
-        <v-col cols="6 mx-auto">
-          <v-btn block elevation="3" color="orange lighten-1" x-large @click="submit" class="font-weight-bold">LOGIN</v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6 mx-auto" class="text-right">
-          <router-link to="/signUp" class="link">회원 가입</router-link>
-        </v-col>
+      <v-row class="text-center footer">
+          <v-footer>footer</v-footer>
       </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
-
-const userStore = 'userStore'
+  import Map from '../components/Map'
+  import MainNav from '../components/place/MainNav'
+  import MainCategory from '../components/place/MainCategory'
 
   export default {
     name: 'Main',
-    data: () => ({
-      userId : '',
-      userPw : '',
-      loginError : false,
-      errorMessage : ''
+    data:() =>({
+        openSide : false,
+        sideArea : '',
+        mapCol : 9,
+        mapAreaStyle : ''
     }),
-    validators: {
-      userId : function (value) {
-        return this.$Validator.value(value).required() 
-      },
-      userPw : function (value) {
-        return this.$Validator.value(value).required() 
-      }
+    components: {
+      Map,
+      MainNav,
+      MainCategory
     },
-    computed :{
-      ...mapGetters(userStore, ['getLoginResult', 'getErrorMessage'])
+    methods:{
+        openSideArea(value) {
+            this.openSide = true;
+            this.sideArea = value;
+            this.mapCol = 6
+            console.log(this.sideArea)
+        },
     },
-    methods: {
-      submit: function () {
-        this.$refs.form.validate()
-        this.$validate()
-          .then(success => {
-            if(success){
-              this.login();
-            }
-        })
-      },
-      login : function(){
-        const loginUser = { id : this.userId, password : this.userPw };
-        this.postLogin(loginUser).
-        then(success => {
-          if(success){
-            this.$router.push({
-              name: 'MyPage'
-            })
-          }
-        })
-      },
-      ...mapActions(userStore, ['postLogin', 'initLogin'])
+    created() {
     },
-    created(){
-      this.initLogin();
-    }
   }
 </script>
 
 <style scoped>
-.link{
-  text-decoration: none;
-  color : gray;
+.top{
+    height: 10vh;
+}
+.body{
+    height:80vh;
+}
+.sideArea{
+    height:90vh;
+    width:25vw;
+    background-color: white;
+    overflow: auto;
+}
+.mapArea{
+    height:80vh;
+    overflow: disabled;
+}
+.footer{
+    height: hidden;
 }
 </style>

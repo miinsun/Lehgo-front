@@ -7,7 +7,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapGetters } = createNamespacedHelpers("userStore");
+const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 
   export default {
     name: 'ProfileCard',
@@ -18,10 +18,17 @@ const { mapGetters } = createNamespacedHelpers("userStore");
     methods: {
         openUserInfo : function() {
             this.$emit('openSideArea', 'userInfo')
-        }
+        },
+      ...mapActions(['postLogout'])
     },
     created() {
         this.userId = this.getUserId
+        if (this.getUserId == ''){
+          this.postLogout();
+          this.$router.push({
+            name: 'Login'
+          })
+        }
     }, 
     computed: {
       ...mapGetters(['getUserId']),

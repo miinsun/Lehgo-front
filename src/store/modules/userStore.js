@@ -60,7 +60,7 @@ const userStore = {
         initLogin: ({ commit }) => {
             commit('setLoginResult', true);
             commit('setErrorMessage', '');
-        }
+        },
     }
 }
 

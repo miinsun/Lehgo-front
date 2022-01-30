@@ -177,7 +177,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
             if(error == 500){
               this.postLogout();
               this.$router.push({
-                name: 'Main'
+                name: 'Login'
               })
             }
         })

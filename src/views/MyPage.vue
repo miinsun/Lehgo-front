@@ -5,17 +5,19 @@
       </div>
       <v-row class="text-center body" >
           <v-col cols="3">
-              <ProfileCard @openSideArea="openSideArea"/>
-              <MyPageList @openSideArea="openSideArea"/>
+              <div>
+                <ProfileCard @openSideArea="openSideArea"/>
+                <MyPageList id="listArea" @openSideArea="openSideArea"/>
+              </div>
           </v-col>
           <v-col v-if="openSide" cols="3">
-              <div v-if="openSide" class="sideArea" v-bar>
+              <div v-if="openSide" id="sideArea" v-bar>
                 <UserInfo v-if="sideArea == 'userInfo'"/>
                 <SearchList v-if="sideArea == 'searchList'"/>
               </div>
           </v-col>
           <v-col :cols="mapCol">
-              <div class="mapArea">
+              <div id="mapArea">
                 <Map/>
               </div>
           </v-col>
@@ -68,17 +70,18 @@
 .body{
     height:80vh;
 }
-.sideArea{
+#listArea{
+    height:50vh;
+    overflow: auto;
+}
+#sideArea{
     height:90vh;
     width:25vw;
     background-color: white;
     overflow: auto;
 }
-.mapArea{
+#mapArea{
     height:80vh;
     overflow: disabled;
-}
-.footer{
-    height: hidden;
 }
 </style>
