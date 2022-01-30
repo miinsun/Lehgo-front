@@ -145,7 +145,7 @@ import userInfoService from '@/services/userInfoService';
               .then(success => {
                 if(success){
                   this.$router.push({
-                    name: 'Main'
+                    name: 'Login'
                   })
                 }
               })
@@ -166,7 +166,7 @@ import userInfoService from '@/services/userInfoService';
         }
       },
       email : function() {
-        if(this.nickname != ''){
+        if(this.email != ''){
           userInfoService.checkEmail(this.email)
           .then(checkResult => {
               this.existEmail = checkResult
