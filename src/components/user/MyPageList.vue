@@ -44,7 +44,9 @@
           </v-list-item>
         </v-list-group>
         <v-list-item>
-            <v-list-item-content><v-list-item-title>취향 조사 다시하기</v-list-item-title></v-list-item-content>
+            <v-list-item-content @click="goToSurvey">
+              <v-list-item-title>취향 조사 다시하기</v-list-item-title>
+            </v-list-item-content>
         </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -62,6 +64,11 @@
     methods: {
         openSearchList : function() {
             this.$emit('openSideArea', 'searchList')
+        },
+        goToSurvey: function() {
+            this.$router.push({
+                name: 'Survey'
+            })
         }
     },
     mounted(){

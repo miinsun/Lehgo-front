@@ -5,6 +5,7 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import MyPage from '../views/MyPage.vue'
+import Survey from '../views/Survey.vue'
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
     path: '/myPage',
     name: 'MyPage',
     component: MyPage
+  },
+  {
+    path: '/survey',
+    name: 'Survey',
+    component: Survey
   }
 ]
 
