@@ -12,6 +12,15 @@
         @load="onWindowLoad"
         :isOpen="info"
         :marker="marker">
+        <div class="info-window-container">
+          <draggable class="list-group"   :group="{name : 'mainCourse', pull: 'clone', put: false }" :list="list2">
+          <!-- <v-btn class="list-group-item" text @click="addPlace('부산역')" key="부산역">부산역</v-btn> -->
+            <v-btn text class="list-group-item" v-for="e in list2" :key="e.id">
+                {{e.name}}
+            </v-btn>
+          </draggable>
+          드래그하여 이동 가능
+        </div>
       </naver-info-window>
       <naver-marker :lat="35.11527763852661" :lng="129.04223978515628" @click="onMarkerClicked" @load="onMarkerLoaded"/>
     </naver-maps>
@@ -20,11 +29,18 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("courseStore");
 
   export default {
     name: 'Map',
+    components:{
+        draggable
+    },
     data() {
       return {
+        list2 : [{name : '부산역', id : 5}],
         loaded : false,
         width: window.innerWidth * 0.75,
         height: window.innerHeight - 100,
@@ -47,12 +63,21 @@
         {
         this.map = vue;
       },
-      onMarkerLoaded(vue) {
-        this.marker = vue.marker;
-      },
       moveCenter(){
           this.map.setCenter(35.11527763852661, 129.04013978515628)
       },
+      onMarkerClicked(){
+        this.info = !this.info
+      },
+      onWindowLoad(){
+      },
+      onMarkerLoaded(vue) {
+        this.marker = vue.marker;
+      },
+      addPlace(value){
+        this.addPlaceList(value);
+      }, 
+      ...mapActions(['addPlaceList'])
     },
     mounted() {
       setInterval(() => this.count++, 1000);

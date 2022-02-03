@@ -1,15 +1,22 @@
 <template>
     <v-row>
         <v-col cols="2" class="text-center"><h1 @click="goToMain">LEHGO</h1></v-col>
-        <v-col cols="9">
-            
-        <draggable class="list-group" :list="list">
+        <v-col cols="1">
+          <draggable class="list-group" group="mainCourse" >
             <!-- <transition-group type="transition" > -->
-            <v-btn text class="list-group-item" v-for="(e, i) in list" :key="i">
-                {{e}}
+            <i class="far fa-trash-alt"></i>
+            <!-- </transition-group> -->
+          </draggable>
+        </v-col>
+        <v-col cols="8">
+        <draggable class="list-group" group="mainCourse" :list="list" @change="updateMainCourse">
+            <!-- <transition-group type="transition" > -->
+            <v-btn text class="list-group-item"  v-for="e in list" :key="e.id">
+                {{e.name}}
             </v-btn>
             <!-- </transition-group> -->
         </draggable>
+        
         </v-col>
         <v-col cols="1">
             <v-speed-dial id="menu" top right open-on-hover direction="bottom" transition="slide-y-transition" >
@@ -26,7 +33,8 @@
 <script>
 import draggable from 'vuedraggable'
 import { createNamespacedHelpers } from "vuex";
-const { mapActions } = createNamespacedHelpers("userStore");
+const { mapActions : userMapActions } = createNamespacedHelpers("userStore");
+const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createNamespacedHelpers("courseStore");
 
   export default {
     name: 'MainNav',
@@ -35,7 +43,7 @@ const { mapActions } = createNamespacedHelpers("userStore");
     },
     data: () => ({
       userInfo : '',
-      list : ['장소1', '장소2', '장소3', '장소4', '장소5',]
+      list : [],
     }),
     methods: {
       logout() {
@@ -56,8 +64,33 @@ const { mapActions } = createNamespacedHelpers("userStore");
             name: 'MyPage'
         })
       },
-      ...mapActions(['postLogout'])
+      updateMainCourse(){
+        this.setPlaceList(this.list);
+      },
+      ...userMapActions(['postLogout']),
+      ...courseMapActions(['addPlaceList', 'setPlaceList'])
     },
+    computed:{
+        list: {
+            get() {
+                return this.getPlaceList
+            },
+            set(value) {
+                this.addPlaceList(value)
+                this.list = this.getPlaceList
+                console.log(this.getPlaceList)
+            }
+        },
+        ...courseMapGetters(['getPlaceList'])
+    },
+    mounted(){
+        this.list = this.getPlaceList
+    },
+    watch : {
+        // list: function() {
+        //   this.setPlaceList(list);
+        // }
+    }
   }
 </script>
 
