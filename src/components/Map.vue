@@ -21,10 +21,13 @@
           </v-btn>
          </draggable>
           </naver-info-window>
-        <naver-marker v-for="e, idx in placeList" :key="e.PLACE_ID"
-          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(idx, e)" @load="onMarkerLoaded"/>
-        <naver-marker v-for="e, idx in coursePlaceList" :key="e.PLACE_ID"
-          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(idx + placeList.length, e)" @load="onCourseMarkerLoaded"/>
+        <naver-marker v-for="e in placeList" :key="e.PLACE_ID"
+          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
+        <naver-marker v-for="e in coursePlaceList" :key="e.PLACE_ID"
+          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onCourseMarkerLoaded"/>
+        <naver-polyline v-for="e in coursePlaceList.length - 1" :key="coursePlaceList[e].PLACE_ID" 
+          :path="[{lat: coursePlaceList[e - 1].LATITUDE, lng: coursePlaceList[e - 1].LONGITUDE},
+                  {lat: coursePlaceList[e].LATITUDE, lng: coursePlaceList[e].LONGITUDE}]"/>
     </naver-maps>
   </div>
 </transition>
@@ -84,7 +87,9 @@ import courseMarker from '@/assets/marker-course.png'
       moveCenter(){
           this.map.setCenter(35.11527763852661, 129.04013978515628)
       },
-      onMarkerClicked(idx, place){
+      onMarkerClicked(place){
+        let idx = this.findMarkerIdx(place.LONGITUDE + '' + place.LATITUDE)
+        console.log(idx, place.PLACE_NAME)
         if(!this.info){
           this.changeSelected(idx, place)
         }
@@ -110,16 +115,26 @@ import courseMarker from '@/assets/marker-course.png'
       onWindowLoad(){
       },
       onMarkerLoaded(vue) {
-        this.marker.push(vue.marker);
+        let newMarker = vue.marker;
+        newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
+        this.marker.push(newMarker);
       },
       onCourseMarkerLoaded(vue) {
         let newMarker = vue.marker;
         newMarker.setIcon(courseMarker)
+        newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
         this.marker.push(newMarker);
       },
       addPlace(value){
         this.addPlaceList(value);
-      }, 
+      },
+      findMarkerIdx(title){
+        for(let m in this.marker){
+          if(title == this.marker[m].getTitle()){
+            return m
+          }
+        }
+      },
       ...mapActions(['addPlaceList'])
     },
     mounted() {
@@ -130,6 +145,8 @@ import courseMarker from '@/assets/marker-course.png'
     },
     computed: {
       ...mapGetters(['getPlaceList'])
+    },
+    watch:{
     }
   }
 </script>
