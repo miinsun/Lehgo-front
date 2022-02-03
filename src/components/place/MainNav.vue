@@ -11,8 +11,8 @@
         <v-col cols="8">
         <draggable class="list-group" group="mainCourse" :list="list" @change="updateMainCourse">
             <!-- <transition-group type="transition" > -->
-            <v-btn text class="list-group-item"  v-for="e in list" :key="e.id">
-                {{e.name}}
+            <v-btn text class="list-group-item"  v-for="e in list" :key="e.PLACE_ID">
+                {{e.PLACE_NAME}}
             </v-btn>
             <!-- </transition-group> -->
         </draggable>
@@ -23,8 +23,8 @@
               <template v-slot:activator>
                 <v-btn text fab><i class="fas fa-bars"></i></v-btn>
               </template>
-              <v-btn text id="menuBtn" @click="logout">Logout</v-btn>
-              <v-btn text id="menuBtn" @click="goToMyPage">My Page</v-btn>
+              <v-btn text class="menuBtn" @click="logout">Logout</v-btn>
+              <v-btn text class="menuBtn" @click="goToMyPage">My Page</v-btn>
             </v-speed-dial>
         </v-col>
     </v-row>
@@ -95,7 +95,7 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
 </script>
 
 <style scoped>
-#menuBtn {
+.menuBtn {
   background-color:white;
 }
 #menu{
