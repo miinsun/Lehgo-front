@@ -25,9 +25,11 @@
           :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
         <naver-marker v-for="e in coursePlaceList" :key="e.PLACE_ID"
           :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onCourseMarkerLoaded"/>
-        <naver-polyline v-for="e in coursePlaceList.length - 1" :key="coursePlaceList[e].PLACE_ID" 
-          :path="[{lat: coursePlaceList[e - 1].LATITUDE, lng: coursePlaceList[e - 1].LONGITUDE},
-                  {lat: coursePlaceList[e].LATITUDE, lng: coursePlaceList[e].LONGITUDE}]"/>
+          <div v-for="e, i in coursePlaceList" :key="i">
+          <naver-polyline  v-if="i != 0 && reLoad"
+            :path="[{lat: coursePlaceList[i - 1].LATITUDE, lng:coursePlaceList[i - 1].LONGITUDE},
+                {lat: coursePlaceList[i].LATITUDE, lng:coursePlaceList[i].LONGITUDE}]"/>
+          </div>
     </naver-maps>
   </div>
 </transition>
@@ -52,7 +54,6 @@ import courseMarker from '@/assets/marker-course.png'
     data() {
       return {
         placeList : [],
-        coursePlaceList : [],
         loaded : false,
         width: window.innerWidth * 0.75,
         height: window.innerHeight - 100,
@@ -77,6 +78,7 @@ import courseMarker from '@/assets/marker-course.png'
         selectedMarker : null,
         selectedIdx : -1,
         originIcon : null,
+        reLoad : true,
       }
     },
     methods: {
@@ -89,7 +91,6 @@ import courseMarker from '@/assets/marker-course.png'
       },
       onMarkerClicked(place){
         let idx = this.findMarkerIdx(place.LONGITUDE + '' + place.LATITUDE)
-        console.log(idx, place.PLACE_NAME)
         if(!this.info){
           this.changeSelected(idx, place)
         }
@@ -135,19 +136,24 @@ import courseMarker from '@/assets/marker-course.png'
           }
         }
       },
+      reRoadPath(){
+        this.reLoad = false
+        setTimeout(() =>(this.reLoad = true), 1);
+      },
       ...mapActions(['addPlaceList'])
     },
     mounted() {
       setInterval(() => this.count++, 1000);
       this.loaded = true;
-      this.coursePlaceList = this.getPlaceList;
       this.placeList = courseService.notCoursePlaceList(places);
     },
     computed: {
+      coursePlaceList: function(){
+        this.reRoadPath()
+        return this.getPlaceList
+      },
       ...mapGetters(['getPlaceList'])
     },
-    watch:{
-    }
   }
 </script>
 <style scoped>

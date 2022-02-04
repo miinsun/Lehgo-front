@@ -71,16 +71,6 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
       ...courseMapActions(['addPlaceList', 'setPlaceList'])
     },
     computed:{
-        list: {
-            get() {
-                return this.getPlaceList
-            },
-            set(value) {
-                this.addPlaceList(value)
-                this.list = this.getPlaceList
-                console.log(this.getPlaceList)
-            }
-        },
         ...courseMapGetters(['getPlaceList'])
     },
     mounted(){
