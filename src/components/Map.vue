@@ -9,23 +9,22 @@
       @load="onLoad">
         <naver-info-window
           class="info-window"
-          id="testtest"
           @load="onWindowLoad"
           :isOpen="info"
           :marker="selectedMarker"
           :moreOptions="windowOptions">
-             <draggable class="list-group mainCourse"  v-if="info" :list="[selectedPlace]"
-          :group="{name : 'mainCourse', pull: 'clone', put: false }">
-          <v-btn text class="list-group-item placeTitleBtn" elevation="4">
-              {{selectedPlace.PLACE_NAME}}
-          </v-btn>
-         </draggable>
-          </naver-info-window>
-        <naver-marker v-for="e in placeList" :key="e.PLACE_ID"
+          <draggable class="list-group mainCourse"  v-if="info" :list="[selectedPlace]"
+            :group="{name : 'mainCourse', pull: 'clone', put: false }">
+            <v-btn text class="list-group-item placeTitleBtn" elevation="4">
+                {{selectedPlace.PLACE_NAME}}
+            </v-btn>
+          </draggable>
+        </naver-info-window>
+        <naver-marker v-for="e, i in placeList" :key="'placeList' + i"
           :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
-        <naver-marker v-for="e in coursePlaceList" :key="e.PLACE_ID"
+        <naver-marker v-for="e, i  in coursePlaceList" :key="'coursePlaceList' + i"
           :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onCourseMarkerLoaded"/>
-          <div v-for="e, i in coursePlaceList" :key="i">
+          <div v-for="e, i in coursePlaceList" :key="'polyLine' + i">
           <naver-polyline  v-if="i != 0 && reLoad"
             :path="[{lat: coursePlaceList[i - 1].LATITUDE, lng:coursePlaceList[i - 1].LONGITUDE},
                 {lat: coursePlaceList[i].LATITUDE, lng:coursePlaceList[i].LONGITUDE}]"/>
@@ -40,6 +39,7 @@ import draggable from 'vuedraggable'
 import courseService from '@/services/courseService';
 import { createNamespacedHelpers } from "vuex";
 const { mapActions, mapGetters } = createNamespacedHelpers("courseStore");
+const { mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
 
 //assets
 import places from '@/assets/testPlaceData.js'
@@ -70,7 +70,7 @@ import courseMarker from '@/assets/marker-course.png'
         },
         windowOptions : {
           disableAnchor : true,
-          pixelOffset : {x : -50, y : -40 },
+          pixelOffset : {x : 0, y : -40 },
           borderWidth : 0,
         },
         initLayers: ['BACKGROUND', 'BACKGROUND_DETAIL', 'POI_KOREAN', 'TRANSIT', 'ENGLISH', 'CHINESE', 'JAPANESE'],
@@ -79,6 +79,7 @@ import courseMarker from '@/assets/marker-course.png'
         selectedIdx : -1,
         originIcon : null,
         reLoad : true,
+        testOriginIcon : null
       }
     },
     methods: {
@@ -96,6 +97,8 @@ import courseMarker from '@/assets/marker-course.png'
         }
         else{
           if(this.info){
+            this.setPlace(null)
+            this.setPlace(null)
             this.info = false
             this.selectedMarker.setIcon(this.originIcon)
           }
@@ -106,9 +109,12 @@ import courseMarker from '@/assets/marker-course.png'
         }
       },
       changeSelected(idx, place){
+        let nameLength = place.PLACE_NAME.length 
+        this.windowOptions.pixelOffset.x = (nameLength < 5) ? -50 : nameLength * (-10)
+        this.setPlace(place)
         this.originIcon = this.marker[idx].getIcon()
-        this.marker[idx].setIcon(selectMarker)
         this.selectedMarker = this.marker[idx]
+        this.marker[idx].setIcon(selectMarker)
         this.selectedIdx = idx
         this.selectedPlace = place
         this.info = true
@@ -123,6 +129,9 @@ import courseMarker from '@/assets/marker-course.png'
       onCourseMarkerLoaded(vue) {
         let newMarker = vue.marker;
         newMarker.setIcon(courseMarker)
+        if(newMarker == this.selectedMarker){
+          newMarker.setIcon(selectMarker)
+        }
         newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
         this.marker.push(newMarker);
       },
@@ -140,7 +149,8 @@ import courseMarker from '@/assets/marker-course.png'
         this.reLoad = false
         setTimeout(() =>(this.reLoad = true), 1);
       },
-      ...mapActions(['addPlaceList'])
+      ...mapActions(['addPlaceList']),
+      ...placeMapActions(['setPlace'])
     },
     mounted() {
       setInterval(() => this.count++, 1000);
@@ -157,21 +167,11 @@ import courseMarker from '@/assets/marker-course.png'
   }
 </script>
 <style scoped>
-.info-window-container {
-  all: none;
-  width: 100px;
-  height: 40px;
-  margin-bottom: -30px;
-}
-  .map-enter-active, .map-leave-active {
+.map-enter-active, .map-leave-active {
   transition: opacity .5s;
 }
 .map-enter, .map-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
-}
-.naver-info-window{
-  all:none;
-  margin-bottom: 200px
 }
 .placeTitleBtn {
   border: none;

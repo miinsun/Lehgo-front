@@ -3,9 +3,14 @@
       <div class="top">
           <MainNav/>
       </div>
-      <v-row class="text-center body" >
+      <v-row class="text-center mainContent">
           <v-col cols="5">
-            <MainCategory/>
+            <div class="mainCategory" v-bar>
+                <MainCategory/>
+            </div>
+            <div class="placeInfo" v-bar>
+                <PlaceInfo/>
+            </div>
           </v-col>
           <v-col cols="7">
               <div class="mapArea">
@@ -23,6 +28,7 @@
   import Map from '../components/Map'
   import MainNav from '../components/place/MainNav'
   import MainCategory from '../components/place/MainCategory'
+  import PlaceInfo from '../components/place/PlaceInfo'
 
   export default {
     name: 'Main',
@@ -35,7 +41,8 @@
     components: {
       Map,
       MainNav,
-      MainCategory
+      MainCategory,
+      PlaceInfo,
     },
     methods:{
         openSideArea(value) {
@@ -54,14 +61,14 @@
 .top{
     height: 10vh;
 }
-.body{
+.mainContent{
     height:80vh;
 }
-.sideArea{
-    height:90vh;
-    width:25vw;
-    background-color: white;
-    overflow: auto;
+.mainCategory{
+    height:20vh;
+}
+.placeInfo{
+    height:60vh;
 }
 .mapArea{
     height:80vh;
