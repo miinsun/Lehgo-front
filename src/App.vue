@@ -19,6 +19,8 @@ export default {
 <style>
   body {
     margin: 0;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
   }
   #app {
     width : 100vw;
