@@ -3,7 +3,7 @@
 const placeStore = {
     namespaced: true,
     state: {
-        place : null,
+        place : null
     },
     getters: {
         getPlace : state => state.place,
@@ -27,7 +27,7 @@ const placeStore = {
             if(state.place.IMG3 != '') { list.push(state.place.IMG3) }
             if(state.place.IMG4 != '') { list.push(state.place.IMG4) }
             return list
-        }
+        },
     },
     mutations: {
         setPlace: (state, payload) => {

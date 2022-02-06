@@ -4,6 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 import userStore from './modules/userStore';
 import courseStore from './modules/courseStore';
 import placeStore from './modules/placeStore';
+import placeListStore from './modules/placeListStore';
 Vue.use(Vuex)
 
 
@@ -21,9 +22,10 @@ export default new Vuex.Store({
   modules: {
     userStore: userStore,
     courseStore : courseStore,
-    placeStore : placeStore
+    placeStore : placeStore,
+    placeListStore : placeListStore
   },
   plugins :[createPersistedState({
-    paths: ['userStore', 'courseStore'],
+    paths: ['userStore', 'courseStore', 'placeListStore'],
   })]
 })

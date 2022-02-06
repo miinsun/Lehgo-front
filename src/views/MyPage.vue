@@ -14,11 +14,12 @@
               <div v-if="openSide" id="sideArea" v-bar>
                 <UserInfo v-if="sideArea == 'userInfo'"/>
                 <SearchList v-if="sideArea == 'searchList'"/>
+                <FolderList @clickedPlace="clickedPlace" v-if="sideArea == 'folderList'"/>
               </div>
           </v-col>
           <v-col :cols="mapCol">
               <div id="mapArea">
-                <Map/>
+                <Map :clickedPlace="newPlace"/>
               </div>
           </v-col>
       </v-row>
@@ -33,7 +34,8 @@
   import ProfileCard from '../components/user/ProfileCard'
   import UserInfo from '../components/user/UserInfo'
   import SearchList from '../components/user/SearchList'
-  import Map from '../components/Map'
+  import FolderList from '../components/user/FolderList.vue'
+  import Map from '../components/map/FolderMap'
   import TestBar from '../components/TestBar'
 
   export default {
@@ -43,7 +45,8 @@
         openSide : false,
         sideArea : '',
         mapCol : 9,
-        mapAreaStyle : ''
+        mapAreaStyle : '',
+        newPlace : null,
     }),
     components: {
       MyPageList,
@@ -51,15 +54,18 @@
       Map,
       TestBar,
       UserInfo,
-      SearchList
+      SearchList,
+      FolderList
     },
     methods:{
         openSideArea(value) {
             this.openSide = true;
             this.sideArea = value;
             this.mapCol = 6
-            console.log(this.sideArea)
         },
+        clickedPlace(place){
+          this.newPlace = place;
+        }
     },
     created() {
     },

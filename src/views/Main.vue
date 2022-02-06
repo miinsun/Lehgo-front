@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import Map from '../components/Map'
+  import Map from '../components/map/MainMap'
   import MainNav from '../components/place/MainNav'
   import MainCategory from '../components/place/MainCategory'
   import PlaceInfo from '../components/place/PlaceInfo'
