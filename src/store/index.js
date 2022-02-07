@@ -26,6 +26,6 @@ export default new Vuex.Store({
     placeListStore : placeListStore
   },
   plugins :[createPersistedState({
-    paths: ['userStore', 'courseStore', 'placeListStore'],
+    paths: ['userStore', 'courseStore'],
   })]
 })

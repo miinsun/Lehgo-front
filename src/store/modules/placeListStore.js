@@ -1,4 +1,4 @@
-// import axios from 'axios'
+import axios from 'axios'
 
 const placeListStore = {
     namespaced: true,
@@ -76,16 +76,21 @@ const placeListStore = {
             // }
             commit('setFolderList', newFolderList);
         },
-        // addPlaceToFolder: ({ commit, state }, payload) => {
-        //     let newLikedList = state.likedList
-        //     let place = payload.
-        //     for (let i in newLikedList){
-        //         if(newLikedList[i].PLACE_ID == payload.PLACE_ID){
-        //             newLikedList[i].folder('')
-        //         }
-        //     }
-        //     commit('setLikedList', newLikedList);
-        // },
+        setLikedList: ({ commit, rootState, rootGetters }) => {
+            let api = rootState.domain + '/place/mylist'
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+                }).then(res => {
+                    let likedList = []
+                    for (let i in res.data){
+                        likedList.push(res.data[i].place)
+                    }
+                    commit('setLikedList', likedList)
+                })
+        },
     }
 }
 

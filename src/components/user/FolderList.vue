@@ -4,13 +4,13 @@
       <v-list rounded>
         <v-list-item-group  color="gray"  class="text-left" >
           <v-list-item class="py-3" v-for="place, i in getLikedList" :key="i"> 
-            <span class="placeImg rounded-circle" v-if="place.IMG1" :style="bgImg(place)"></span>
-            <span class="noImg rounded-circle" v-if="!place.IMG1">
+            <span class="placeImg rounded-circle" v-if="place.img1" :style="bgImg(place)"></span>
+            <span class="noImg rounded-circle" v-if="!place.img1">
                 <i class="far fa-image"></i>
             </span>
             <v-list-item-content @click="clickedPlace(place)">
-                <v-list-item-title><b>{{place.PLACE_NAME}}</b></v-list-item-title>
-                <small>{{place.ADDRESS}}</small>
+                <v-list-item-title><b>{{place.placeName}}</b></v-list-item-title>
+                <small>{{place.address}}</small>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -21,7 +21,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapGetters } = createNamespacedHelpers("placeListStore");
+const { mapGetters, mapActions } = createNamespacedHelpers("placeListStore");
 
   export default {
     name: 'FolderList',
@@ -30,14 +30,18 @@ const { mapGetters } = createNamespacedHelpers("placeListStore");
     }),
     methods: {
         bgImg(place) {
-            return 'background-image : url("' + place.IMG1 + '");'
+            return 'background-image : url("' + place.img1 + '");'
         },
         clickedPlace(place){
             this.$emit('clickedPlace', place);
-        }
+        },
+        ...mapActions(['setLikedList'])
     },
     computed:{
         ...mapGetters(['getLikedList'])
+    },
+    mounted() {
+      this.setLikedList();
     }
   }
 </script>

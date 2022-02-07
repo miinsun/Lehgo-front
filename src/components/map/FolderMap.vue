@@ -16,12 +16,12 @@
           <draggable class="list-group mainCourse"  v-if="info" :list="[selectedPlace]"
             :group="{name : 'mainCourse', pull: 'clone', put: false }">
             <v-btn text class="list-group-item placeTitleBtn" elevation="4">
-                {{selectedPlace.PLACE_NAME}}
+                {{selectedPlace.placeName}}
             </v-btn>
           </draggable>
         </naver-info-window>
         <naver-marker v-for="e, i in placeList" :key="'placeList' + i"
-          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
+          :lat="e.latitude" :lng="e.longitude" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
     </naver-maps>
   </div>
 </transition>
@@ -53,9 +53,9 @@ import selectMarker from '@/assets/marker-select.png'
         map: null,
         isCTT: false,
         mapOptions: {
-          lat: 35.11527763852661, 
-          lng: 129.04223978515628,
-          zoom: 12,
+          lat: 35.15, 
+          lng: 129.05,
+          zoom: 11,
           mapTypeControl: true,
         },
         windowOptions : {
@@ -78,10 +78,9 @@ import selectMarker from '@/assets/marker-select.png'
         this.map = vue;
       },
       moveCenter(){
-          this.map.setCenter(35.11527763852661, 129.04013978515628)
       },
       onMarkerClicked(place){
-        let idx = this.findMarkerIdx(place.LONGITUDE + '' + place.LATITUDE)
+        let idx = this.findMarkerIdx(place.longitude + '' + place.latitude)
         if(!this.info){
           this.changeSelected(idx, place)
         }
@@ -98,8 +97,9 @@ import selectMarker from '@/assets/marker-select.png'
         }
       },
       changeSelected(idx, place){
-        let nameLength = place.PLACE_NAME.length 
-        this.windowOptions.pixelOffset.x = (nameLength < 5) ? -50 : nameLength * (-10)
+        let length, i, c;
+        for ((length=i=0); (c=place.placeName.charCodeAt(i++));(length+=c>>11?3:c>>7?2:1));
+        this.windowOptions.pixelOffset.x = (length < 15) ? -50 : length * (-3.3)
         this.setPlace(place)
         this.originIcon = this.marker[idx].getIcon()
         this.selectedMarker = this.marker[idx]
