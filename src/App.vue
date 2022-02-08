@@ -5,6 +5,14 @@
 </template>
 
 <script>
+let vh = window.innerHeight * 0.01
+document.documentElement.style.setProperty('--vh', vh + 'px')
+
+window.addEventListener('resize', () => {
+  let vh = window.innerHeight * 0.01
+  document.documentElement.style.setProperty('--vh', vh + 'px')
+})
+
 export default {
   name: 'App',
   components: {
@@ -17,14 +25,8 @@ export default {
 </script>
 
 <style>
-  body {
-    margin: 0;
-    font-size: 12px;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  #app {
-    width : 100vw;
-    height: 100vh;
-    position: relative;
-  }
+html, body {
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 </style>

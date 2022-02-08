@@ -1,10 +1,9 @@
 <template>
   <v-container fluid>
-      <v-row class="mainContainer">
-        <v-col cols="1" class="info"> </v-col>
-        <v-col cols="11">
-        <v-row class="text-center mainContent">
-            <v-col cols="5">
+      <v-row class="content">
+        <v-col cols="1"><SideBar/></v-col>
+        <v-col cols="5">
+            <v-row class="text-center mainContent">
                 <div class="mainCourse">
                     <MainNav/>
                 </div>
@@ -14,14 +13,13 @@
                 <div class="placeInfo" v-bar>
                     <PlaceInfo/>
                 </div>
-            </v-col>
-            <v-col cols="7">
-                <div class="mapArea">
-                    <Map/>
-                </div>
-            </v-col>
-        </v-row>
-       </v-col>
+            </v-row>
+        </v-col>
+        <v-col cols="6">
+            <div class="mapArea">
+                <Map/>
+            </div>
+        </v-col>
       </v-row>
   </v-container>
 </template>
@@ -31,6 +29,7 @@
   import MainNav from '../components/place/MainNav'
   import MainCategory from '../components/place/MainCategory'
   import PlaceInfo from '../components/place/PlaceInfo'
+  import SideBar from '../components/SideBar'
 
   export default {
     name: 'Main',
@@ -45,6 +44,7 @@
       MainNav,
       MainCategory,
       PlaceInfo,
+      SideBar
     },
     methods:{
         openSideArea(value) {
@@ -59,9 +59,9 @@
 </script>
 
 <style scoped>
-.mainContainer{
-    height: 100vh;
-    width: 100vw;
+.col{
+  padding: 0;
+  height: 100vh;
 }
 .mainCourse{
     height:10vh;

@@ -1,67 +1,91 @@
 <template>
   <v-container fluid>
-      <div class="top">
-          <TestBar/>
-      </div>
-      <v-row class="text-center body" >
-          <v-col cols="3">
-              <div>
-                <ProfileCard @openSideArea="openSideArea"/>
-                <MyPageList id="listArea" @openSideArea="openSideArea"/>
-              </div>
-          </v-col>
-          <v-col v-if="openSide" cols="3">
-              <div v-if="openSide" id="sideArea" v-bar>
-                <UserInfo v-if="sideArea == 'userInfo'"/>
-                <SearchList v-if="sideArea == 'searchList'"/>
-                <FolderList @clickedPlace="clickedPlace" v-if="sideArea == 'folderList'"/>
-              </div>
-          </v-col>
-          <v-col :cols="mapCol">
-              <div id="mapArea">
-                <Map :clickedPlace="newPlace" :mapSize="mapCol"/>
-              </div>
-          </v-col>
-      </v-row>
-      <v-row class="text-center footer">
-          <v-footer>footer</v-footer>
-      </v-row>
+    <v-row class="content">
+      <v-col cols="1"><SideBar/></v-col>
+      <v-col cols="3">
+        <div>
+          <ProfileCard @openUserInfo="openUserInfo"/>
+          <MyPageList id="listArea" 
+            @openLikedList="openLikedList"
+            @openSearchList="openSearchList"
+            @openCourseList="openCourseList"/>
+        </div>
+      </v-col>
+      <v-col v-if="openSide" cols="3">
+          <div v-if="openSide" id="sideArea" v-bar>
+            <UserInfo v-if="isUserInfo"/>
+            <SearchList v-if="isSearchedList"/>
+            <FolderList @clickedPlace="clickedPlace" v-if="isLikedList"/>
+          </div>
+      </v-col>
+      <v-col :cols="mapCol">
+          <div id="mapArea">
+            <Map :clickedPlace="newPlace" :mapCol="mapCol" :placeList="placeList"/>
+          </div>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
-  import MyPageList from '../components/user/MyPageList'
-  import ProfileCard from '../components/user/ProfileCard'
+  import SideBar from '../components/SideBar'
+  import Map from '../components/map/MyPageMap'
   import UserInfo from '../components/user/UserInfo'
+  import ProfileCard from '../components/user/ProfileCard'
+  import MyPageList from '../components/user/MyPageList'
   import SearchList from '../components/user/SearchList'
-  import FolderList from '../components/user/FolderList.vue'
-  import Map from '../components/map/FolderMap'
-  import TestBar from '../components/TestBar'
+  import FolderList from '../components/user/FolderList'
+  import placeListService from '@/services/placeListService';
 
   export default {
     name: 'MyPage',
 
     data:() =>({
         openSide : false,
-        sideArea : '',
-        mapCol : 9,
-        mapAreaStyle : '',
+        mapCol : 8,
         newPlace : null,
+        isUserInfo : false,
+        isVisitedList : false,
+        isSearchedList : false,
+        isLikedList : false,
+        isCourseList : false,
+        placeList : [],
     }),
     components: {
-      MyPageList,
-      ProfileCard,
+      SideBar,
+      UserInfo, MyPageList, ProfileCard,
+      SearchList, FolderList,
       Map,
-      TestBar,
-      UserInfo,
-      SearchList,
-      FolderList
     },
     methods:{
-        openSideArea(value) {
+        openSideArea() {
             this.openSide = true;
-            this.sideArea = value;
-            this.mapCol = 6
+            this.isUserInfo = false;
+            this.isVisitedList = false;
+            this.isSearchedList = false;
+            this.isLikedList = false;
+            this.isCourseList = false;
+            this.mapCol = 5;
+        },
+        openUserInfo(){
+            this.openSideArea();
+            this.isUserInfo = true;
+        },
+        openLikedList(){
+            this.openSideArea();
+            this.isLikedList = true;
+            placeListService.getLikedList()
+            .then((res) => { 
+              this.placeList = res; 
+            })
+        },
+        openSearchList(){
+            this.openSideArea();
+            this.isSearchedList = true;
+        },
+        openCourseList(){
+            this.openSideArea();
+            this.isCourseList = true;
         },
         clickedPlace(place){
           this.newPlace = place;
@@ -69,25 +93,33 @@
     },
     created() {
     },
+    mounted() {
+      //List<Place>로 수정 후 사용
+      // placeListService.getVisitedList()
+      // .then((res) => { 
+      //   this.placeList = res; 
+      // })
+    }
   }
 </script>
 
 <style scoped>
-.body{
-    height:80vh;
+.col{
+  padding: 0;
+  height: 100vh;
 }
 #listArea{
     height:50vh;
     overflow: auto;
 }
 #sideArea{
-    height:90vh;
-    width:25vw;
+    width: 25vw;
+    height: 100vh;
     background-color: white;
     overflow: auto;
 }
 #mapArea{
-    height:80vh;
-    overflow: disabled;
+    height: 100vh;
+    overflow: hidden;
 }
 </style>

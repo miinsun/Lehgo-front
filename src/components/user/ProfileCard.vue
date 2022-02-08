@@ -17,7 +17,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
     }),
     methods: {
         openUserInfo : function() {
-            this.$emit('openSideArea', 'userInfo')
+            this.$emit('openUserInfo')
         },
       ...mapActions(['postLogout'])
     },

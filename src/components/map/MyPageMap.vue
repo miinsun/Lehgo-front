@@ -3,7 +3,7 @@
   <div v-if="loaded">
     <naver-maps
       :height="height"
-      :width="width"
+      :width="mapSize"
       :mapOptions="mapOptions"
       :initLayers="initLayers"
       @load="onLoad">
@@ -21,7 +21,7 @@
           </draggable>
         </naver-info-window>
         <naver-marker v-for="e, i in placeList" :key="'placeList' + i"
-          :lat="e.latitude" :lng="e.longitude" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
+          :lat="e.place.latitude" :lng="e.place.longitude" @click="onMarkerClicked(e.place)" @load="onMarkerLoaded"/>
     </naver-maps>
   </div>
 </transition>
@@ -30,7 +30,6 @@
 <script>
 import draggable from 'vuedraggable'
 import { createNamespacedHelpers } from "vuex";
-const { mapGetters } = createNamespacedHelpers("placeListStore");
 const { mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
 
 //assets
@@ -41,12 +40,11 @@ import selectMarker from '@/assets/marker-select.png'
     components:{
         draggable
     },
-    props: ['clickedPlace', 'mapSize'],
+    props: ['placeList', 'clickedPlace', 'mapSize', 'mapCol'],
     data() {
       return {
         loaded : false,
-        width: window.innerWidth * 0.75,
-        height: window.innerHeight - 100,
+        height: window.innerHeight,
         info: false,
         marker: [],
         count: 1,
@@ -68,13 +66,12 @@ import selectMarker from '@/assets/marker-select.png'
         selectedMarker : null,
         selectedIdx : -1,
         originIcon : null,
-        reLoad : true,
         testOriginIcon : null
       }
     },
     methods: {
       onLoad(vue)
-        {
+      {
         this.map = vue;
       },
       moveCenter(){
@@ -116,19 +113,12 @@ import selectMarker from '@/assets/marker-select.png'
         newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
         this.marker.push(newMarker);
       },
-      addPlace(value){
-        this.addPlaceList(value);
-      },
       findMarkerIdx(title){
         for(let m in this.marker){
           if(title == this.marker[m].getTitle()){
             return m
           }
         }
-      },
-      reRoadPath(){
-        this.reLoad = false
-        setTimeout(() =>(this.reLoad = true), 2);
       },
       ...placeMapActions(['setPlace'])
     },
@@ -137,28 +127,34 @@ import selectMarker from '@/assets/marker-select.png'
       this.loaded = true;
     },
     computed: {
-      placeList: function(){
-        this.reRoadPath()
-        return this.getLikedList
-      },
-      ...mapGetters(['getLikedList'])
+      // placeList: function(){
+      //   return this.getLikedList
+      // },
+      // ...mapGetters(['getLikedList'])
     },
     watch:{
       clickedPlace: function(){
           this.onMarkerClicked(this.clickedPlace);
       },
-      mapSize : function(){
-        this.map.setSize({ width: window.innerWidth * 0.50, height: window.innerHeight - 100})
+      mapCol : function(){
+         this.map.setSize({width: this.map.getSize().width / 8 * this.mapCol, height: this.height})
       }
     }
   }
 </script>
 <style scoped>
-.map-enter-active, .map-leave-active {
+.map-enter-active{
   transition: opacity .5s;
+}
+.map-leave-active {
+  transition: opacity 0.8s ease 0.2s;
+  position: absolute;
 }
 .map-enter, .map-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.map-move{
+  transition: transform 1s;
 }
 .placeTitleBtn {
   border: none;

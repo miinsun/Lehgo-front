@@ -55,14 +55,16 @@ import courseMarker from '@/assets/marker-course.png'
       return {
         placeList : [],
         loaded : false,
-        width: window.innerWidth * 0.52,
-        height: window.innerHeight * 0.95,
+        width: window.innerWidth * 0.5,
+        height: window.innerHeight,
         info: false,
         marker: [],
         count: 1,
         map: null,
         isCTT: false,
         mapOptions: {
+          lat : 35.11527763852661,
+          lng : 129.04223978515628,
           zoom: 12,
           mapTypeControl: true,
         },

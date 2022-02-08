@@ -4,13 +4,13 @@
       <v-list rounded id="page2-slide" class="page2-slide-hidden">
         <v-list-item-group  color="gray" >
           <v-list-item>
-            <v-list-item-content @click="openSearchList">
+            <v-list-item-content @click="openSearchList()">
                 <v-list-item-title>검색 기록</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         <v-list-group color="gray">
             <template v-slot:activator>
-              <v-list-item-content @click="openFolderList">
+              <v-list-item-content @click="openLikedList()">
                   <v-list-item-title>찜한 여행지</v-list-item-title>
               </v-list-item-content>
             </template>
@@ -35,13 +35,13 @@
                 <v-list-item-title>나만의 코스</v-list-item-title>
             </template>
           <v-list-item>
-            <v-list-item-content>
+            <v-list-item-content @click="openCourseList()">
                 <v-list-item-title>코스 2</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
         <v-list-item>
-            <v-list-item-content @click="goToSurvey">
+            <v-list-item-content @click="goToSurvey()">
               <v-list-item-title>취향 조사 다시하기</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
@@ -64,18 +64,21 @@ const { mapGetters : placeListGetters, mapActions : placeListActions } = createN
       folderList : [],
     }),
     methods: {
-        openSearchList : function() {
-            this.$emit('openSideArea', 'searchList')
+        openSearchList() {
+            this.$emit('openSearchList')
         },
-        openFolderList : function() {
-            this.$emit('openSideArea', 'folderList')
+        openLikedList() {
+            this.$emit('openLikedList')
         },
-        goToSurvey: function() {
+        openCourseList(){
+            this.$emit('openCourseList')
+        },
+        goToSurvey() {
             this.$router.push({
                 name: 'Survey'
             })
         },
-        addFolderBtn: function(){
+        addFolderBtn(){
           this.addFolder(this.folderName);
           this.newFolder = false;
         },
