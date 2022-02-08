@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
 import MyPage from '../views/MyPage.vue'
 import Survey from '../views/Survey.vue'
+import Search from '../views/Search.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,11 @@ const routes = [
     path: '/survey',
     name: 'Survey',
     component: Survey
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search
   }
 ]
 

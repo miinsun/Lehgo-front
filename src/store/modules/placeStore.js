@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 const placeStore = {
     namespaced: true,
@@ -56,7 +56,14 @@ const placeStore = {
                         }
                         payload.liked = isLiked
                         commit('setPlace', payload);
-                    }) 
+                    }).then(() => {
+                        let api = rootState.domain + '/place/visited/add?id=' + payload.placeId
+                        axios.post(api, JSON.stringify({
+                            id : rootGetters["userStore/getUserId"]
+                        }), {
+                            headers: { "Content-Type": 'application/json' } 
+                        })
+                    })
                 }
                 else{
                     commit('setPlace', null);
