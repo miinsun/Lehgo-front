@@ -1,25 +1,27 @@
 <template>
   <v-container fluid>
-      <div class="top">
-          <MainNav/>
-      </div>
-      <v-row class="text-center mainContent">
-          <v-col cols="5">
-            <div class="mainCategory" v-bar>
-                <MainCategory/>
-            </div>
-            <div class="placeInfo" v-bar>
-                <PlaceInfo/>
-            </div>
-          </v-col>
-          <v-col cols="7">
-              <div class="mapArea">
-                <Map/>
-              </div>
-          </v-col>
-      </v-row>
-      <v-row class="text-center footer">
-          <v-footer>footer</v-footer>
+      <v-row class="mainContainer">
+        <v-col cols="1" class="info"> </v-col>
+        <v-col cols="11">
+        <v-row class="text-center mainContent">
+            <v-col cols="5">
+                <div class="mainCourse">
+                    <MainNav/>
+                </div>
+                <div class="mainCategory" v-bar>
+                    <MainCategory/>
+                </div>
+                <div class="placeInfo" v-bar>
+                    <PlaceInfo/>
+                </div>
+            </v-col>
+            <v-col cols="7">
+                <div class="mapArea">
+                    <Map/>
+                </div>
+            </v-col>
+        </v-row>
+       </v-col>
       </v-row>
   </v-container>
 </template>
@@ -49,7 +51,6 @@
             this.openSide = true;
             this.sideArea = value;
             this.mapCol = 6
-            console.log(this.sideArea)
         },
     },
     created() {
@@ -58,20 +59,20 @@
 </script>
 
 <style scoped>
-.top{
-    height: 10vh;
+.mainContainer{
+    height: 100vh;
+    width: 100vw;
 }
-.mainContent{
-    height:80vh;
+.mainCourse{
+    height:10vh;
 }
 .mainCategory{
     height:20vh;
 }
 .placeInfo{
-    height:60vh;
+    height:65vh;
 }
 .mapArea{
-    height:80vh;
     overflow: disabled;
 }
 .footer{

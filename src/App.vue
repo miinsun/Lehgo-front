@@ -24,8 +24,7 @@ export default {
   }
   #app {
     width : 100vw;
-    height : 90vh;
-    min-height: 100%;
+    height: 100vh;
     position: relative;
   }
 </style>

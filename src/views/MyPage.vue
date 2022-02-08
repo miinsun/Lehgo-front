@@ -19,7 +19,7 @@
           </v-col>
           <v-col :cols="mapCol">
               <div id="mapArea">
-                <Map :clickedPlace="newPlace"/>
+                <Map :clickedPlace="newPlace" :mapSize="mapCol"/>
               </div>
           </v-col>
       </v-row>

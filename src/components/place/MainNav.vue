@@ -12,7 +12,7 @@
         <draggable class="list-group" group="mainCourse" :list="list" @change="updateMainCourse">
             <!-- <transition-group type="transition" > -->
             <v-btn text class="list-group-item"  v-for="e, i in list" :key="'mainCourse' + i">
-                {{e.PLACE_NAME}}
+                {{e.placeName}}
             </v-btn>
             <!-- </transition-group> -->
         </draggable>

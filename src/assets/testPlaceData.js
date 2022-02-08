@@ -1,7 +1,7 @@
 let testPlaceData = [
     {
-        PLACE_ID : 27,
-        PLACE_NAME : '다대포해수욕장',
+        placeId : 27,
+        placeName : '다대포해수욕장',
         LATITUDE : 35.0457857,
         LONGITUDE : 128.9687153,
         ADDRESS : '부산광역시 사하구 몰운대1길 14',
@@ -15,8 +15,8 @@ let testPlaceData = [
         IMG4 : 'https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=91ee8374-127f-4850-9e3b-68e6769eefa0'
     },
     {
-        PLACE_ID : 0,
-        PLACE_NAME : '부산역',
+        placeId : 0,
+        placeName : '부산역',
         LATITUDE : 35.11527763852661,
         LONGITUDE : 129.04223978515628,
         ADDRESS : '부산광역시 동구 초량3동 중앙대로',
@@ -29,8 +29,8 @@ let testPlaceData = [
         IMG3 : '',
         IMG4 : ''
     },
-    {   PLACE_ID : 1,
-        PLACE_NAME : '하리방파제',
+    {   placeId : 1,
+        placeName : '하리방파제',
         LATITUDE : 35.0703205,
         LONGITUDE : 129.0815195,
         ADDRESS : '부산광역시 영도구 동삼동 764-7',

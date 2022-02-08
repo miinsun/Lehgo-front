@@ -16,15 +16,15 @@
           <draggable class="list-group mainCourse"  v-if="info" :list="[selectedPlace]"
             :group="{name : 'mainCourse', pull: 'clone', put: false }">
             <v-btn text class="list-group-item placeTitleBtn" elevation="4">
-                {{selectedPlace.PLACE_NAME}}
+                {{selectedPlace.placeName}}
             </v-btn>
           </draggable>
         </naver-info-window>
-        <naver-marker v-for="e, i in placeList" :key="'placeList' + i"
-          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onMarkerLoaded"/>
-        <naver-marker v-for="e, i  in coursePlaceList" :key="'coursePlaceList' + i"
-          :lat="e.LATITUDE" :lng="e.LONGITUDE" @click="onMarkerClicked(e)" @load="onCourseMarkerLoaded"/>
-          <div v-for="e, i in coursePlaceList" :key="'polyLine' + i">
+        <naver-marker v-for="p, i in placeList" :key="'p' + i"
+          :lat="p.LATITUDE" :lng="p.LONGITUDE" @click="onMarkerClicked(p, $event)" @load="onMarkerLoaded"/>
+        <naver-marker v-for="p, i  in coursePlaceList" :key="'coursePlaceList' + i"
+          :lat="p.LATITUDE" :lng="p.LONGITUDE" @click="onMarkerClicked(p, $event)" @load="onCourseMarkerLoaded"/>
+          <div v-for="p, i in coursePlaceList" :key="'c' + i">
           <naver-polyline  v-if="i != 0 && reLoad"
             :path="[{lat: coursePlaceList[i - 1].LATITUDE, lng:coursePlaceList[i - 1].LONGITUDE},
                 {lat: coursePlaceList[i].LATITUDE, lng:coursePlaceList[i].LONGITUDE}]"/>
@@ -38,12 +38,12 @@
 import draggable from 'vuedraggable'
 import courseService from '@/services/courseService';
 import { createNamespacedHelpers } from "vuex";
-const { mapActions, mapGetters } = createNamespacedHelpers("courseStore");
+const { mapActions : courseActions, mapGetters : courseGetters } = createNamespacedHelpers("courseStore");
 const { mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
 
 //assets
 import places from '@/assets/testPlaceData.js'
-import selectMarker from '@/assets/marker-select.png'
+import selectMarkerIcon from '@/assets/marker-select.png'
 import courseMarker from '@/assets/marker-course.png'
 
   export default {
@@ -55,16 +55,14 @@ import courseMarker from '@/assets/marker-course.png'
       return {
         placeList : [],
         loaded : false,
-        width: window.innerWidth * 0.75,
-        height: window.innerHeight - 100,
+        width: window.innerWidth * 0.52,
+        height: window.innerHeight * 0.95,
         info: false,
         marker: [],
         count: 1,
         map: null,
         isCTT: false,
         mapOptions: {
-          lat: 35.11527763852661, 
-          lng: 129.04223978515628,
           zoom: 12,
           mapTypeControl: true,
         },
@@ -84,38 +82,36 @@ import courseMarker from '@/assets/marker-course.png'
     },
     methods: {
       onLoad(vue)
-        {
+      {
         this.map = vue;
       },
-      moveCenter(){
-          this.map.setCenter(35.11527763852661, 129.04013978515628)
-      },
-      onMarkerClicked(place){
-        let idx = this.findMarkerIdx(place.LONGITUDE + '' + place.LATITUDE)
+      onMarkerClicked(place, event){
+        let idx = event.overlay.title;
         if(!this.info){
-          this.changeSelected(idx, place)
+            this.map.morph(event.overlay.position)
+            setTimeout(() => this.changeSelected(idx, place), 500);
         }
         else{
+          this.selectedMarker.setIcon(this.originIcon)
           if(this.info){
             this.setPlace(null)
-            this.setPlace(null)
             this.info = false
-            this.selectedMarker.setIcon(this.originIcon)
           }
-          if(this.selectedIdx != idx){
+          if(this.selectedPlace != place){
             this.info = false
-            setTimeout(() => this.changeSelected(idx, place), 1);
+            this.map.morph(event.overlay.position)
+            setTimeout(() => this.changeSelected(idx, place), 500);
           }
         }
       },
       changeSelected(idx, place){
-        let nameLength = place.PLACE_NAME.length 
-        this.windowOptions.pixelOffset.x = (nameLength < 5) ? -50 : nameLength * (-10)
+        let length, i, c;
+        for ((length=i=0); (c=place.placeName.charCodeAt(i++));(length+=c>>11?3:c>>7?2:1));
+        this.windowOptions.pixelOffset.x = (length < 15) ? -50 : length * (-3.3)
         this.setPlace(place)
         this.originIcon = this.marker[idx].getIcon()
         this.selectedMarker = this.marker[idx]
-        this.marker[idx].setIcon(selectMarker)
-        this.selectedIdx = idx
+        this.marker[idx].setIcon(selectMarkerIcon)
         this.selectedPlace = place
         this.info = true
       },
@@ -123,17 +119,14 @@ import courseMarker from '@/assets/marker-course.png'
       },
       onMarkerLoaded(vue) {
         let newMarker = vue.marker;
-        newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
+        newMarker.setTitle(this.marker.length);
         this.marker.push(newMarker);
       },
       onCourseMarkerLoaded(vue) {
         let newMarker = vue.marker;
         newMarker.setIcon(courseMarker)
-        if(newMarker == this.selectedMarker){
-          newMarker.setIcon(selectMarker)
-        }
-        newMarker.setTitle(vue.marker.getPosition().x + '' + vue.marker.getPosition().y)
-        this.marker.push(newMarker);
+        newMarker.setTitle(this.marker.length);
+        this.marker.push(newMarker);  
       },
       addPlace(value){
         this.addPlaceList(value);
@@ -149,21 +142,31 @@ import courseMarker from '@/assets/marker-course.png'
         this.reLoad = false
         setTimeout(() =>(this.reLoad = true), 1);
       },
-      ...mapActions(['addPlaceList']),
+      ...courseActions(['addPlaceList']),
       ...placeMapActions(['setPlace'])
     },
     mounted() {
+      this.setPlace(null);
       setInterval(() => this.count++, 1000);
       this.loaded = true;
-      this.placeList = courseService.notCoursePlaceList(places);
+      if(this.coursePlaceList.length > 0){
+        this.mapOptions.lat = this.coursePlaceList[0].LATITUDE;
+        this.mapOptions.lng = this.coursePlaceList[0].LONGITUDE;
+      }
+      this.placeList = courseService.notCoursePlaceList(places, this.coursePlaceList);
     },
     computed: {
       coursePlaceList: function(){
         this.reRoadPath()
         return this.getPlaceList
       },
-      ...mapGetters(['getPlaceList'])
+      ...courseGetters(['getPlaceList'])
     },
+    watch:{
+      coursePlaceList: function(){
+        this.placeList = courseService.notCoursePlaceList(places, this.coursePlaceList);
+      },
+    }
   }
 </script>
 <style scoped>

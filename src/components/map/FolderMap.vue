@@ -41,7 +41,7 @@ import selectMarker from '@/assets/marker-select.png'
     components:{
         draggable
     },
-    props: ['clickedPlace'],
+    props: ['clickedPlace', 'mapSize'],
     data() {
       return {
         loaded : false,
@@ -78,6 +78,7 @@ import selectMarker from '@/assets/marker-select.png'
         this.map = vue;
       },
       moveCenter(){
+        this.map.setCenter({x: 219.8977951388889, y: 101.2692443674243})
       },
       onMarkerClicked(place){
         let idx = this.findMarkerIdx(place.longitude + '' + place.latitude)
@@ -92,7 +93,7 @@ import selectMarker from '@/assets/marker-select.png'
           }
           if(this.selectedIdx != idx){
             this.info = false
-            setTimeout(() => this.changeSelected(idx, place), 1);
+            setTimeout(() => this.changeSelected(idx, place), 2);
           }
         }
       },
@@ -127,7 +128,7 @@ import selectMarker from '@/assets/marker-select.png'
       },
       reRoadPath(){
         this.reLoad = false
-        setTimeout(() =>(this.reLoad = true), 1);
+        setTimeout(() =>(this.reLoad = true), 2);
       },
       ...placeMapActions(['setPlace'])
     },
@@ -146,6 +147,9 @@ import selectMarker from '@/assets/marker-select.png'
       clickedPlace: function(){
           this.onMarkerClicked(this.clickedPlace);
       },
+      mapSize : function(){
+        this.map.setSize({ width: window.innerWidth * 0.50, height: window.innerHeight - 100})
+      }
     }
   }
 </script>

@@ -1,14 +1,11 @@
 // import axios from 'axios'
-import courseStore from '../store/modules/courseStore.js';
-
 class courseService{
-   notCoursePlaceList(placeList){
-        let coursePlaceList = courseStore.state.placeList;
+   notCoursePlaceList(placeList, coursePlaceList){
         let newPlaceList = []
         for (let p in placeList){
             let noCourse = false;
             for (let cp in coursePlaceList){
-                if(placeList[p].PLACE_ID == coursePlaceList[cp].PLACE_ID){
+                if(placeList[p].placeId == coursePlaceList[cp].placeId){
                     noCourse = true;
                     break;
                 }

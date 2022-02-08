@@ -1,4 +1,4 @@
-// import axios from 'axios'
+import axios from 'axios'
 
 const placeStore = {
     namespaced: true,
@@ -33,11 +33,66 @@ const placeStore = {
         setPlace: (state, payload) => {
             state.place = payload
         },
+        setLiked: (state, payload) => {
+            state.place.liked = payload
+        },
     },
     actions: {
-        setPlace: ({ commit }, payload) => {
-            commit('setPlace', payload);
+        setPlace: ({ commit, rootState, rootGetters }, payload) => {
+            return new Promise(function() {
+                if(payload != null) {
+                    let api = rootState.domain + '/place/mylist/'
+                    axios.post(api, JSON.stringify({
+                            id : rootGetters["userStore/getUserId"]
+                        }), {
+                            headers: { "Content-Type": 'application/json'
+                        }
+                    }).then(res => {
+                        let isLiked = false;
+                        for (let i in res.data){
+                            if(payload.placeId == res.data[i].place.placeId){
+                                isLiked = true
+                            }
+                        }
+                        payload.liked = isLiked
+                        commit('setPlace', payload);
+                    }) 
+                }
+                else{
+                    commit('setPlace', null);
+                }
+            })
         },
+        likePlace: ({ commit, rootState, rootGetters }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/place/mylist/like?id=' + payload
+                axios.post(api, JSON.stringify({
+                        id : rootGetters["userStore/getUserId"]
+                    }), {
+                        headers: { "Content-Type": 'application/json'
+                    }
+                }).then(() => {
+                    commit('setLiked', true);
+                }).catch(function(error){
+                    console.log(error.response.data.message);
+                });
+            })
+        },
+        dislikePlace: ({ commit, rootState, rootGetters }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/place/mylist/delete?id=' + payload
+                axios.post(api, JSON.stringify({
+                        id : rootGetters["userStore/getUserId"]
+                    }), {
+                        headers: { "Content-Type": 'application/json'
+                    }
+                }).then(() => {
+                    commit('setLiked', false);
+                }).catch(function(error){
+                    console.log(error.response.data.message);
+                });
+            })
+        }
     }
 }
 

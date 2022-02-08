@@ -11,7 +11,7 @@
             <div class="mt-5 text-left">
                 <v-row>
                     <v-col cols="9 offset-1">
-                        <h3>{{getPlace.PLACE_NAME}}</h3>
+                        <h3>{{getPlace.placeName}}</h3>
                         {{getPlace.ADDRESS}}
                     </v-col>
                     <v-col cols="1" class="pt-5">
@@ -43,8 +43,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
-const { mapGetters : ListMapGetters,  mapActions : ListMapActions } = createNamespacedHelpers("placeListStore");
+const { mapActions : placeMapActions, mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
 import { Hooper, Slide, Navigation  } from 'hooper';
 import 'hooper/dist/hooper.css';
 
@@ -56,39 +55,30 @@ import 'hooper/dist/hooper.css';
         Navigation
     },
     data: () => ({
+        liked : false
     }),
     methods: {
         clickLike(){
-            console.log("like")
-            this.addLikedPlace(this.getPlace)
+            this.likePlace(this.getPlace.placeId);
+            this.liked = true;
         },
         clickDislike(){
-            console.log("dislike")
-            this.removeLikedPlace(this.getPlace)
+            this.dislikePlace(this.getPlace.placeId);
+            this.liked = false;
         },
-        ...ListMapActions(['addLikedPlace', 'removeLikedPlace'])
+        ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace'])
     },
     mounted(){
     },
     computed: {
-        liked : function() {
-            for (let p in this.getLikedList){
-                if(this.getPlace.PLACE_ID == this.getLikedList[p].PLACE_ID){
-                    return true
-                }
-            }
-            return false
-        },
-        likedButtonStyle : function() {
-            if(this.liked){
-                return "far fa-heart"
-            }
-            else{
-                return "fas fa-heart"
-            }
-        },
         ...placeMapGetters(['getPlace', 'getImgList']),
-        ...ListMapGetters(['getLikedList'])
+    },
+    watch: {
+        getPlace : function(){
+            if(this.getPlace != null){
+                this.liked = this.getPlace.liked
+            }
+        }
     }
   }
 </script>
@@ -103,7 +93,7 @@ import 'hooper/dist/hooper.css';
     margin-right: 8.5vw;
 }
 .hooper{
-    height : 30vh;
+    height : 50vh;
     width : 35vw;
     margin-left: -2vw;
 }
