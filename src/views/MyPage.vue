@@ -20,7 +20,7 @@
       </v-col>
       <v-col :cols="mapCol">
           <div id="mapArea">
-            <Map :clickedPlace="newPlace" :mapCol="mapCol" :placeList="placeList"/>
+            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="[]"/>
           </div>
       </v-col>
     </v-row>
@@ -29,13 +29,14 @@
 
 <script>
   import SideBar from '../components/SideBar'
-  import Map from '../components/map/MyPageMap'
+  import Map from '../components/map/Map'
   import UserInfo from '../components/user/UserInfo'
   import ProfileCard from '../components/user/ProfileCard'
   import MyPageList from '../components/user/MyPageList'
   import SearchList from '../components/user/SearchList'
   import FolderList from '../components/user/FolderList'
-  import placeListService from '@/services/placeListService';
+  import { createNamespacedHelpers } from "vuex";
+  const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
   export default {
     name: 'MyPage',
@@ -49,7 +50,6 @@
         isSearchedList : false,
         isLikedList : false,
         isCourseList : false,
-        placeList : [],
     }),
     components: {
       SideBar,
@@ -72,12 +72,9 @@
             this.isUserInfo = true;
         },
         openLikedList(){
+            this.setListByLiked();
             this.openSideArea();
             this.isLikedList = true;
-            placeListService.getLikedList()
-            .then((res) => { 
-              this.placeList = res; 
-            })
         },
         openSearchList(){
             this.openSideArea();
@@ -89,11 +86,13 @@
         },
         clickedPlace(place){
           this.newPlace = place;
-        }
+        },
+        ...listMapActions(['setPlaceList', 'setListByLiked'])
+    },
+    computed: {
     },
     created() {
-    },
-    mounted() {
+      this.setPlaceList(null);
       //List<Place>로 수정 후 사용
       // placeListService.getVisitedList()
       // .then((res) => { 

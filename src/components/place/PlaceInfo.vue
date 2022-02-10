@@ -12,7 +12,7 @@
                 <v-row>
                     <v-col cols="9 offset-1">
                         <h3>{{getPlace.placeName}}</h3>
-                        {{getPlace.ADDRESS}}
+                        {{getPlace.address}}
                     </v-col>
                     <v-col cols="1" class="pt-5">
                         <i type="button" v-if="liked" @click="clickDislike()" class="fas fa-heart"></i>
@@ -21,17 +21,17 @@
                 </v-row>
                 <v-row class="placeInfo">
                     <v-col cols="10 offset-1">
-                    <div class="content" v-if="getPlace.TEL != ''">
+                    <div class="tel" v-if="getPlace.tel != ''">
                         <i class="fas fa-phone-alt"></i>
-                        {{getPlace.TEL}}
+                        {{getPlace.tel}}
                     </div>
-                    <div class="content" v-if="getPlace.TIME != ''">
+                    <div class="time" v-if="getPlace.time != ''">
                         <i class="far fa-clock"></i>
-                        {{getPlace.TIME}}
+                        {{getPlace.time}}
                     </div>
-                    <div class="content" v-if="getPlace.CONTENT != ''">
+                    <div class="content" v-if="getPlace.content != ''">
                         <i class="far fa-comment-dots"></i>
-                        {{getPlace.CONTENT}}
+                        {{getPlace.content}}
                     </div>
                     </v-col>
                 </v-row>

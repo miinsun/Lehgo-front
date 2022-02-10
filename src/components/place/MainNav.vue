@@ -12,7 +12,7 @@
         <draggable class="list-group" group="mainCourse" :list="list" @change="updateMainCourse">
             <!-- <transition-group type="transition" > -->
             <v-btn text class="list-group-item"  v-for="e, i in list" :key="'mainCourse' + i">
-                {{e.placeName}}
+                {{e.place.placeName}}
             </v-btn>
             <!-- </transition-group> -->
         </draggable>
@@ -77,9 +77,6 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
         this.list = this.getPlaceList
     },
     watch : {
-        // list: function() {
-        //   this.setPlaceList(list);
-        // }
     }
   }
 </script>
@@ -90,5 +87,8 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
 }
 #menu{
     margin-top: -20px;
+}
+.list-group{
+  padding: 10px
 }
 </style>

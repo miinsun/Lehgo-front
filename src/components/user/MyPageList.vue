@@ -14,11 +14,6 @@
                   <v-list-item-title>찜한 여행지</v-list-item-title>
               </v-list-item-content>
             </template>
-          <v-list-item v-for="folder, i in folderList" :key="i">
-            <v-list-item-content>
-                <v-list-item-title>{{folder}}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item v-if="!newFolder">
             <v-list-item-content  @click="newFolder = true">
                 <v-list-item-title><i class="fas fa-plus mr-3"></i> 폴더 추가</v-list-item-title>
@@ -52,16 +47,12 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters : placeListGetters, mapActions : placeListActions } = createNamespacedHelpers("placeListStore");
-
   export default {
     name: 'MyPageList',
 
     data: () => ({
       newFolder : false,
       folderName : '',
-      folderList : [],
     }),
     methods: {
         openSearchList() {
@@ -82,13 +73,10 @@ const { mapGetters : placeListGetters, mapActions : placeListActions } = createN
           this.addFolder(this.folderName);
           this.newFolder = false;
         },
-        ...placeListActions(['addFolder'])
     },
     mounted(){
-      this.folderList = this.getFolderList
     },
     computed:{
-        ...placeListGetters(['getFolderList'])
     }
   }
 </script>

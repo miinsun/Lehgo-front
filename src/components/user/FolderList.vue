@@ -1,16 +1,16 @@
 <template>
-    <div class="FolderList" v-bar>
+    <div class="placeList" v-bar>
     <div>
       <v-list rounded>
         <v-list-item-group  color="gray"  class="text-left" >
-          <v-list-item class="py-3" v-for="place, i in getLikedList" :key="i"> 
-            <span class="placeImg rounded-circle" v-if="place.img1" :style="bgImg(place)"></span>
-            <span class="noImg rounded-circle" v-if="!place.img1">
+          <v-list-item class="py-3" v-for="p, i in getPlaceList" :key="i"> 
+            <span class="placeImg rounded-circle" v-if="p.place.img1" :style="bgImg(p.place)"></span>
+            <span class="noImg rounded-circle" v-if="!p.place.img1">
                 <i class="far fa-image"></i>
             </span>
-            <v-list-item-content @click="clickedPlace(place)">
-                <v-list-item-title><b>{{place.placeName}}</b></v-list-item-title>
-                <small>{{place.address}}</small>
+            <v-list-item-content @click="clickedPlace(p.place)">
+                <v-list-item-title><b>{{p.place.placeName}}</b></v-list-item-title>
+                <small>{{p.place.address}}</small>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from "vuex";
-const { mapGetters, mapActions } = createNamespacedHelpers("placeListStore");
+  import { createNamespacedHelpers } from "vuex";
+  const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore");
 
   export default {
     name: 'FolderList',
@@ -35,19 +35,18 @@ const { mapGetters, mapActions } = createNamespacedHelpers("placeListStore");
         clickedPlace(place){
             this.$emit('clickedPlace', place);
         },
-        ...mapActions(['setLikedList'])
     },
     computed:{
-        ...mapGetters(['getLikedList'])
+      ...listMapGetters(['getPlaceList'])
     },
     mounted() {
-      this.setLikedList();
+      console.log(this.getPlaceList)
     }
   }
 </script>
 
 <style scoped>
-.FolderList{
+.placeList{
     overflow-y: scroll;
 }
 .placeImg{

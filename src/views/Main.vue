@@ -17,7 +17,7 @@
         </v-col>
         <v-col cols="6">
             <div class="mapArea">
-                <Map/>
+                <Map :mapCol="0.5" :coursePlaceList="getPlaceList"/>
             </div>
         </v-col>
       </v-row>
@@ -25,11 +25,15 @@
 </template>
 
 <script>
-  import Map from '../components/map/MainMap'
+  import Map from '../components/map/Map'
   import MainNav from '../components/place/MainNav'
   import MainCategory from '../components/place/MainCategory'
   import PlaceInfo from '../components/place/PlaceInfo'
   import SideBar from '../components/SideBar'
+  import places from '@/assets/testPlaceData.js'
+  import { createNamespacedHelpers } from "vuex";
+  const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
+  const { mapGetters : courseGetters } = createNamespacedHelpers("courseStore");
 
   export default {
     name: 'Main',
@@ -52,9 +56,16 @@
             this.sideArea = value;
             this.mapCol = 6
         },
+        ...listMapActions(['setPlaceList'])
     },
-    created() {
+    computed:{
+      ...courseGetters(['getPlaceList'])
     },
+    mounted() {
+    },
+    created(){
+        this.setPlaceList(places)
+    }
   }
 </script>
 
