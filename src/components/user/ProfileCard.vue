@@ -39,6 +39,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 <style scoped>
 .profileCard{
     height:30vh;
+    padding:30px;
 }
 .fa-user-circle{
     color: lightgray;

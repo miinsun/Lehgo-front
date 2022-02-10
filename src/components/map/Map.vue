@@ -47,7 +47,7 @@ import courseMarker from '@/assets/marker-course.png'
 
   export default {
     name: 'Map',
-    props: ['coursePlaceList', 'clickedPlace', 'mapCol'],
+    props: ['coursePlaceList', 'clickedPlace', 'mapCol', 'mapKey'],
     components:{
         draggable
     },
@@ -121,6 +121,7 @@ import courseMarker from '@/assets/marker-course.png'
       onWindowLoad(){
       },
       onMarkerLoaded(place, event) {
+        console.log('new marker')
         let newMarker = event.marker;
         newMarker.setTitle(this.marker.length);
         this.placeMarkerList[place.placeId] = this.marker.length
@@ -138,7 +139,9 @@ import courseMarker from '@/assets/marker-course.png'
         setTimeout(() =>(this.reLoad = true), 1);
       },
       setMapPlace(){
-        this.marker = []
+        this.marker = [];
+        this.loaded = false;
+        setInterval(() => this.loaded = true, 100);
         if(this.coursePlaceList.length > 0){
             this.selectedPlace = this.coursePlaceList[0].place
             this.mapOptions.lat = this.selectedPlace.latitude;
@@ -153,17 +156,12 @@ import courseMarker from '@/assets/marker-course.png'
     },
     mounted() {
         setInterval(() => this.count++, 1000);
-        setTimeout(() =>(this.loaded = true), 100);
         this.width = window.innerWidth * this.mapCol;
-        this.setMapPlace();
     },
     computed: {
         ...listMapGetters(['getPlaceList'])
     },
     watch:{
-        getPlaceList: function(){
-          this.setMapPlace()
-        },
         coursePlaceList: function(){
           this.reRoadPath()
           this.placeList = courseService.notCoursePlaceList(this.getPlaceList, this.coursePlaceList);
@@ -174,6 +172,9 @@ import courseMarker from '@/assets/marker-course.png'
         mapCol : function(){
           this.map.setSize({width: window.innerWidth * this.mapCol, height: this.height})
         }
+    },
+    created() {
+        this.setMapPlace();
     }
   }
 </script>

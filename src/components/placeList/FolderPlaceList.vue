@@ -24,7 +24,7 @@
   const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore");
 
   export default {
-    name: 'FolderList',
+    name: 'FolderPlaceList',
 
     data: () => ({
     }),
@@ -40,15 +40,11 @@
       ...listMapGetters(['getPlaceList'])
     },
     mounted() {
-      console.log(this.getPlaceList)
     }
   }
 </script>
 
 <style scoped>
-.placeList{
-    overflow-y: scroll;
-}
 .placeImg{
     /* background-image: url("https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=264a874f-7a2e-4733-9349-044794a845ee"); */
     background-size: cover; 

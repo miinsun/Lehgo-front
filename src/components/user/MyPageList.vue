@@ -24,6 +24,11 @@
                   <v-list-item-title>폴더</v-list-item-title>
               </v-list-item-content>
             </template>
+          <v-list-item v-for="f, i in getFolderList" :key="'folder' + i">
+            <v-list-item-content @click="openFolderPlaceList(f.folderId)">
+                <v-list-item-title>{{f.folderName}}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-if="!newFolder">
             <v-list-item-content  @click="newFolder = true">
                 <v-list-item-title><i class="fas fa-plus mr-3"></i> 폴더 추가</v-list-item-title>
@@ -57,6 +62,9 @@
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
+const { mapGetters, mapActions } = createNamespacedHelpers("folderStore");
+
   export default {
     name: 'MyPageList',
 
@@ -77,6 +85,9 @@
         openCourseList(){
             this.$emit('openCourseList')
         },
+        openFolderPlaceList(folderId){
+            this.$emit('openFolderPlaceList', folderId)
+        },
         goToSurvey() {
             this.$router.push({
                 name: 'Survey'
@@ -86,20 +97,23 @@
           this.addFolder(this.folderName);
           this.newFolder = false;
         },
+        ...mapActions(['setFolderList', 'addFolder'])
     },
     mounted(){
     },
     computed:{
+      ...mapGetters(['getFolderList'])
+    },
+    created(){
+      this.setFolderList()
     }
   }
 </script>
 
 <style scoped>
 .myPageList{
-    height:60vh;
     overflow-y: scroll;
 }
-
 .zap-slideout-opener {
   position: absolute;
   top: 20px;

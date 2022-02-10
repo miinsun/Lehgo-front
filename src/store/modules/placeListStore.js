@@ -51,7 +51,15 @@ const placeListStore = {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
-                console.log(res.data)
+                commit('setPlaceList', res.data);
+            })
+        },
+        setListByFolder : ({ commit, rootState }, payload) => {
+            let api = rootState.domain + '/folder/place/list?folder=' + payload
+            axios.get(api, {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
                 commit('setPlaceList', res.data);
             })
         },

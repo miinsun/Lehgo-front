@@ -3,7 +3,7 @@
     <div class="searchArea">
       <v-form ref="form">
       <v-text-field id="searchInput" outlined placeholder="검색어를 입력하세요" hide-details="auto"
-        v-model="keyword" :rules="[validation.firstError('keyword')]" color="#2699fb" required>
+        v-model="keyword" :rules="[validation.firstError('keyword')]" color="#2699fb" @keydown.enter.prevent="searchPlace">
         <template v-slot:append>
           <div type="submit" class="mx-2" @click="searchPlace">
           <svg width="19" height="19" viewBox="0 0 20 20">
@@ -75,7 +75,6 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
     watch: {
       getPlaceList: function(){
         this.result = this.getPlaceList
-        console.log(this.result)
       }
     }
   }
@@ -83,7 +82,7 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
 
 <style scoped>
 .searchArea{
-  height: 20vh;
+  height: 12vh;
 }
 .resultArea{
   height: 90vh;
@@ -108,5 +107,11 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
     color: white;
     font-size: 30px;
     margin-top: 35px
+}
+.v-text-field >>> input {
+  padding: 0px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color : #186EC5;
 }
 </style>

@@ -8,20 +8,22 @@
           <MyPageList id="listArea" 
             @openLikedList="openLikedList"
             @openVisitedList="openVisitedList"
-            @openCourseList="openCourseList"/>
+            @openCourseList="openCourseList"
+            @openFolderPlaceList="openFolderPlaceList"/>
         </div>
       </v-col>
       <v-col v-if="openSide" cols="3">
-          <div v-if="openSide" id="sideArea" v-bar>
+          <div v-if="openSide">
             <UserInfo v-if="isUserInfo"/>
             <SearchList v-if="isSearchedList"/>
-            <FolderList @clickedPlace="clickedPlace" v-if="isLikedList"/>
+            <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
             <VisitedList @clickedPlace="clickedPlace" v-if="isVisitedList"/>
+            <FolderPlaceList @clickedPlace="clickedPlace" v-if="isFolderPlaceList"/>
           </div>
       </v-col>
       <v-col :cols="mapCol">
           <div id="mapArea">
-            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="[]"/>
+            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="[]" :key="mapKey"/>
           </div>
       </v-col>
     </v-row>
@@ -34,11 +36,12 @@
   import UserInfo from '../components/user/UserInfo'
   import ProfileCard from '../components/user/ProfileCard'
   import MyPageList from '../components/user/MyPageList'
-  import SearchList from '../components/user/SearchList'
-  import FolderList from '../components/user/FolderList'
-  import VisitedList from '../components/user/VisitedList'
+  import SearchList from '../components/placeList/SearchList'
+  import LikedList from '../components/placeList/LikedList'
+  import VisitedList from '../components/placeList/VisitedList'
+  import FolderPlaceList from '../components/placeList/FolderPlaceList'
   import { createNamespacedHelpers } from "vuex";
-  const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
+  const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
   export default {
     name: 'MyPage',
@@ -52,11 +55,13 @@
         isSearchedList : false,
         isLikedList : false,
         isCourseList : false,
+        isFolderPlaceList : false,
+        mapKey : 0
     }),
     components: {
       SideBar,
       UserInfo, MyPageList, ProfileCard,
-      SearchList, FolderList, VisitedList,
+      SearchList,  LikedList, VisitedList, FolderPlaceList,
       Map,
     },
     methods:{
@@ -65,6 +70,7 @@
             this.isUserInfo = false;
             this.isVisitedList = false;
             this.isSearchedList = false;
+            this.isFolderPlaceList = false;
             this.isLikedList = false;
             this.isCourseList = false;
             this.mapCol = 5;
@@ -87,12 +93,18 @@
             this.openSideArea();
             this.isCourseList = true;
         },
+        openFolderPlaceList(folderId){
+            this.setListByFolder(folderId);
+            this.openSideArea();
+            this.isFolderPlaceList = true;
+        },
         clickedPlace(place){
           this.newPlace = place;
         },
-        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited'])
+        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder'])
     },
     computed: {
+      ...listMapGetters(['getPlaceList'])
     },
     created() {
       this.setPlaceList(null);
@@ -101,6 +113,11 @@
       // .then((res) => { 
       //   this.placeList = res; 
       // })
+    },
+    watch:{
+      getPlaceList: function(){
+        this.mapKey += 1
+      }
     }
   }
 </script>
@@ -111,13 +128,7 @@
   height: 100vh;
 }
 #listArea{
-    height:50vh;
-    overflow: auto;
-}
-#sideArea{
-    width: 25vw;
-    height: 100vh;
-    background-color: white;
+    height:70vh;
     overflow: auto;
 }
 #mapArea{
