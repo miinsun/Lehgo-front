@@ -1,4 +1,4 @@
-
+//저장되지 않은, 메인 페이지 내 반환 코스 Store
 const courseStore = {
     namespaced: true,
     state: {
@@ -16,11 +16,12 @@ const courseStore = {
         },
     },
     actions: {
-        addPlaceList: ({ commit }, payload) => {
-            commit('addPlaceList', payload);
-        },
         setPlaceList: ({ commit }, payload) => {
             commit('setPlaceList', payload);
+        },
+        addPlaceList: ({ commit }, payload) => {
+            let placeElement = { place : payload }
+            commit('addPlaceList', placeElement);
         },
     },
 }

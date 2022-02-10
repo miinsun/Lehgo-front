@@ -1,40 +1,58 @@
 <template>
   <v-container fluid>
-    <v-row class="content">
-      <v-col cols="1"><SideBar/></v-col>
-      <v-col cols="3">
-        <div>
-          <SearchArea/>
-        </div>
-      </v-col>
-    </v-row>
+      <v-row class="content">
+        <v-col cols="1"><SideBar/></v-col>
+        <v-col cols="3">
+          <div class="searchArea">
+            <Search @clickedPlace="clickedPlace"/>
+          </div>
+        </v-col>
+        <v-col cols="3">
+          <div class="searchArea">
+              <PlaceInfo/>
+          </div>
+        </v-col>
+        <v-col cols="5">
+            <div id="mapArea">
+                <Map :clickedPlace="newPlace" :mapCol="0.416" :coursePlaceList="[]"/>
+            </div>
+        </v-col>
+      </v-row>
   </v-container>
 </template>
 
 <script>
+  import Map from '../components/map/Map'
   import SideBar from '../components/SideBar'
-  import SearchArea from '../components/Search'
-//   import placeListService from '@/services/placeListService';
+  import Search from '../components/Search'
+  import PlaceInfo from '../components/place/PlaceInfo'
+  import { createNamespacedHelpers } from "vuex";
+  const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
   export default {
-    name: 'sesarch',
-
+    name: 'Main',
     data:() =>({
+      newPlace : null,
     }),
     components: {
+      Map,
       SideBar,
-      SearchArea
+      Search,
+      PlaceInfo
     },
     methods:{
+      clickedPlace(place){
+        this.newPlace = place;
+      },
+        ...listMapActions(['setPlaceList'])
     },
-    created() {
+    computed:{
     },
     mounted() {
-      //List<Place>로 수정 후 사용
-      // placeListService.getVisitedList()
-      // .then((res) => { 
-      //   this.placeList = res; 
-      // })
+    },
+    created() {
+      //사용?
+      this.setPlaceList(null)
     }
   }
 </script>
@@ -43,5 +61,17 @@
 .col{
   padding: 0;
   height: 100vh;
+}
+.footer{
+    height: hidden;
+}
+.searchArea{
+    width: 25vw;
+    height: 100vh;
+    overflow: hidden;
+}
+#mapArea{
+    height: 100vh;
+    overflow: hidden;
 }
 </style>

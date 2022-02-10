@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//선택한 place
 const placeStore = {
     namespaced: true,
     state: {
@@ -7,25 +8,25 @@ const placeStore = {
     },
     getters: {
         getPlace : state => state.place,
-        getId: state => state.place.PLACE_ID,
-        getName: state => state.place.PLACE_NAME,
-        getLat: state => state.place.LATITUDE,
-        getLng: state => state.place.LONGITUDE,
-        getAddress: state => state.place.ADDRESS,
-        getTel: state => state.place.TEL,
-        getTime: state => state.place.TIME,
-        getContent: state => state.place.CONTENT,
-        getLikeCount: state => state.place.LIKE_COUNT,
-        getImg1: state => state.place.IMG1,
-        getImg2: state => state.place.IMG2,
-        getImg3: state => state.place.IMG3,
-        getImg4: state => state.place.IMG4,
+        getId: state => state.place.placeId,
+        getName: state => state.place.placeName,
+        getLat: state => state.place.latitude,
+        getLng: state => state.place.longitude,
+        getAddress: state => state.place.address,
+        getTel: state => state.place.tel,
+        getTime: state => state.place.time,
+        getContent: state => state.place.content,
+        getLikeCount: state => state.place.like_count,
+        getImg1: state => state.place.img1,
+        getImg2: state => state.place.img2,
+        getImg3: state => state.place.img3,
+        getImg4: state => state.place.img4,
         getImgList: state => {
             let list = []
-            if(state.place.IMG1 != '') { list.push(state.place.IMG1) }
-            if(state.place.IMG2 != '') { list.push(state.place.IMG2) }
-            if(state.place.IMG3 != '') { list.push(state.place.IMG3) }
-            if(state.place.IMG4 != '') { list.push(state.place.IMG4) }
+            if(state.place.img1 != '') { list.push(state.place.img1) }
+            if(state.place.img2 != '') { list.push(state.place.img2) }
+            if(state.place.img3 != '') { list.push(state.place.img3) }
+            if(state.place.img4 != '') { list.push(state.place.img4) }
             return list
         },
     },

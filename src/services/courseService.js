@@ -5,7 +5,7 @@ class courseService{
         for (let p in placeList){
             let noCourse = false;
             for (let cp in coursePlaceList){
-                if(placeList[p].placeId == coursePlaceList[cp].placeId){
+                if(placeList[p].place.placeId == coursePlaceList[cp].place.placeId){
                     noCourse = true;
                     break;
                 }
