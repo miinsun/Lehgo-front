@@ -1,43 +1,43 @@
 <template>
-  <v-container>
-    <v-row v-if="getPlace != null">
-        <v-col cols="10 offset-1">
-            <hooper v-if="getImgList.length != 0" >
-                <slide class="placeImg" v-for="img, i in getImgList" :key="i">
-                    <img :src="img">
-                </slide>
-                <navigation slot="hooper-addons"></navigation>
-            </hooper>
-            <div class="mt-5 text-left">
-                <v-row>
-                    <v-col cols="9 offset-1">
-                        <h3>{{getPlace.placeName}}</h3>
-                        {{getPlace.address}}
-                    </v-col>
-                    <v-col cols="1" class="pt-5">
-                        <i type="button" v-if="liked" @click="clickDislike()" class="fas fa-heart"></i>
-                        <i type="button" v-if="!liked" @click="clickLike()" class="far fa-heart"></i>
-                    </v-col>
-                </v-row>
-                <v-row class="placeInfo">
-                    <v-col cols="10 offset-1">
-                    <div class="tel" v-if="getPlace.tel != ''">
-                        <i class="fas fa-phone-alt"></i>
-                        {{getPlace.tel}}
-                    </div>
-                    <div class="time" v-if="getPlace.time != ''">
-                        <i class="far fa-clock"></i>
-                        {{getPlace.time}}
-                    </div>
-                    <div class="content" v-if="getPlace.content != ''">
-                        <i class="far fa-comment-dots"></i>
-                        {{getPlace.content}}
-                    </div>
-                    </v-col>
-                </v-row>
+  <v-container v-if="getPlace != null">
+    <!-- (사용X) 이미지 슬라이더 -->
+    <div v-show="false">
+    <hooper v-if="getImgList.length != 0" >
+        <slide class="hooperImg" v-for="img, i in getImgList" :key="i">
+            <img :src="img">
+        </slide>
+        <navigation slot="hooper-addons"></navigation>
+    </hooper>
+    </div>
+    <!-- (사용X) 이미지 슬라이더 -->
+
+    <v-row>
+        <v-col cols="4">
+        <div class="mainImg my-5">
+            <div class="placeImg rounded-circle" v-if="getImg1" :style="bgImg()"></div>
+            <div class="noImg rounded-circle" v-if="!getImg1">
+                <i class="far fa-image"></i>
             </div>
+        </div>
+        </v-col>
+        <v-col cols="8">
+        <div class="mainInfo my-5">
+            <v-row>
+                <v-col cols="10"> <div class="title">{{getPlace.placeName}}</div> </v-col>
+                <v-col cols="2">
+                    <i type="button" v-if="liked" @click="clickDislike()" class="fas fa-heart"></i>
+                    <i type="button" v-if="!liked" @click="clickLike()" class="far fa-heart"></i>
+                </v-col>
+            </v-row>
+            <div class="content">{{getPlace.content}}</div>
+            <div class="in"><i class="fas fa-phone-alt"></i><span class="infoTitle">전화번호</span>{{getTel}}</div>
+            <div class="in"><i class="far fa-clock"></i><span class="infoTitle">영업시간</span>{{getTime}}</div>
+            <div class="in"><i class="fas fa-map-marker-alt"></i><span class="infoTitle">{{getPlace.address}}</span></div>
+        </div>
         </v-col>
     </v-row>
+    <div class="mt-5 text-left">
+    </div>
   </v-container>
 </template>
 
@@ -58,6 +58,9 @@ import 'hooper/dist/hooper.css';
         liked : false
     }),
     methods: {
+        bgImg() {
+            return 'background-image : url("' + this.getImg1 + '");'
+        },
         clickLike(){
             this.likePlace(this.getPlace.placeId);
             this.liked = true;
@@ -71,7 +74,7 @@ import 'hooper/dist/hooper.css';
     mounted(){
     },
     computed: {
-        ...placeMapGetters(['getPlace', 'getImgList']),
+        ...placeMapGetters(['getPlace', 'getImg1', 'getImgList', 'getTel', 'getTime']),
     },
     watch: {
         getPlace : function(){
@@ -84,24 +87,62 @@ import 'hooper/dist/hooper.css';
 </script>
 
 <style scoped>
-.placeImg img{
+.hooperImg img{
     border-radius: 5%;
     height : 30vh;
-    width : 20vw;
-    /* margin-left: -50px; */
-    margin-left: 6.5vw;
-    margin-right: 8.5vw;
+    width : 90%;
+    /* margin-left: 6.5vw;
+    margin-right: 8.5vw; */
 }
 .hooper{
     height : 50vh;
-    width : 35vw;
-    margin-left: -2vw;
+    width: 100%;
+    /* margin-left: -2vw; */
 }
-i{
-    margin-right: 10px;
+.mainInfo{
+    font-family: 'Noto Sans KR';
+    color: #2699FB;
 }
-.content{
-    margin-bottom: 5px;
+.mainInfo .title{
+    font-weight: 900;
+    color: #226AB3;
+}
+.mainInfo .content{
     font-size: 14px;
+    font-weight: 700;
+    margin: 5px 5px 15px 0px;
+    padding-right: 10px;
+    width : 100%;
+    overflow: hidden;
+    white-space : nowrap;
+    text-overflow: ellipsis;
+}
+.mainInfo .in{
+    margin: 3px 0px;
+    font-size: 10px;
+}
+.infoTitle{
+    margin: 0px 10px 0px 7px;
+}
+.placeImg{
+    background-size: cover; 
+    background-position: center; 
+    width: 120px;
+    height: 120px;
+    box-sizing: content-box;
+    border: #226AB3 solid 5px;
+}
+.noImg{
+    background-color: lightgray;
+    text-align: center; 
+    width: 120px;
+    height: 120px;
+    box-sizing: content-box;
+    border: #226AB3 solid 5px;
+}
+.noImg i{
+    color: white;
+    font-size: 50px;
+    margin-top: 35px
 }
 </style>

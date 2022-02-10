@@ -8,10 +8,20 @@
                 <v-list-item-title>검색 기록</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item>
+            <v-list-item-content @click="openVisitedList()">
+                <v-list-item-title>여행지 방문 기록</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content @click="openLikedList()">
+                <v-list-item-title>찜한 여행지</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         <v-list-group color="gray">
             <template v-slot:activator>
-              <v-list-item-content @click="openLikedList()">
-                  <v-list-item-title>찜한 여행지</v-list-item-title>
+              <v-list-item-content>
+                  <v-list-item-title>폴더</v-list-item-title>
               </v-list-item-content>
             </template>
           <v-list-item v-if="!newFolder">
@@ -57,6 +67,9 @@
     methods: {
         openSearchList() {
             this.$emit('openSearchList')
+        },
+        openVisitedList(){
+            this.$emit('openVisitedList')
         },
         openLikedList() {
             this.$emit('openLikedList')

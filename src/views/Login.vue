@@ -10,7 +10,7 @@
           <v-text-field :color="blue" label="ID" hide-details="auto" v-model="userId" ref="id"
             :rules="[validation.firstError('userId')]" required>
             <template v-slot:prepend-inner>
-              <svg id="Mail" xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12">
+              <svg id="Mail" width="16" height="12" viewBox="0 0 16 12">
                 <path d="M14,2H2L8,7ZM0,2A2.006,2.006,0,0,1,2,0H14a2.006,2.006,0,0,1,2,2v8a2.006,2.006,0,0,1-2,2H2a2.006,2.006,0,0,1-2-2Z" fill="#186ec5" fill-rule="evenodd"/>
               </svg>
             </template>
@@ -20,7 +20,7 @@
           <v-text-field :color="blue" label="PW" hide-details="auto" v-model="userPw" :type="'password'"
             :rules="[validation.firstError('userPw')]" required>
             <template v-slot:prepend-inner>
-              <svg id="Lock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <svg id="Lock" width="16" height="16" viewBox="0 0 16 16">
                 <path d="M7,8a2,2,0,1,1-2,2A2.006,2.006,0,0,1,7,8ZM7,2A2.006,2.006,0,0,0,5,4H9A2.006,2.006,0,0,0,7,2Zm5,14H2a2.006,2.006,0,0,1-2-2V6A2.006,2.006,0,0,1,2,4H3a4,4,0,0,1,8,0h1a2.006,2.006,0,0,1,2,2v8A2.006,2.006,0,0,1,12,16Z" transform="translate(1)" fill="#186ec5" fill-rule="evenodd"/>
               </svg>
             </template>

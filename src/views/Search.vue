@@ -7,12 +7,12 @@
             <Search @clickedPlace="clickedPlace"/>
           </div>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="4">
           <div class="searchArea">
               <PlaceInfo/>
           </div>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="4">
             <div id="mapArea">
                 <Map :clickedPlace="newPlace" :mapCol="0.416" :coursePlaceList="[]"/>
             </div>
@@ -66,7 +66,6 @@
     height: hidden;
 }
 .searchArea{
-    width: 25vw;
     height: 100vh;
     overflow: hidden;
 }

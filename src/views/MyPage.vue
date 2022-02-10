@@ -7,7 +7,7 @@
           <ProfileCard @openUserInfo="openUserInfo"/>
           <MyPageList id="listArea" 
             @openLikedList="openLikedList"
-            @openSearchList="openSearchList"
+            @openVisitedList="openVisitedList"
             @openCourseList="openCourseList"/>
         </div>
       </v-col>
@@ -16,6 +16,7 @@
             <UserInfo v-if="isUserInfo"/>
             <SearchList v-if="isSearchedList"/>
             <FolderList @clickedPlace="clickedPlace" v-if="isLikedList"/>
+            <VisitedList @clickedPlace="clickedPlace" v-if="isVisitedList"/>
           </div>
       </v-col>
       <v-col :cols="mapCol">
@@ -35,6 +36,7 @@
   import MyPageList from '../components/user/MyPageList'
   import SearchList from '../components/user/SearchList'
   import FolderList from '../components/user/FolderList'
+  import VisitedList from '../components/user/VisitedList'
   import { createNamespacedHelpers } from "vuex";
   const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
@@ -54,7 +56,7 @@
     components: {
       SideBar,
       UserInfo, MyPageList, ProfileCard,
-      SearchList, FolderList,
+      SearchList, FolderList, VisitedList,
       Map,
     },
     methods:{
@@ -76,9 +78,10 @@
             this.openSideArea();
             this.isLikedList = true;
         },
-        openSearchList(){
+        openVisitedList(){
+            this.setListByVisited();
             this.openSideArea();
-            this.isSearchedList = true;
+            this.isVisitedList = true;
         },
         openCourseList(){
             this.openSideArea();
@@ -87,7 +90,7 @@
         clickedPlace(place){
           this.newPlace = place;
         },
-        ...listMapActions(['setPlaceList', 'setListByLiked'])
+        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited'])
     },
     computed: {
     },

@@ -43,6 +43,18 @@ const placeListStore = {
                 commit('setPlaceList', placeList);
             })
         },
+        setListByVisited : ({ commit, rootState, rootGetters }) => {
+            let api = rootState.domain + '/place/visited'
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                console.log(res.data)
+                commit('setPlaceList', res.data);
+            })
+        },
     }
 }
 

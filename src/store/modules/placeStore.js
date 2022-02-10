@@ -10,23 +10,21 @@ const placeStore = {
         getPlace : state => state.place,
         getId: state => state.place.placeId,
         getName: state => state.place.placeName,
-        getLat: state => state.place.latitude,
-        getLng: state => state.place.longitude,
-        getAddress: state => state.place.address,
-        getTel: state => state.place.tel,
-        getTime: state => state.place.time,
-        getContent: state => state.place.content,
-        getLikeCount: state => state.place.like_count,
+        getTel : state => {
+            if(state.place.tel) { return state.place.tel }
+            else { return "-" }
+        },
+        getTime : state => {
+            if(state.place.time) { return state.place.time }
+            else { return "-" }
+        },
         getImg1: state => state.place.img1,
-        getImg2: state => state.place.img2,
-        getImg3: state => state.place.img3,
-        getImg4: state => state.place.img4,
         getImgList: state => {
             let list = []
-            if(state.place.img1 != '') { list.push(state.place.img1) }
-            if(state.place.img2 != '') { list.push(state.place.img2) }
-            if(state.place.img3 != '') { list.push(state.place.img3) }
-            if(state.place.img4 != '') { list.push(state.place.img4) }
+            if(state.place.img1) { list.push(state.place.img1) }
+            if(state.place.img2) { list.push(state.place.img2) }
+            if(state.place.img3) { list.push(state.place.img3) }
+            if(state.place.img4) { list.push(state.place.img4) }
             return list
         },
     },

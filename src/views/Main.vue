@@ -2,18 +2,10 @@
   <v-container fluid>
       <v-row class="content">
         <v-col cols="1"><SideBar/></v-col>
-        <v-col cols="5">
-            <v-row class="text-center mainContent">
-                <div class="mainCourse">
-                    <MainNav/>
-                </div>
-                <div class="mainCategory" v-bar>
-                    <MainCategory/>
-                </div>
-                <div class="placeInfo" v-bar>
-                    <PlaceInfo/>
-                </div>
-            </v-row>
+        <v-col cols="5" class="text-center">
+            <div class="mainCourse"> <MainNav/> </div>
+            <div class="mainCategory" v-bar> <MainCategory/> </div>
+            <div class="placeInfo text-left" v-bar> <PlaceInfo/> </div>
         </v-col>
         <v-col cols="6">
             <div class="mapArea">
@@ -77,16 +69,7 @@
 .mainCourse{
     height:10vh;
 }
-.mainCategory{
-    height:20vh;
-}
-.placeInfo{
-    height:65vh;
-}
 .mapArea{
     overflow: disabled;
-}
-.footer{
-    height: hidden;
 }
 </style>
