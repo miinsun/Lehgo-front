@@ -6,7 +6,7 @@
     </v-row>
     <v-row>
       <v-form ref="form" class="loginForm">
-        <v-col cols="10 offset-1">
+        <v-col cols="10 offset-1" id="idInput">
           <v-text-field :color="blue" label="ID" hide-details="auto" v-model="userId" ref="id"
             :rules="[validation.firstError('userId')]" required>
             <template v-slot:prepend-inner>
@@ -124,15 +124,15 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
   width : 460px;
   margin: 50px 0px 30px 0px;
  }
-.v-text-field >>> label {
+#idInput .v-text-field >>> input {
   font-size: 13px;
-}
-.v-text-field >>> input {
-  font-size: 13px;
-  font-weight: 500;
   color : #186EC5;
+  font-weight: 500;
 }
 #pwInput .v-text-field >>> input {
+  color : #186EC5;
+  font-size: 13px;
+  font-weight: 500;
   letter-spacing: 2px;
   font-family: 'Open Sans', sans-serif;
 }

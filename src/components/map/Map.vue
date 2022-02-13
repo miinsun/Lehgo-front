@@ -6,7 +6,8 @@
       :width="width"
       :mapOptions="mapOptions"
       :initLayers="initLayers"
-      @load="onLoad">
+      @load="onLoad"
+      @idle="checkMacker">
         <naver-info-window
           class="info-window"
           @load="onWindowLoad"
@@ -86,6 +87,20 @@ import courseMarker from '@/assets/marker-course.png'
       onLoad(vue)
       {
         this.map = vue;
+        this.checkMacker();
+      },
+      checkMacker(){
+        for(let i in this.marker){
+          let lat = this.marker[i].position._lat;
+          let lng = this.marker[i].position._lng;
+          if(lat > this.map.getBounds()._max._lat || lat < this.map.getBounds()._min._lat ||
+            lng >  this.map.getBounds()._max._lng || lng < this.map.getBounds()._min._lng){
+              this.marker[i].onRemove()
+          }
+          else{
+            this.marker[i].onAdd()
+          }
+        }
       },
       onMarkerClicked(place, event){
         let idx = event.overlay.title;
@@ -121,7 +136,6 @@ import courseMarker from '@/assets/marker-course.png'
       onWindowLoad(){
       },
       onMarkerLoaded(place, event) {
-        console.log('new marker')
         let newMarker = event.marker;
         newMarker.setTitle(this.marker.length);
         this.placeMarkerList[place.placeId] = this.marker.length

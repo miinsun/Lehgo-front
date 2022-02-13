@@ -29,4 +29,9 @@ html, body {
   font-size: 12px;
   font-family: Arial, Helvetica, sans-serif;
 }
+.v-progress-circular {
+  position: absolute;
+  left: 50%;
+  margin: 50px 0px 0px -30px;
+}
 </style>

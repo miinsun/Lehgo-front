@@ -14,6 +14,7 @@
       </v-col>
       <v-col v-if="openSide" cols="3">
           <div v-if="openSide">
+            <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular>
             <UserInfo v-if="isUserInfo"/>
             <SearchList v-if="isSearchedList"/>
             <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
@@ -66,14 +67,14 @@
     },
     methods:{
         openSideArea() {
-            this.openSide = true;
-            this.isUserInfo = false;
-            this.isVisitedList = false;
-            this.isSearchedList = false;
-            this.isFolderPlaceList = false;
-            this.isLikedList = false;
-            this.isCourseList = false;
-            this.mapCol = 5;
+          this.openSide = true;
+          this.isUserInfo = false;
+          this.isVisitedList = false;
+          this.isSearchedList = false;
+          this.isFolderPlaceList = false;
+          this.isLikedList = false;
+          this.isCourseList = false;
+          this.mapCol = 5;
         },
         openUserInfo(){
             this.openSideArea();
@@ -104,7 +105,7 @@
         ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder'])
     },
     computed: {
-      ...listMapGetters(['getPlaceList'])
+      ...listMapGetters(['getLoaded', 'getPlaceList'])
     },
     created() {
       this.setPlaceList(null);
@@ -117,6 +118,8 @@
     watch:{
       getPlaceList: function(){
         this.mapKey += 1
+      },
+      getLoaded: function(){
       }
     }
   }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axios } from '../index';
 
 //선택한 place
 const placeStore = {

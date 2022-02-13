@@ -4,6 +4,20 @@
       <v-form ref="form">
       <v-text-field id="searchInput" outlined placeholder="검색어를 입력하세요" hide-details="auto"
         v-model="keyword" :rules="[validation.firstError('keyword')]" color="#2699fb" @keydown.enter.prevent="searchPlace">
+        <template v-slot:prepend-inner>
+          <div class="text-center searchOption">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn v-bind="attrs" v-on="on">{{items[selected]}}</v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, index) in items" :key="index" link>
+                  <v-list-item-title v-text="item"></v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </template>
         <template v-slot:append>
           <div type="submit" class="mx-2" @click="searchPlace">
           <svg width="19" height="19" viewBox="0 0 20 20">
@@ -15,6 +29,7 @@
       </v-form>
     </div>
     <div class="resultArea" v-bar>
+      <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular>
       <v-list rounded>
         <v-list-item-group color="gray"  class="text-left">
           <v-list-item class="py-3" v-for="p, i in result" :key="i"> 
@@ -44,6 +59,8 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
     data: () => ({
       keyword : '',
       result : [],
+      selected : 0,
+      items : ['전체', '주소', '설명']
     }),
     validators: {
       keyword : function (value) {
@@ -70,7 +87,7 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
     mounted(){
     },
     computed: {
-      ...listMapGetters(['getPlaceList'])
+      ...listMapGetters(['getLoaded', 'getPlaceList'])
     },
     watch: {
       getPlaceList: function(){
@@ -113,5 +130,10 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
   font-size: 14px;
   font-weight: 500;
   color : #186EC5;
+}
+.searchOption{
+  font-size: 12px;
+  width: 50px;
+  margin-top: 7px;
 }
 </style>

@@ -115,7 +115,6 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
         ...courseActions(['setCourseList', 'addCourse'])
     },
     mounted(){
-      console.log(this.getCourseList)
     },
     computed:{
       ...folderGetters(['getFolderList']),

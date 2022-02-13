@@ -2,7 +2,7 @@
     <div class="placeList" v-bar>
     <div>
       <v-list rounded>
-        <v-list-item-group  color="gray"  class="text-left" >
+        <v-list-item-group color="gray"  class="text-left" >
           <v-list-item class="py-3" v-for="p, i in getPlaceList" :key="i"> 
             <span class="placeImg rounded-circle" v-if="p.place.img1" :style="bgImg(p.place)"></span>
             <span class="noImg rounded-circle" v-if="!p.place.img1">
@@ -40,6 +40,8 @@
       ...listMapGetters(['getPlaceList'])
     },
     mounted() {
+    },
+    created(){
     }
   }
 </script>
