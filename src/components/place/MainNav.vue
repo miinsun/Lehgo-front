@@ -54,16 +54,16 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
         })
       },
       updateMainCourse(){
-        this.setPlaceList(this.list);
+        this.setNowCourse(this.list);
       },
       ...userMapActions(['postLogout']),
-      ...courseMapActions(['addPlaceList', 'setPlaceList'])
+      ...courseMapActions(['addNowCourse', 'setNowCourse'])
     },
     computed:{
-        ...courseMapGetters(['getPlaceList'])
+        ...courseMapGetters(['getNowCourse'])
     },
     mounted(){
-        this.list = this.getPlaceList
+        this.list = this.getNowCourse
     },
     watch : {
     }

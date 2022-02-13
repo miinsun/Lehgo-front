@@ -46,7 +46,8 @@
 
 <style scoped>
 .placeList{
-    overflow-y: scroll;
+    height: 100vh;
+    overflow: auto;
 }
 .placeImg{
     /* background-image: url("https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=264a874f-7a2e-4733-9349-044794a845ee"); */

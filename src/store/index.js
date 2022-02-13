@@ -1,5 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+
+import Axios from 'axios';
+import Vue from 'vue';
+import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import userStore from './modules/userStore';
 import courseStore from './modules/courseStore';
@@ -8,10 +10,10 @@ import placeListStore from './modules/placeListStore';
 import folderStore from './modules/folderStore';
 Vue.use(Vuex)
 
-
-export default new Vuex.Store({
+export const vuex = new Vuex.Store({
   state: {
-    domain : 'http://localhost:8080'
+    domain : 'http://localhost:8080',
+    pageLoaded : true
   },
   getters : {
     getDomain : state => state.domain,
@@ -31,3 +33,12 @@ export default new Vuex.Store({
     paths: ['userStore', 'courseStore'],
   })]
 })
+
+function setDefaultHeader(){
+  const axios = Axios.create();
+  axios.defaults.headers.common['authorization'] = vuex.getters['userStore/getAccessToken'];
+  return axios;
+}
+
+export const axios = setDefaultHeader();
+export default vuex;

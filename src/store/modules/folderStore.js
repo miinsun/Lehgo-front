@@ -1,6 +1,5 @@
-import axios from 'axios'
+import { axios } from '../index';
 
-//map에 표시될 placeList
 const folderStore = {
     namespaced: true,
     state: {
@@ -20,12 +19,11 @@ const folderStore = {
     actions: {
         setFolderList : ({ commit, rootState, rootGetters }) => {
             let api = rootState.domain + '/folder/list?user=' + rootGetters['userStore/getUserId']
-            axios.get(api, {
-                headers: { "Content-Type": 'application/json'
-                }
-            }).then(res => {
+            axios.get(api).then(res => {
                 commit('setFolderList', res.data);
-            })
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
         },
         addFolder: ({ commit, rootState, rootGetters }, payload) => {
             let api = rootState.domain + '/folder/new?name=' + payload

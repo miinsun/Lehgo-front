@@ -1,27 +1,41 @@
-//저장되지 않은, 메인 페이지 내 반환 코스 Store
+import { axios } from '../index';
+
 const courseStore = {
     namespaced: true,
     state: {
-        placeList : []
+        courseList : [],
+        nowCourse : []
     },
     getters: {
-        getPlaceList : state => state.placeList,
+        getCourseList : state => state.courseList,
+        getNowCourse : state => state.nowCourse,
     },
     mutations: {
-        setPlaceList: (state, payload) => {
-            state.placeList = payload
+        setCourseList : (state, payload) => {
+            state.courseList = payload
         },
-        addPlaceList: (state, payload) => {
-            state.placeList.push(payload)
+        setNowCourse: (state, payload) => {
+            state.nowCourse = payload
+        },
+        addNowCourse: (state, payload) => {
+            state.nowCourse.push(payload)
         },
     },
     actions: {
-        setPlaceList: ({ commit }, payload) => {
-            commit('setPlaceList', payload);
+        setCourseList: ({ commit, rootState, rootGetters }) => {
+            let api = rootState.domain + '/course/list?user=' + rootGetters['userStore/getUserId']
+            axios.get(api).then(res => {
+                commit('setCourseList', res.data);
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
         },
-        addPlaceList: ({ commit }, payload) => {
+        setNowCourse: ({ commit }, payload) => {
+            commit('setNowCourse', payload);
+        },
+        addNowCourse: ({ commit }, payload) => {
             let placeElement = { place : payload }
-            commit('addPlaceList', placeElement);
+            commit('addNowCourse', placeElement);
         },
     },
 }

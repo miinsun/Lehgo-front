@@ -9,7 +9,7 @@
         </v-col>
         <v-col cols="6">
             <div class="mapArea">
-                <Map :mapCol="0.5" :coursePlaceList="getPlaceList"/>
+                <Map :mapCol="0.5" :coursePlaceList="getNowCourse"/>
             </div>
         </v-col>
       </v-row>
@@ -51,7 +51,7 @@
         ...listMapActions(['setPlaceList'])
     },
     computed:{
-      ...courseGetters(['getPlaceList'])
+      ...courseGetters(['getNowCourse'])
     },
     mounted() {
     },

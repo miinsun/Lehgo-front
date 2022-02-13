@@ -42,12 +42,24 @@
         </v-list-group>
         <v-list-group color="gray">
             <template v-slot:activator>
-                <v-list-item-title>나만의 코스</v-list-item-title>
+              <v-list-item-content>
+                  <v-list-item-title>나만의 코스</v-list-item-title>
+              </v-list-item-content>
             </template>
-          <v-list-item>
-            <v-list-item-content @click="openCourseList()">
-                <v-list-item-title>코스 2</v-list-item-title>
+          <v-list-item v-for="c, i in getCourseList" :key="'course' + i">
+            <v-list-item-content @click="openCoursePlaceList(c.courseId)">
+                <v-list-item-title>{{c.courseName}}</v-list-item-title>
             </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="!newCourse">
+            <v-list-item-content  @click="newFolder = true">
+                <v-list-item-title><i class="fas fa-plus mr-3"></i> 코스 추가</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="newCourse">
+            <v-text-field v-model="folderName" class="mb-5 mx-5" color="orange darken-4" 
+                hide-details="auto" maxlength="20" required label="이름"></v-text-field>
+            <v-btn text @click="addFolderBtn()">추가</v-btn>
           </v-list-item>
         </v-list-group>
         <v-list-item>
@@ -63,13 +75,15 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapGetters, mapActions } = createNamespacedHelpers("folderStore");
+const { mapGetters : folderGetters , mapActions : folderActions } = createNamespacedHelpers("folderStore");
+const { mapGetters : courseGetters , mapActions : courseActions } = createNamespacedHelpers("courseStore");
 
   export default {
     name: 'MyPageList',
 
     data: () => ({
       newFolder : false,
+      newCourse : false,
       folderName : '',
     }),
     methods: {
@@ -97,15 +111,19 @@ const { mapGetters, mapActions } = createNamespacedHelpers("folderStore");
           this.addFolder(this.folderName);
           this.newFolder = false;
         },
-        ...mapActions(['setFolderList', 'addFolder'])
+        ...folderActions(['setFolderList', 'addFolder']),
+        ...courseActions(['setCourseList', 'addCourse'])
     },
     mounted(){
+      console.log(this.getCourseList)
     },
     computed:{
-      ...mapGetters(['getFolderList'])
+      ...folderGetters(['getFolderList']),
+      ...courseGetters(['getCourseList'])
     },
     created(){
       this.setFolderList()
+      this.setCourseList()
     }
   }
 </script>

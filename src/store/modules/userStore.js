@@ -1,5 +1,4 @@
-import axios from 'axios'
-import VueCookie from 'vue-cookie'
+import { axios } from '../index';
 
 const userStore = {
     namespaced: true,
@@ -7,13 +6,15 @@ const userStore = {
         userId : '',
         userName: '',
         loginResult : false,
-        errorMessage: ''
+        errorMessage: '',
+        accessToken : '',
     },
     getters: {
         getUserId : state => state.userId,
         getUserName: state => state.userName,
         getLoginResult : state => state.loginResult,
-        getErrorMessage: state => state.errorMessage
+        getErrorMessage: state => state.errorMessage,
+        getAccessToken: state => state.accessToken,
     },
     mutations: {
         setUserId: (state, payload) => {
@@ -27,15 +28,19 @@ const userStore = {
         },
         setErrorMessage: (state, payload) => {
             state.errorMessage = payload
+        },
+        setAccessToken: (state, payload) => {
+            state.accessToken = payload
         }
     },
     actions: {
         postLogin: ({ commit, rootState }, payload) => {
+                delete axios.defaults.headers.common["authorization"];
                 return new Promise((resolve) => {
                     let api = rootState.domain + '/user'
                     axios.post(api, JSON.stringify({
-                    id : payload.id,
-                    password : payload.password
+                        id : payload.id,
+                        password : payload.password
                     }), {
                     headers: { "Content-Type": 'application/json'
                     }
@@ -43,8 +48,8 @@ const userStore = {
                         commit('setLoginResult', true);
                         commit('setErrorMessage', '');
                         commit('setUserId', res.data);
-                        VueCookie.set('accessToken', res.headers.authorization);
-                        axios.defaults.headers.common["authorization"] = res.headers.authorization;
+                        commit('setAccessToken', res.headers.authorization);
+                        axios.defaults.headers.common['authorization'] = res.headers.authorization;
                         resolve(true);
                     }).catch(function(error){
                         commit('setLoginResult', false);
@@ -54,7 +59,7 @@ const userStore = {
         },
         postLogout:({ commit }) => {
             commit('setUserId', '');
-            VueCookie.set('accessToken', null);
+            commit('setAccessToken', null);
             delete axios.defaults.headers.common["authorization"];
         },
         initLogin: ({ commit }) => {
