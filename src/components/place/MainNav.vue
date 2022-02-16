@@ -57,7 +57,7 @@ const { mapGetters : courseMapGetters, mapActions : courseMapActions } = createN
         this.setNowCourse(this.list);
       },
       ...userMapActions(['postLogout']),
-      ...courseMapActions(['addNowCourse', 'setNowCourse'])
+      ...courseMapActions(['setNowCourse'])
     },
     computed:{
         ...courseMapGetters(['getNowCourse'])

@@ -46,6 +46,11 @@
                   <v-list-item-title>나만의 코스</v-list-item-title>
               </v-list-item-content>
             </template>
+          <v-list-item>
+            <v-list-item-content @click="openCoursePlaceList(0)">
+                <v-list-item-title>테스트 코스</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-for="c, i in getCourseList" :key="'course' + i">
             <v-list-item-content @click="openCoursePlaceList(c.courseId)">
                 <v-list-item-title>{{c.courseId}}</v-list-item-title>
@@ -96,8 +101,8 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
         openLikedList() {
             this.$emit('openLikedList')
         },
-        openCourseList(){
-            this.$emit('openCourseList')
+        openCoursePlaceList(courseId){
+            this.$emit('openCoursePlaceList', courseId)
         },
         openFolderPlaceList(folderId){
             this.$emit('openFolderPlaceList', folderId)

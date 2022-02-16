@@ -8,10 +8,12 @@ const placeListStore = {
         folderId : null, //folder에서 리스트를 불러온 경우 저장
         courseId : null, //course에서 리스트를 불러온 경우 저장
         placeList : [],
+        coursePlaceList : []
     },
     getters: {
         getLoaded : state => state.loaded,
         getPlaceList : state => state.placeList,
+        getCoursePlaceList : state => state.coursePlaceList,
         getFolderId : state => state.folderId,
         getCourseId : state => state.courseId,
     },
@@ -22,6 +24,9 @@ const placeListStore = {
         setPlaceList: (state, payload) => {
             state.placeList = payload
             state.loaded = true
+        },
+        setCoursePlaceList: (state, payload) => {
+            state.coursePlaceList = payload
         },
         setFolderId : (state, payload) => {
             state.folderId = payload
@@ -117,6 +122,10 @@ const placeListStore = {
             });
         },
         setListByCourse : () => {},
+        setListByLocalCourse: ({ commit, rootGetters },) => {
+            commit('setCoursePlaceList', rootGetters['courseStore/getNowCourse']);
+            commit('setPlaceList', []);
+        },
         
         //selectedFolder
         editFolder: ({ commit, rootState, rootGetters }, payload) => {

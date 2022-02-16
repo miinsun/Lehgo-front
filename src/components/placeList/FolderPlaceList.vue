@@ -98,7 +98,7 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
 
 <style scoped>
 .placeList{
-  height: 90vh;
+  height: 85vh;
   overflow: auto;
   overflow-y: scroll;
 }

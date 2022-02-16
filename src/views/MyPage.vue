@@ -8,22 +8,22 @@
           <MyPageList id="listArea" 
             @openLikedList="openLikedList"
             @openVisitedList="openVisitedList"
-            @openCourseList="openCourseList"
+            @openCoursePlaceList="openCoursePlaceList"
             @openFolderPlaceList="openFolderPlaceList"/>
         </div>
       </v-col>
       <v-col v-if="openSide" cols="3">
           <div v-if="openSide">
             <UserInfo v-if="isUserInfo"/>
-            <SearchList v-if="isSearchedList"/>
             <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
             <VisitedList @clickedPlace="clickedPlace" v-if="isVisitedList"/>
             <FolderPlaceList @clickedPlace="clickedPlace" v-if="isFolderPlaceList"/>
+            <CoursePlaceList @clickedPlace="clickedPlace" v-if="isCoursePlaceList"/>
           </div>
       </v-col>
       <v-col :cols="mapCol">
           <div id="mapArea">
-            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="[]" :key="mapKey"/>
+            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="coursePlaceList" :key="mapKey"/>
           </div>
       </v-col>
     </v-row>
@@ -41,7 +41,7 @@
   import UserInfo from '../components/user/UserInfo'
   import ProfileCard from '../components/user/ProfileCard'
   import MyPageList from '../components/user/MyPageList'
-  import SearchList from '../components/placeList/SearchList'
+  import CoursePlaceList from '../components/placeList/CoursePlaceList'
   import LikedList from '../components/placeList/LikedList'
   import VisitedList from '../components/placeList/VisitedList'
   import FolderPlaceList from '../components/placeList/FolderPlaceList'
@@ -54,32 +54,32 @@
 
     data:() =>({
         openSide : false,
-        mapCol : 8,
-        newPlace : null,
         isUserInfo : false,
         isVisitedList : false,
-        isSearchedList : false,
         isLikedList : false,
-        isCourseList : false,
+        isCoursePlaceList : false,
         isFolderPlaceList : false,
         sheet : false,
-        mapKey : 0
+        newPlace : null,
+        mapCol : 8,
+        mapKey : 0,
+        coursePlaceList : [],
     }),
     components: {
       SideBar,
       UserInfo, MyPageList, ProfileCard,
-      SearchList,  LikedList, VisitedList, FolderPlaceList,
+      CoursePlaceList,  LikedList, VisitedList, FolderPlaceList,
       Map, PlaceInfo
     },
     methods:{
         openSideArea() {
+          this.coursePlaceList = [];
           this.openSide = true;
           this.isUserInfo = false;
           this.isVisitedList = false;
-          this.isSearchedList = false;
+          this.isCoursePlaceList = false;
           this.isFolderPlaceList = false;
           this.isLikedList = false;
-          this.isCourseList = false;
           this.mapCol = 5;
         },
         openUserInfo(){
@@ -96,9 +96,12 @@
             this.openSideArea();
             this.isVisitedList = true;
         },
-        openCourseList(){
+        openCoursePlaceList(){
+            // this.setListByCourse(courseId);
+            this.setListByLocalCourse(); //test
             this.openSideArea();
-            this.isCourseList = true;
+            this.coursePlaceList = this.getCoursePlaceList
+            this.isCoursePlaceList = true;
         },
         openFolderPlaceList(folderId){
             this.setListByFolder(folderId);
@@ -109,10 +112,10 @@
           this.sheet = true;
           this.newPlace = place;
         },
-        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder'])
+        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder', 'setListByLocalCourse'])
     },
     computed: {
-      ...listMapGetters(['getPlaceList'])
+      ...listMapGetters(['getPlaceList', 'getCoursePlaceList'])
     },
     created() {
       this.setPlaceList(null);

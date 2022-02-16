@@ -18,7 +18,7 @@ const courseStore = {
             state.nowCourse = payload
         },
         addNowCourse: (state, payload) => {
-            state.nowCourse.push(payload)
+            state.getCourseList.push(payload)
         },
     },
     actions: {
@@ -34,8 +34,7 @@ const courseStore = {
             commit('setNowCourse', payload);
         },
         addNowCourse: ({ commit }, payload) => {
-            let placeElement = { place : payload }
-            commit('addNowCourse', placeElement);
+            commit('addNowCourse', payload);
         },
     },
 }

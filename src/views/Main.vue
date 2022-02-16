@@ -56,7 +56,7 @@
     mounted() {
     },
     created(){
-        this.setPlaceList(places)
+      this.setPlaceList(places)
     }
   }
 </script>
