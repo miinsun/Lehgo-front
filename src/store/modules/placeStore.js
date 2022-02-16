@@ -111,10 +111,10 @@ const placeStore = {
         checkPlaceInFolder : ({ state, rootState }, payload) => {
             return new Promise(function() {
                 let api = rootState.domain + '/folder/place/list?folder=' + payload
-                axios.get(api).then(() => {
+                axios.get(api).then((res) => {
                     for (let i in res.data){
                         if(res.data[i].placeId == state.place.placeId){
-                            
+                            //
                         }
                     }
                 }).catch(function(error){
