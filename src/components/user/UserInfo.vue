@@ -33,8 +33,8 @@
         </v-col>
       </v-row>
       </v-form>
-      <v-row class="notiArea" v-if="updateError || updateSuccess">
-        <v-col cols="11 mx-auto">
+      <v-row v-if="updateError || updateSuccess">
+        <v-col class="notiArea" cols="11 mx-auto">
           <v-alert text type="error" v-if="updateError">
             {{ resultMessage }}
           </v-alert>
@@ -111,12 +111,6 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
       },
     },
     methods: {
-      testBtn() {
-        userInfoService.getUserInfo(this.getUserId)
-        .then(resInfo => {
-          this.userInfo = resInfo
-        })
-      },
       submit: function () {
         this.$refs.form.validate()
         const updateUser = { 
@@ -161,7 +155,6 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
       ...mapActions(['postLogout'])
     },
     created() {
-      userInfoService.setHeader();
       userInfoService.getUserInfo(this.getUserId)
         .then(userInfo => {
           this.id = userInfo.id
@@ -183,7 +176,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
         })
     },
     computed: {
-      ...mapGetters(['getUserId']),
+      ...mapGetters(['getUserId', 'getUserInfo']),
     },
     watch:{
       email : function() {
@@ -213,5 +206,8 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 }
 .notiArea{
   height: 80px;
+}
+.notiArea .v-alert{
+  font-size:13px;
 }
 </style>

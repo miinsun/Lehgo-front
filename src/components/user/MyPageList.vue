@@ -48,7 +48,7 @@
             </template>
           <v-list-item v-for="c, i in getCourseList" :key="'course' + i">
             <v-list-item-content @click="openCoursePlaceList(c.courseId)">
-                <v-list-item-title>{{c.courseName}}</v-list-item-title>
+                <v-list-item-title>{{c.courseId}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="!newCourse">

@@ -1,6 +1,5 @@
-import axios from 'axios'
+import { axios } from '../store';
 import store from '../store';
-import VueCookie from 'vue-cookie'
 
 const domain = store.state.domain
 
@@ -98,6 +97,7 @@ class userInfoService{
     updateUserInfo(updateUser){
         return new Promise(function(resolve) {
             let api = domain + '/users/' + updateUser.id
+            axios.defaults.headers.common['authorization'] = store.getters['userStore/getAccessToken'];
             axios.post(api, JSON.stringify({
                 id : updateUser.id,
                 password : updateUser.password,
@@ -123,6 +123,7 @@ class userInfoService{
     getUserInfo(userId) {
         return new Promise(function(resolve, reject) {
             let api = domain + '/users/' + userId
+            axios.defaults.headers.common['authorization'] = store.getters['userStore/getAccessToken'];
             axios.get(api, {
                     headers: { 
                         "Content-Type": 'application/json',
@@ -133,12 +134,6 @@ class userInfoService{
                 console.log(error.response.data.status)
                 reject(error.response.data.status)
             });
-        })
-    }
-
-    setHeader(){
-        return new Promise(function() {
-            axios.defaults.headers.common["authorization"] = VueCookie.get('accessToken');
         })
     }
 }

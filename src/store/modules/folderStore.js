@@ -33,7 +33,7 @@ const folderStore = {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
-                commit('addFolder', res.data.folderName);
+                commit('addFolder', res.data);
             })
         },
     }

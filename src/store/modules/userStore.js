@@ -15,6 +15,19 @@ const userStore = {
         getLoginResult : state => state.loginResult,
         getErrorMessage: state => state.errorMessage,
         getAccessToken: state => state.accessToken,
+        getUserInfo: (state) => {
+                let api = 'http://localhost:8080' + '/users/' + state.userId
+                axios.defaults.headers.common['authorization'] = state.accessToken;
+                axios.get(api, {
+                        headers: { 
+                            "Content-Type": 'application/json',
+                    }
+                }).then(res => {
+                   console.log(res.data)
+                }).catch(function(error){
+                    console.log(error.response.data.status)
+                })
+            }
     },
     mutations: {
         setUserId: (state, payload) => {

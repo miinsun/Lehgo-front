@@ -14,7 +14,6 @@
       </v-col>
       <v-col v-if="openSide" cols="3">
           <div v-if="openSide">
-            <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular>
             <UserInfo v-if="isUserInfo"/>
             <SearchList v-if="isSearchedList"/>
             <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
@@ -28,6 +27,11 @@
           </div>
       </v-col>
     </v-row>
+    <v-bottom-sheet v-model="sheet">
+      <v-sheet height="250px" >
+       <PlaceInfo/>
+      </v-sheet>
+    </v-bottom-sheet>
   </v-container>
 </template>
 
@@ -41,6 +45,7 @@
   import LikedList from '../components/placeList/LikedList'
   import VisitedList from '../components/placeList/VisitedList'
   import FolderPlaceList from '../components/placeList/FolderPlaceList'
+  import PlaceInfo from '../components/place/PlaceInfo'
   import { createNamespacedHelpers } from "vuex";
   const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
@@ -57,13 +62,14 @@
         isLikedList : false,
         isCourseList : false,
         isFolderPlaceList : false,
+        sheet : false,
         mapKey : 0
     }),
     components: {
       SideBar,
       UserInfo, MyPageList, ProfileCard,
       SearchList,  LikedList, VisitedList, FolderPlaceList,
-      Map,
+      Map, PlaceInfo
     },
     methods:{
         openSideArea() {
@@ -100,12 +106,13 @@
             this.isFolderPlaceList = true;
         },
         clickedPlace(place){
+          this.sheet = true;
           this.newPlace = place;
         },
         ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder'])
     },
     computed: {
-      ...listMapGetters(['getLoaded', 'getPlaceList'])
+      ...listMapGetters(['getPlaceList'])
     },
     created() {
       this.setPlaceList(null);
@@ -119,8 +126,6 @@
       getPlaceList: function(){
         this.mapKey += 1
       },
-      getLoaded: function(){
-      }
     }
   }
 </script>

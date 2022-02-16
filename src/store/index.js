@@ -36,6 +36,8 @@ export const vuex = new Vuex.Store({
 
 function setDefaultHeader(){
   const axios = Axios.create();
+  console.log('호출됨')
+  console.log(vuex.getters['userStore/getAccessToken'])
   axios.defaults.headers.common['authorization'] = vuex.getters['userStore/getAccessToken'];
   return axios;
 }

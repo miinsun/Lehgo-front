@@ -5,11 +5,15 @@ const placeListStore = {
     namespaced: true,
     state: {
         loaded : false,
+        folderId : null, //folder에서 리스트를 불러온 경우 저장
+        courseId : null, //course에서 리스트를 불러온 경우 저장
         placeList : [],
     },
     getters: {
         getLoaded : state => state.loaded,
         getPlaceList : state => state.placeList,
+        getFolderId : state => state.folderId,
+        getCourseId : state => state.courseId,
     },
     mutations: {
         setLoaded: (state, payload) => {
@@ -18,6 +22,12 @@ const placeListStore = {
         setPlaceList: (state, payload) => {
             state.placeList = payload
             state.loaded = true
+        },
+        setFolderId : (state, payload) => {
+            state.folderId = payload
+        },
+        setCourseId : (state, payload) => {
+            state.courseId = payload
         },
         initList : (state) => {
             state.loaded = false
@@ -43,9 +53,27 @@ const placeListStore = {
                 console.log(error.response.data.message);
             });
         },
-        setListBySearch : ({ commit, rootState }, payload) => {
+        setListBySearchContent : ({ commit, rootState }, payload) => {
             commit('initList');
             let api = rootState.domain + '/place/search/content?content='+ payload
+            axios.get(api, {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                //임시
+                let placeList = []
+                for (let i in res.data){
+                    placeList.push({place : res.data[i]})
+                }
+                commit('setPlaceList', placeList);
+                
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
+        },
+        setListBySearchArea : ({ commit, rootState }, payload) => {
+            commit('initList');
+            let api = rootState.domain + '/place/search/area?area='+ payload
             axios.get(api, {
                 headers: { "Content-Type": 'application/json'
                 }
@@ -77,6 +105,7 @@ const placeListStore = {
         },
         setListByFolder : ({ commit, rootState }, payload) => {
             commit('initList');
+            commit('setFolderId', payload);
             let api = rootState.domain + '/folder/place/list?folder=' + payload
             axios.get(api, {
                 headers: { "Content-Type": 'application/json'
@@ -86,6 +115,58 @@ const placeListStore = {
             }).catch(function(error){
                 console.log(error.response.data.message);
             });
+        },
+        setListByCourse : () => {},
+        
+        //selectedFolder
+        editFolder: ({ commit, rootState, rootGetters }, payload) => {
+            let api = rootState.domain + '/folder/new?name=' + payload
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                commit('addFolder', res.data);
+            })
+        },
+        deleteFolder: ({ state, rootState, rootGetters }) => {
+            let api = rootState.domain + '/folder/delete?id=' + state.folderId
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+            })
+        },
+        deletePlaceFromFolder: ({ state, rootState, dispatch }, paylaod) => {
+            let api = rootState.domain + '/folder/place/delete?place=' + paylaod + '&folder=' + state.folderId
+            axios.get(api)
+            .then(() => {
+                dispatch('setListByFolder', state.folderId)
+            })
+        },
+        deletePlaceFromLiked: ({ rootGetters, rootState, dispatch }, paylaod) => {
+            let api = rootState.domain + '/place/mylist/delete?id=' + paylaod
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(() => {
+                dispatch('setListByLiked')
+            })
+        },
+        deletePlaceFromVisited: ({ rootGetters, rootState, dispatch }, paylaod) => {
+            let api = rootState.domain + '/place/visited/delete?id=' + paylaod
+            axios.post(api, JSON.stringify({
+                id : rootGetters['userStore/getUserId']
+                }), {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(() => {
+                dispatch('setListByVisited')
+            })
         },
     }
 }

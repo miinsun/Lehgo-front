@@ -10,7 +10,6 @@
     </hooper>
     </div>
     <!-- (사용X) 이미지 슬라이더 -->
-
     <v-row>
         <v-col cols="4">
         <div class="mainImg my-5">
@@ -36,6 +35,41 @@
         </div>
         </v-col>
     </v-row>
+    <div class="savePlaceArea">
+        <div>
+            <v-menu offset-y v-model="folderMenu" :close-on-content-click="false">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn color="white" depressed v-bind="attrs" v-on="on"><i class="far fa-plus-square"></i>폴더에 추가</v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(folder, index) in getFolderList" :key="index" @click="addPlaceToFolderBtn(folder.folderId)">
+                <v-list-item-title v-text="folder.folderName"></v-list-item-title>
+                </v-list-item>
+                <v-list-item v-if="!newFolder" @click="newFolder = true">
+                        <v-list-item-title><i class="fas fa-plus mr-3"></i> 폴더 추가</v-list-item-title>
+                </v-list-item>
+                <v-list-item v-if="newFolder">
+                    <v-text-field v-model="folderName" class="mb-5 mx-2" color="#226AB3" 
+                        hide-details="auto" maxlength="10" size="10" required label="이름"></v-text-field>
+                    <v-btn text @click="addFolderBtn()">추가</v-btn>
+                </v-list-item>
+            </v-list>
+            </v-menu>
+            <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn color="white" depressed v-bind="attrs" v-on="on"><i class="far fa-plus-square"></i>코스에 추가</v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(course, index) in getCourseList" :key="index" link>
+                <v-list-item-title v-text="course.courseId"></v-list-item-title>
+                </v-list-item>
+            </v-list>
+            </v-menu>
+        </div>
+        <transition name="addMessage">
+        <div class="addMessage my-2 ml-5" v-if="isPlaceAdded">추가되었습니다.</div>
+        </transition>
+    </div>
     <div class="mt-5 text-left">
     </div>
   </v-container>
@@ -44,6 +78,9 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapActions : placeMapActions, mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
+const { mapGetters : folderGetters , mapActions : folderActions } = createNamespacedHelpers("folderStore");
+const { mapGetters : courseGetters , mapActions : courseActions } = createNamespacedHelpers("courseStore");
+
 import { Hooper, Slide, Navigation  } from 'hooper';
 import 'hooper/dist/hooper.css';
 
@@ -55,7 +92,12 @@ import 'hooper/dist/hooper.css';
         Navigation
     },
     data: () => ({
-        liked : false
+        liked : false,
+        folderMenu : false,
+        newFolder : false,
+        newCourse : false,
+        folderName : '',
+        isPlaceAdded : false,
     }),
     methods: {
         bgImg() {
@@ -69,11 +111,26 @@ import 'hooper/dist/hooper.css';
             this.dislikePlace(this.getPlace.placeId);
             this.liked = false;
         },
-        ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace'])
+        addFolderBtn(){
+          this.addFolder(this.folderName);
+          this.newFolder = false;
+          this.folderName = '';
+        },
+        addPlaceToFolderBtn(folderId){
+            this.addPlaceToFolder(folderId);
+            this.folderMenu = false;
+            this.isPlaceAdded = true;
+            setTimeout(() => this.isPlaceAdded = false, 1500);
+        },
+        ...folderActions(['setFolderList', 'addFolder']),
+        ...courseActions(['setCourseList', 'addCourse']),
+        ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace', 'addPlaceToFolder']),
     },
     mounted(){
     },
-    computed: {
+    computed:{
+      ...folderGetters(['getFolderList']),
+      ...courseGetters(['getCourseList']),
         ...placeMapGetters(['getPlace', 'getImg1', 'getImgList', 'getTel', 'getTime']),
     },
     watch: {
@@ -82,6 +139,10 @@ import 'hooper/dist/hooper.css';
                 this.liked = this.getPlace.liked
             }
         }
+    },
+    created(){
+      this.setFolderList()
+      this.setCourseList()
     }
   }
 </script>
@@ -144,5 +205,17 @@ import 'hooper/dist/hooper.css';
     color: white;
     font-size: 50px;
     margin-top: 35px
+}
+.savePlaceArea i {
+    margin-right: 5px;
+}
+.addMessage{
+    color: #226AB3;
+}
+.addMessage-enter-active, .addMessage-leave-active {
+  transition: opacity .5s;
+}
+.addMessage-enter, .addMessage-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

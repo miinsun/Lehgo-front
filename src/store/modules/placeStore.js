@@ -98,8 +98,31 @@ const placeStore = {
                     console.log(error.response.data.message);
                 });
             })
-        }
-    }
+        },
+        addPlaceToFolder: ({ state, rootState }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/folder/place/new?place=' +  state.place.placeId + '&folder=' + payload
+                axios.get(api).then(() => {
+                }).catch(function(error){
+                    console.log(error.response.data.message);
+                });
+            })
+        },
+        checkPlaceInFolder : ({ state, rootState }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/folder/place/list?folder=' + payload
+                axios.get(api).then(() => {
+                    for (let i in res.data){
+                        if(res.data[i].placeId == state.place.placeId){
+                            
+                        }
+                    }
+                }).catch(function(error){
+                    console.log(error.response.data.message);
+                });
+            })
+        },
+    },
 }
 
 export default placeStore

@@ -2,17 +2,17 @@
   <v-container>
     <div class="searchArea">
       <v-form ref="form">
-      <v-text-field id="searchInput" outlined placeholder="검색어를 입력하세요" hide-details="auto"
+      <v-text-field id="searchInput2" outlined placeholder="검색어를 입력하세요" hide-details="auto"
         v-model="keyword" :rules="[validation.firstError('keyword')]" color="#2699fb" @keydown.enter.prevent="searchPlace">
         <template v-slot:prepend-inner>
           <div class="text-center searchOption">
             <v-menu offset-y>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn v-bind="attrs" v-on="on">{{items[selected]}}</v-btn>
+                <v-btn color="white" depressed v-bind="attrs" v-on="on">{{items[selected]}} ▼</v-btn>
               </template>
               <v-list>
                 <v-list-item v-for="(item, index) in items" :key="index" link>
-                  <v-list-item-title v-text="item"></v-list-item-title>
+                  <v-list-item-title v-text="item" @click="selected = index"></v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -29,6 +29,7 @@
       </v-form>
     </div>
     <div class="resultArea" v-bar>
+      <div class="noResult" v-if="result && result.length == 0">검색 결과가 없습니다.</div>
       <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular>
       <v-list rounded>
         <v-list-item-group color="gray"  class="text-left">
@@ -58,7 +59,7 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
     },
     data: () => ({
       keyword : '',
-      result : [],
+      result : null,
       selected : 0,
       items : ['전체', '주소', '설명']
     }),
@@ -75,14 +76,22 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
         this.$refs.form.validate()
         this.$validate().then(() => {
           if(this.keyword){
-            this.setListBySearch(this.keyword)
+            if(this.selected == 0){
+              this.setListBySearchArea(this.keyword)
+            }
+            else if(this.selected == 1){
+              this.setListBySearchArea(this.keyword)
+            }
+            else if(this.selected == 2){
+              this.setListBySearchContent(this.keyword)
+            }
           }
         })
       },
       clickedPlace(place){
           this.$emit('clickedPlace', place);
       },
-      ...listMapActions(['setListBySearch'])
+      ...listMapActions(['setListBySearchArea', 'setListBySearchContent'])
     },
     mounted(){
     },
@@ -131,9 +140,20 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
   font-weight: 500;
   color : #186EC5;
 }
-.searchOption{
+.searchOption .v-btn{
   font-size: 12px;
   width: 50px;
-  margin-top: 7px;
+  margin-top: -7px;
+  color : #186EC5;
+}
+.searchOption .v-list-item__title{
+  font-size: 12px;
+  color: gray;
+  text-align: center;
+}
+.noResult{
+  font-size: 14px;
+  margin-top: 20px;
+  text-align: center;
 }
 </style>
