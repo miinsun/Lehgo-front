@@ -36,6 +36,9 @@
       <v-col cols="10 offset-1">
         <v-btn block depressed :color="blue" x-large @click="submit" class="submitBtn">CONTINUE</v-btn>
       </v-col>
+      <v-col cols="10 offset-1" class="text-right">
+        <a @click="findId()">아이디</a> /  <a @click="findPw()">비밀번호 찾기</a>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -91,6 +94,16 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
           name: 'signUp'
         })
       },
+      findId : function(){
+        this.$router.push({
+          name: 'FindId'
+        })
+      },
+      findPw : function(){
+        this.$router.push({
+          name: 'FindPw'
+        })
+      },
       ...mapActions(['postLogin', 'initLogin'])
     },
     created(){
@@ -100,7 +113,6 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap');
 .loginContainer{
   width : 460px;
   margin: auto;
@@ -137,7 +149,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
   font-family: 'Open Sans', sans-serif;
 }
 #Lock, #Mail{
-  margin-top: 1px;
+  margin-top: 5px;
   margin-right: 10px;
 }
 </style>

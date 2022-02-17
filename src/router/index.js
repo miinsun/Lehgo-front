@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
-import Login from '../views/Login.vue'
+import Login from '../views/Login/Login.vue'
+import FindId from '../views/Login/FindId.vue'
+import FindPw from '../views/Login/FindPw.vue'
 import SignUp from '../views/SignUp.vue'
 import MyPage from '../views/MyPage.vue'
 import Survey from '../views/Survey.vue'
@@ -19,6 +21,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/findId',
+    name: 'FindId',
+    component: FindId
+  },
+  {
+    path: '/findPw',
+    name: 'FindPw',
+    component: FindPw
   },
   {
     path: '/signUp',

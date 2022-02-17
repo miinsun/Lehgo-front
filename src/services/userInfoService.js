@@ -96,7 +96,7 @@ class userInfoService{
     
     updateUserInfo(updateUser){
         return new Promise(function(resolve) {
-            let api = domain + '/users/' + updateUser.id
+            let api = domain + '/users?id=' + updateUser.id
             axios.defaults.headers.common['authorization'] = store.getters['userStore/getAccessToken'];
             axios.post(api, JSON.stringify({
                 id : updateUser.id,
@@ -131,8 +131,45 @@ class userInfoService{
             }).then(res => {
                 resolve(res.data)
             }).catch(function(error){
-                console.log(error.response.data.status)
-                reject(error.response.data.status)
+                reject(error.response.data.message)
+            });
+        })
+    }
+    findId(email){
+        return new Promise(function(resolve, reject) {
+            let api = domain + '/users/findid/' + email
+            axios.get(api).then(res => {
+                resolve(res.data)
+            }).catch(function(error){
+                reject(error.response.data.message)
+            });
+        })
+    }
+    findPw(userId, email){
+        return new Promise(function(resolve, reject) {
+            let api = domain + '/users/findpw?id=' + userId + '&email=' + email
+            axios.get(api).then(res => {
+                console.log(res.data)
+                resolve(res.data)
+            }).catch(function(error){
+                reject(error.response.data.message)
+            });
+        })
+    }
+    resetPw(userId, newPw){
+        return new Promise(function(resolve, reject) {
+            let api = domain + '/users/resetpw'
+            axios.put(api, JSON.stringify({
+                id : userId,
+                password : newPw
+            }),{
+                headers: { "Content-Type": 'application/json'
+            }
+            }).then(() => {
+                resolve(true)
+            }).catch(function(error){
+                console.log(error.response)
+                reject(error.response.data.message)
             });
         })
     }
