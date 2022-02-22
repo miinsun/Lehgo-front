@@ -111,7 +111,8 @@ class userInfoService{
             }
             })
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+                store.dispatch('userStore/setUserInfo', res.data)
                 resolve({status : true, message : '정보가 변경되었습니다.'});
             }).catch(function(error) {
                 console.log(error.response.data.message);

@@ -1,7 +1,7 @@
 <template>
     <div class="profileCard text-center">
         <i class="fas fa-user-circle fa-10x mb-5"></i>
-        <h3><a @click="openUserInfo" class="userId">{{userId}}</a>님, 안녕하세요.</h3>   
+        <h3><a @click="openUserInfo" class="userNickName">{{userNickName}}</a>님, 안녕하세요.</h3>   
     </div>
 </template>
 
@@ -13,7 +13,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
     name: 'ProfileCard',
 
     data: () => ({
-        userId : ''
+        userNickName : ''
     }),
     methods: {
         openUserInfo : function() {
@@ -22,8 +22,8 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
       ...mapActions(['postLogout'])
     },
     created() {
-        this.userId = this.getUserId
-        if (this.getUserId == ''){
+        this.userNickName = this.getUserNickName
+        if (this.getUserNickName == ''){
           this.postLogout();
           this.$router.push({
             name: 'Login'
@@ -31,7 +31,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
         }
     }, 
     computed: {
-      ...mapGetters(['getUserId']),
+      ...mapGetters(['getUserNickName']),
     },
   }
 </script>
@@ -44,7 +44,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 .fa-user-circle{
     color: lightgray;
 }
-.userId{
+.userNickName{
   text-decoration: none;
   color : #E65100;
 }
