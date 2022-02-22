@@ -27,6 +27,7 @@ const placeListStore = {
         },
         setCoursePlaceList: (state, payload) => {
             state.coursePlaceList = payload
+            state.loaded = true
         },
         setFolderId : (state, payload) => {
             state.folderId = payload
@@ -36,7 +37,8 @@ const placeListStore = {
         },
         initList : (state) => {
             state.loaded = false
-            state.placeList = null
+            state.coursePlaceList = []
+            state.placeList = []
         },
     },
     actions: {
@@ -58,6 +60,39 @@ const placeListStore = {
                 console.log(error.response.data.message);
             });
         },
+        setListBySearchAll : ({ commit, rootState }, payload) => {
+            commit('initList');
+            let api = rootState.domain + '/place/search/all?query='+ payload
+            axios.get(api, {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                let placeList = []
+                for (let i in res.data){
+                    placeList.push({place : res.data[i]})
+                }
+                commit('setPlaceList', placeList);
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
+        },
+        setListBySearchName : ({ commit, rootState }, payload) => {
+            commit('initList');
+            let api = rootState.domain + '/place/search/name?name='+ payload
+            axios.get(api, {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                let placeList = []
+                for (let i in res.data){
+                    placeList.push({place : res.data[i]})
+                }
+                commit('setPlaceList', placeList);
+                
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
+        },
         setListBySearchContent : ({ commit, rootState }, payload) => {
             commit('initList');
             let api = rootState.domain + '/place/search/content?content='+ payload
@@ -65,7 +100,6 @@ const placeListStore = {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
-                //임시
                 let placeList = []
                 for (let i in res.data){
                     placeList.push({place : res.data[i]})
@@ -83,7 +117,6 @@ const placeListStore = {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
-                //임시
                 let placeList = []
                 for (let i in res.data){
                     placeList.push({place : res.data[i]})
@@ -121,10 +154,21 @@ const placeListStore = {
                 console.log(error.response.data.message);
             });
         },
-        setListByCourse : () => {},
-        setListByLocalCourse: ({ commit, rootGetters },) => {
-            commit('setCoursePlaceList', rootGetters['courseStore/getNowCourse']);
-            commit('setPlaceList', []);
+        setListByCourse : ({ commit, dispatch, rootState }, payload) => {
+            commit('initList');
+            commit('setCourseId', payload);
+            let api = rootState.domain + '/course?cid=' + payload
+            axios.get(api, {
+                headers: { "Content-Type": 'application/json'
+                }
+            }).then(res => {
+                dispatch('setCoursePlaceList', res.data.coursePlace);
+            }).catch(function(error){
+                console.log(error.response.data.message);
+            });
+        },
+        setCoursePlaceList : ({ commit }, payload) => {
+            commit('setCoursePlaceList', payload);
         },
         
         //selectedFolder

@@ -4,7 +4,7 @@ import { axios } from '../index';
 const placeStore = {
     namespaced: true,
     state: {
-        place : null
+        place : null,
     },
     getters: {
         getPlace : state => state.place,
@@ -80,7 +80,7 @@ const placeStore = {
                 }).then(() => {
                     commit('setLiked', true);
                 }).catch(function(error){
-                    console.log(error.response.data.message);
+                    console.log(error.response.data.status)
                 });
             })
         },
@@ -95,7 +95,7 @@ const placeStore = {
                 }).then(() => {
                     commit('setLiked', false);
                 }).catch(function(error){
-                    console.log(error.response.data.message);
+                    console.log(error.response.data.status)
                 });
             })
         },
@@ -104,7 +104,7 @@ const placeStore = {
                 let api = rootState.domain + '/folder/place/new?place=' +  state.place.placeId + '&folder=' + payload
                 axios.get(api).then(() => {
                 }).catch(function(error){
-                    console.log(error.response.data.message);
+                    console.log(error.response.data.status)
                 });
             })
         },
@@ -118,8 +118,44 @@ const placeStore = {
                         }
                     }
                 }).catch(function(error){
-                    console.log(error.response.data.message);
+                    console.log(error.response.data.status)
                 });
+            })
+        },
+        addPlaceToCourse: ({ state, rootState }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/course/detail/new?cid=' +  payload + '&pid=' + state.place.placeId
+                axios.get(api).then(() => {
+                }).catch(function(error){
+                    console.log(error.response.data.status)
+                });
+            })
+        },
+        addUserPlace: ({ rootGetters, rootState }, payload) => {
+            
+            console.log(payload)
+            return new Promise(function(resolve) {
+                let api = rootState.domain  + '/open/naver/map?query=' + payload.address
+                axios.get(api)
+                .then(res => {
+                    let api = rootState.domain  + '/place/new?id=' + rootGetters["userStore/getUserId"]
+                    console.log(res.data.addresses[0].x)
+                    axios.post(api, JSON.stringify({
+                        userId : rootGetters["userStore/getUserId"],
+                        placeName : payload.name,
+                        address : payload.address,
+                        latitude : res.data.addresses[0].y,
+                        longitude : res.data.addresses[0].x
+                    }), {
+                        headers: { "Content-Type": 'application/json'
+                        }
+                    }).then(res => {
+                        resolve(res.data)
+                        console.log(res.data)
+                    }).catch(function(error){
+                        console.log(error.response.data)
+                    });
+                })
             })
         },
     },

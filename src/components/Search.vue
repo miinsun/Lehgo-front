@@ -61,7 +61,7 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
       keyword : '',
       result : null,
       selected : 0,
-      items : ['전체', '주소', '설명']
+      items : ['전체', '이름', '주소', '설명']
     }),
     validators: {
       keyword : function (value) {
@@ -77,12 +77,15 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
         this.$validate().then(() => {
           if(this.keyword){
             if(this.selected == 0){
-              this.setListBySearchArea(this.keyword)
+              this.setListBySearchAll(this.keyword)
             }
             else if(this.selected == 1){
-              this.setListBySearchArea(this.keyword)
+              this.setListBySearchName(this.keyword)
             }
             else if(this.selected == 2){
+              this.setListBySearchArea(this.keyword)
+            }
+            else if(this.selected == 3){
               this.setListBySearchContent(this.keyword)
             }
           }
@@ -91,7 +94,7 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
       clickedPlace(place){
           this.$emit('clickedPlace', place);
       },
-      ...listMapActions(['setListBySearchArea', 'setListBySearchContent'])
+      ...listMapActions(['setListBySearchAll', 'setListBySearchName', 'setListBySearchArea', 'setListBySearchContent'])
     },
     mounted(){
     },

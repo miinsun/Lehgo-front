@@ -60,8 +60,8 @@
                 <v-btn color="white" depressed v-bind="attrs" v-on="on"><i class="far fa-plus-square"></i>코스에 추가</v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(course, index) in getCourseList" :key="index" link>
-                <v-list-item-title v-text="course.courseId"></v-list-item-title>
+                <v-list-item v-for="(course, index) in getCourseList" :key="index" link @click="addPlaceToCourseBtn(course.courseId)">
+                <v-list-item-title v-text="course.courseName"></v-list-item-title>
                 </v-list-item>
             </v-list>
             </v-menu>
@@ -122,9 +122,15 @@ import 'hooper/dist/hooper.css';
             this.isPlaceAdded = true;
             setTimeout(() => this.isPlaceAdded = false, 1500);
         },
+        addPlaceToCourseBtn(courseId){
+            this.addPlaceToCourse(courseId);
+            this.courseMenu = false;
+            this.isPlaceAdded = true;
+            setTimeout(() => this.isPlaceAdded = false, 1500);
+        },
         ...folderActions(['setFolderList', 'addFolder']),
         ...courseActions(['setCourseList', 'addCourse']),
-        ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace', 'addPlaceToFolder']),
+        ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace', 'addPlaceToFolder', 'addPlaceToCourse']),
     },
     mounted(){
     },

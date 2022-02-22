@@ -23,7 +23,7 @@
       </v-col>
       <v-col :cols="mapCol">
           <div id="mapArea">
-            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :coursePlaceList="coursePlaceList" :key="mapKey"/>
+            <Map :clickedPlace="newPlace" :mapCol="mapCol / 12" :key="mapKey"/>
           </div>
       </v-col>
     </v-row>
@@ -63,7 +63,6 @@
         newPlace : null,
         mapCol : 8,
         mapKey : 0,
-        coursePlaceList : [],
     }),
     components: {
       SideBar,
@@ -73,7 +72,6 @@
     },
     methods:{
         openSideArea() {
-          this.coursePlaceList = [];
           this.openSide = true;
           this.isUserInfo = false;
           this.isVisitedList = false;
@@ -96,12 +94,14 @@
             this.openSideArea();
             this.isVisitedList = true;
         },
-        openCoursePlaceList(){
-            // this.setListByCourse(courseId);
-            this.setListByLocalCourse(); //test
+        openCoursePlaceList(courseId){
+            this.setListByCourse(courseId);
             this.openSideArea();
             this.coursePlaceList = this.getCoursePlaceList
             this.isCoursePlaceList = true;
+            console.log(courseId)
+            console.log(this.getCoursePlaceList[0].place)
+            console.log(this.getPlaceList)
         },
         openFolderPlaceList(folderId){
             this.setListByFolder(folderId);
@@ -112,7 +112,7 @@
           this.sheet = true;
           this.newPlace = place;
         },
-        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder', 'setListByLocalCourse'])
+        ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder', 'setListByCourse'])
     },
     computed: {
       ...listMapGetters(['getPlaceList', 'getCoursePlaceList'])

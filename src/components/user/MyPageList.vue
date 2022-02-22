@@ -53,18 +53,18 @@
           </v-list-item>
           <v-list-item v-for="c, i in getCourseList" :key="'course' + i">
             <v-list-item-content @click="openCoursePlaceList(c.courseId)">
-                <v-list-item-title>{{c.courseId}}</v-list-item-title>
+                <v-list-item-title>{{c.courseName}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="!newCourse">
-            <v-list-item-content  @click="newFolder = true">
+            <v-list-item-content  @click="newCourse = true">
                 <v-list-item-title><i class="fas fa-plus mr-3"></i> 코스 추가</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="newCourse">
-            <v-text-field v-model="folderName" class="mb-5 mx-5" color="orange darken-4" 
+            <v-text-field v-model="courseName" class="mb-5 mx-5" color="orange darken-4" 
                 hide-details="auto" maxlength="20" required label="이름"></v-text-field>
-            <v-btn text @click="addFolderBtn()">추가</v-btn>
+            <v-btn text @click="addCourseBtn()">추가</v-btn>
           </v-list-item>
         </v-list-group>
         <v-list-item>
@@ -90,6 +90,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
       newFolder : false,
       newCourse : false,
       folderName : '',
+      courseName : ''
     }),
     methods: {
         openSearchList() {
@@ -115,6 +116,10 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
         addFolderBtn(){
           this.addFolder(this.folderName);
           this.newFolder = false;
+        },
+        addCourseBtn(){
+          this.addFolder(this.folderName);
+          this.newCourse = false;
         },
         ...folderActions(['setFolderList', 'addFolder']),
         ...courseActions(['setCourseList', 'addCourse'])

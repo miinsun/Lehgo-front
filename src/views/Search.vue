@@ -51,7 +51,6 @@
     mounted() {
     },
     created() {
-      //사용?
       this.setPlaceList(null)
     }
   }
