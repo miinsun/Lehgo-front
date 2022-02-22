@@ -40,6 +40,41 @@
         <a @click="findId()">아이디</a> /  <a @click="findPw()">비밀번호 찾기</a>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="2 offset-3">
+        <!-- <button @click="googleLoginBtn"> -->
+        <a href="http://localhost:8080/oauth/google">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <defs>
+            <clipPath id="clip-path">
+              <rect width="16" height="16" fill="none"/>
+            </clipPath>
+          </defs>
+            <g transform="translate(-88 -449)">
+              <g transform="translate(88 449)" fill="none" stroke="#bce0fd" stroke-width="1">
+                <circle cx="28" cy="28" r="28" stroke="none"/>
+                <circle cx="28" cy="28" r="27.5" fill="none"/>
+              </g>
+              <g transform="translate(108 469)" clip-path="url(#clip-path)">
+                <rect width="16" height="16" fill="none"/>
+                <path  d="M16,4.4V5.9H14.5V7.4H13V5.8H11.5V4.4H13V2.9h1.5V4.4ZM5.1,4.4H9.9c0,.3.1.5.1.8a4.7,4.7,0,0,1-4.9,5A5.1,5.1,0,0,1,5.1,0,4.938,4.938,0,0,1,8.5,1.3L7.1,2.7a2.666,2.666,0,0,0-2-.8A3.222,3.222,0,0,0,1.9,5.1,3.159,3.159,0,0,0,5.1,8.3,2.724,2.724,0,0,0,8,6.1H5.1Z" transform="translate(0 3)" fill="#186ec5" fill-rule="evenodd"/>
+              </g>
+            </g>
+        </svg>
+        </a>
+        <!-- </button> -->
+      </v-col>
+      <v-col cols="2">
+        <a href="http://localhost:8080/oauth/naver/">
+        <img type="button" src="@/assets/naverIco.png" height="56" width="56" id="naverBtn"/>
+        </a>
+      </v-col>
+      <v-col cols="2">
+        <a href="http://localhost:8080/oauth/kakao">
+        <img type="button" src="@/assets/naverIco.png" height="56" width="56" id="naverBtn"/>
+        </a>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -83,31 +118,35 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
         this.postLogin(loginUser).
         then(success => {
           if(success){
-            this.$router.push({
-              name: 'Main'
-            })
+            this.$router.push({ name: 'Main' })
           }
         })
       },
       signUp : function(){
-        this.$router.push({
-          name: 'signUp'
-        })
+        this.$router.push({ name: 'signUp' })
       },
       findId : function(){
-        this.$router.push({
-          name: 'FindId'
-        })
+        this.$router.push({ name: 'FindId' })
       },
       findPw : function(){
-        this.$router.push({
-          name: 'FindPw'
-        })
+        this.$router.push({ name: 'FindPw' })
       },
-      ...mapActions(['postLogin', 'initLogin'])
+      ...mapActions(['postLogin', 'initLogin', 'socialLogin'])
     },
     created(){
-      this.initLogin();
+      if(this.$route.query.socialLoginType){
+        this.socialLogin({
+            type : this.$route.query.socialLoginType, 
+            code : this.$route.query.code
+        }).then(success => {
+          if(success){
+            this.$router.push({ name: 'Main' })
+          }
+        })
+      }
+      else{
+        this.initLogin();
+      }
     }
   }
 </script>
@@ -144,12 +183,16 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 #pwInput .v-text-field >>> input {
   color : #186EC5;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 900;
   letter-spacing: 2px;
   font-family: 'Open Sans', sans-serif;
 }
 #Lock, #Mail{
   margin-top: 5px;
   margin-right: 10px;
+}
+#naverBtn{
+  border-radius: 100%;
+  border: #bce0fd solid 1px;
 }
 </style>

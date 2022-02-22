@@ -4,9 +4,10 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login/Login.vue'
 import FindId from '../views/Login/FindId.vue'
 import FindPw from '../views/Login/FindPw.vue'
-import SignUp from '../views/SignUp.vue'
+import SignUp from '../views/SignUp/SignUp.vue'
+import SocialSignUp from '../views/SignUp/SocialSignUp.vue'
+import Survey from '../views/SignUp/Survey.vue'
 import MyPage from '../views/MyPage.vue'
-import Survey from '../views/Survey.vue'
 import Search from '../views/Search.vue'
 
 Vue.use(VueRouter)
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'Main',
     component: Main
+  },
+  {
+    path: '/socialSignUp',
+    name: 'SocialSignUp',
+    component: SocialSignUp
   },
   {
     path: '/login',
