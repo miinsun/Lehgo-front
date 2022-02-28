@@ -3,29 +3,29 @@
       <v-form ref="form" v-model="isFormValid">
       <v-row>
         <v-col cols="11 mx-auto">
-        <v-text-field class="mb-5" color="orange lighten-1" hide-details="auto" maxlength="20" required
+        <v-text-field class="mb-5" color="#0057FF" hide-details="auto" maxlength="20" required
           label="아이디" v-model="printId" :readonly="true" :disabled="true"></v-text-field>
-        <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
+        <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
             label="비밀번호" v-model="pw" :type="'password'" :rules="[validation.firstError('pw')]"></v-text-field>
-        <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
+        <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
             label="이름" v-model="name" :rules="[validation.firstError('name')]"></v-text-field>
-        <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="50" required
+        <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="50" required
             label="이메일" v-model="email" :type="'email'" :rules="[validation.firstError('email'), validation.firstError('existEmail')]"></v-text-field>
-        <v-text-field class="my-5"  color="orange lighten-1" hide-details="auto" maxlength="20" required
+        <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
             label="닉네임" v-model="nickname" :rules="[validation.firstError('nickname'), validation.firstError('existNickname')]"></v-text-field>
         <v-row class="selectField">
           <v-col cols="2 my-auto">성별</v-col>
           <v-col cols="10">
           <v-radio-group row class="justify-space-between" v-model="gender" :rules="[validation.firstError('gender')]">
-            <v-radio label="여성" color="orange" value="female" class="mr-10" :checked="isFemale()"></v-radio>
-            <v-radio label="남성" color="orange" value="male" :checked="isMale()"></v-radio>
+            <v-radio label="여성" color="#0057FF" value="female" class="mr-10" :checked="isFemale()"></v-radio>
+            <v-radio label="남성" color="#0057FF" value="male" :checked="isMale()"></v-radio>
           </v-radio-group>
           </v-col>
         </v-row>
         <v-row class="selectField my-auto">
           <v-col cols="2 my-5">생년</v-col>
           <v-col cols="6">
-            <v-combobox color="orange lighten-1" hide-details="auto" maxlength="4" required
+            <v-combobox color="#0057FF" hide-details="auto" maxlength="4" required
                v-model="age" :items="ageList" :rules="[validation.firstError('age')]" soutlined>
             </v-combobox>
           </v-col>
@@ -45,7 +45,7 @@
       </v-row>
       <v-row>
         <v-col cols="6 mx-auto">
-          <v-btn block elevation="3" color="orange lighten-1" x-large @click="submit" 
+          <v-btn block elevation="3" color="#0057FF" style="color:#FFFFFF;" x-large @click="submit" 
             :disabled="!isFormValid" class="font-weight-bold">UPDATE</v-btn>
         </v-col>
       </v-row>

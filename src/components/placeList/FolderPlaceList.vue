@@ -1,6 +1,9 @@
 <template>
     <div>
-    <v-overlay :z-index="zIndex" :value="overlay" >
+    <v-snackbar v-model="deletePlaceStatus">
+      <div class="text-center">삭제되었습니다.</div>
+    </v-snackbar>
+    <v-overlay class="overlay" :z-index="zIndex" :value="overlay" >
       <v-card color="white" elevation="2">
         <v-card-text>정말 폴더를 삭제하시겠습니까?</v-card-text>
       <v-btn class="mx-2" color="#226AB3" @click="deleteFolderBtn()">삭제</v-btn>
@@ -8,48 +11,32 @@
       </v-card>
     </v-overlay>
     <v-row class="editFolder">
-      <v-col cols="8">
-        <v-text-field color="white" v-if="editFolder" v-model="newFolderName"
+      <v-col cols="7 offset-1">
+        <v-text-field color="white" v-if="editFolderStatus" v-model="newFolderName" placeholder="새로운 폴더 이름을 입력하세요"
           hide-details="auto" maxlength="10" required></v-text-field>
       </v-col>
       <v-col cols="2">
-        <v-btn v-if="editFolder" text @click="editFolderBtn()"><i class="far fa-check-circle"></i></v-btn>
-        <v-btn v-if="!editFolder" text @click="editFolder = true"><i class="far fa-edit"></i></v-btn>
+        <v-btn v-if="editFolderStatus" text @click="editFolderBtn()"><i class="far fa-check-circle"></i></v-btn>
+        <v-btn v-if="!editFolderStatus" text @click="editFolderStatus = true"><i class="far fa-edit"></i></v-btn>
       </v-col>
       <v-col cols="2">
          <v-btn text @click="overlay = !overlay"><i class="far fa-trash-alt"></i></v-btn>
       </v-col>
     </v-row>
-    <v-row class="deletePlace mb-5">
+    <v-row class="deletePlace">
       <v-col cols="2 offset-10">
          <v-btn text @click="deletePlace()"><i class="far fa-trash-alt"></i></v-btn>
       </v-col>
     </v-row>
-    <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular>
-    <div class="placeList" v-bar>
-      <v-list rounded>
-        <v-list-item-group  color="gray"  class="text-left" >
-          <v-list-item class="py-3" v-for="p, i in getPlaceList" :key="i"> 
-            <span class="placeImg rounded-circle" v-if="p.place.img1" :style="bgImg(p.place)"></span>
-            <span class="noImg rounded-circle" v-if="!p.place.img1">
-                <i class="far fa-image"></i>
-            </span>
-            <v-list-item-content @click="clickedPlace(p.place)">
-                <v-list-item-title><b>{{p.place.placeName}}</b></v-list-item-title>
-                <small>{{p.place.address}}</small>
-            </v-list-item-content>
-            <v-checkbox class="checkbox" v-model="selectedList" color="error" :value="p.place.placeId" hide-details></v-checkbox>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </div>
+    <PlaceList class="placeListArea" :showCheck="true" @selectedList="changeSelectedList"/>
     </div>
 </template>
 
 <script>
-  import { createNamespacedHelpers } from "vuex";
+import PlaceList from '.././placeList/placeList'
+import { createNamespacedHelpers } from "vuex";
 const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
-  const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
+const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
   export default {
     name: 'FolderPlaceList',
@@ -57,12 +44,14 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
     data: () => ({
       zIndex : 1000,
       overlay : false,
-      newFolder : false,
-      editFolder : false,
+      editFolderStatus : false,
+      deletePlaceStatus : false,
       newFolderName : '',
       selectedList : []
     }),
-    props:['folderName'],
+    components:{
+      PlaceList
+    },
     methods: {
         bgImg(place) {
             return 'background-image : url("' + place.img1 + '");'
@@ -71,8 +60,9 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
             this.$emit('clickedPlace', place);
         },
         editFolderBtn(){
-          this.newFolderName
-          this.editFolder = false;
+          this.editFolder(this.newFolderName)
+          this.editFolderStatus = false;
+          this.$router.go();
         },
         deleteFolderBtn(){
           this.deleteFolder()
@@ -80,16 +70,21 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
           this.overlay = false;
           this.$router.go();
         },
+        changeSelectedList(list){
+          this.selectedList = list;
+        },
         deletePlace(){
           for(let i in this.selectedList){
             this.deletePlaceFromFolder(this.selectedList[i])
           }
+          this.deletePlaceStatus = true;
+          setTimeout(() =>(this.deletePlaceStatus = false), 1000);
         },
-        ...listMapActions(['deleteFolder', 'deletePlaceFromFolder']),
+        ...listMapActions(['editFolder', 'deleteFolder', 'deletePlaceFromFolder']),
         ...folderActions(['setFolderList'])
     },
     computed:{
-      ...listMapGetters(['getLoaded', 'getPlaceList']),
+      ...listMapGetters(['getLoaded', 'getPlaceList'])
     },
     mounted() {
     }
@@ -102,28 +97,13 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
   overflow: auto;
   overflow-y: scroll;
 }
-.placeImg{
-    background-size: cover; 
-    background-position: center; 
-    width: 100px; 
-    height: 100px;
-    margin-right: 20px
-}
-.noImg{
-    background-color: lightgray;
-    text-align: center;
-    width: 100px; 
-    height: 100px;
-    margin-right: 20px;
-}
-.noImg i{
-    color: white;
-    font-size: 30px;
-    margin-top: 35px
-}
 .v-input>>> input{
-  font-size: 12px;
+  font-size: 15px;
   color: white;
+}
+.v-input>>> input::placeholder{
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.356);
 }
 .v-text-field{
   padding-top: 0px;
@@ -142,21 +122,29 @@ const { mapActions : folderActions } = createNamespacedHelpers("folderStore");
 }
 .editFolder{
   margin-right: 0px;
-  height: 50px;
-  background-color:#226AB3;
+  height: 60px;
+  padding-top: 10px;
+  background-color:#0057FF;
+  font-family: 'Noto Sans KR';
 }
 .editFolder i{
   color: white;
 }
 .deletePlace{
   margin-right: 0px;
-  height: 50px;
-  border-bottom : #226AB3 solid;
+  height: 55px;
+  border-bottom : #0057FF solid;
 }
 .checkbox{
   position: absolute;
   height : 10px;
   right: 0;
   top : 0;
+}
+.placeListArea{
+  width: 24vw;
+}
+.overlay{
+  font-family: 'Noto Sans KR';
 }
 </style>

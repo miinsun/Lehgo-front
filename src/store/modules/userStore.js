@@ -11,7 +11,7 @@ const userStore = {
     },
     getters: {
         getUserId : state => state.userId,
-        getUserNickName: state => state.setUserNickName,
+        getUserNickName: state => state.userNickName,
         getLoginResult : state => state.loginResult,
         getErrorMessage: state => state.errorMessage,
         getAccessToken: state => state.accessToken,
@@ -21,7 +21,7 @@ const userStore = {
             state.userId = payload
         },
         setUserNickName: (state, payload) => {
-            state.setUserNickName = payload
+            state.userNickName = payload
         },
         setLoginResult : (state, payload) => {
             state.loginResult = payload
@@ -58,7 +58,9 @@ const userStore = {
                     commit('setUserId', res.data.username);
                     commit('setUserNickName',res.data.nickname);
                     axios.defaults.headers.common['authorization'] = res.headers.authorization;
-                    resolve(true);
+                    api = rootState.domain + '/user/keyword/isin?id=' + res.data.username
+                    axios.get(api)
+                    .then(res => resolve(res.data))
                 }).catch(function(error){
                     commit('setLoginResult', false);
                     commit('setErrorMessage', error.response.data.message);
@@ -76,7 +78,9 @@ const userStore = {
                     commit('setUserId', res.data.username);
                     commit('setUserNickName',res.data.nickname);
                     axios.defaults.headers.common['authorization'] = res.headers.authorization;
-                    resolve(true);
+                    api = rootState.domain + '/user/keyword/isin?id=' + res.data.username
+                    axios.get(api)
+                .then(res => resolve(res.data))
                 }).catch(function(error){
                     commit('setLoginResult', false);
                     commit('setErrorMessage', error.response.data.message);
@@ -92,6 +96,20 @@ const userStore = {
         initLogin: ({ commit }) => {
             commit('setLoginResult', true);
             commit('setErrorMessage', '');
+        },
+        setType: ({ rootState, rootGetters }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/users/type?type=' + payload
+                axios.post(api, JSON.stringify({
+                        id : rootGetters["userStore/getUserId"]
+                    }), {
+                        headers: { "Content-Type": 'application/json'
+                    }
+                }).then(() => {
+                }).catch(function(error){
+                    console.log(error.response.data.status)
+                });
+            })
         },
     }
 }

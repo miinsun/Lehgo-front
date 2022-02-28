@@ -1,25 +1,38 @@
 <template>
-    <div class="sideBarArea">
     <div class="sideBar text-center">
-        <div class="mainBtn" type="button" @click="goToMain()">
-            <h2>LEHGO</h2>
+        <div class="mainBtn mb-3" type="button" @click="goToMain()">
+            <svg id="그룹_156" data-name="그룹 156" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70">
+            <path id="패스_671" data-name="패스 671" d="M35,0A35,35,0,1,1,0,35,35,35,0,0,1,35,0Z" fill="#fff"/>
+            <g id="icn_home_active" transform="translate(16.395 11.667)">
+                <path id="icn_home_active-2" data-name="icn_home_active" d="M19.605,27.415a6.91,6.91,0,0,0-6.891,6.891v8.039H1V16.619L19.605,1,38.211,16.619V42.345H26.5l-.23-.459v-7.58a6.58,6.58,0,0,0-6.661-6.891" transform="translate(-1 -1)" fill="none" stroke="#0057ff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="6"/>
+            </g>
+            </svg>
+            <div class="btnText">일정 홈</div>
         </div>
-        <div v-for="icon, i in icons" :key="'icon' + i">
-        <v-tooltip right color="#186EC5" transition="slide-x-transition" :disabled="icon.router == nowRouter">
-            <template v-slot:activator="{ on, attrs }">
-                <div type="button" @click="goToRouter(icon.router)" v-bind="attrs" v-on="on">
-                    <svg width="60" height="60" viewBox="-10 -10 80 80">
-                        <circle cx="30" cy="30" r="30" :fill="getColor(icon.router)"/>
-                        <g :transform="'translate' + icon.translate">
-                            <path  :d="icon.path" fill="#FFFFFF"/>
-                        </g>
-                    </svg>
-                </div>
-            </template>
-            <div>{{icon.title}}</div>
-        </v-tooltip>
+        <div class="mainBtn mb-3" type="button" @click="goToSearch()">
+            <svg id="Add" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="68.526" height="68.526" viewBox="0 0 68.526 68.526">
+            <defs>
+                <clipPath id="clip-path">
+                <rect width="40" height="40" fill="none"/>
+                </clipPath>
+            </defs>
+            <path id="패스_662" data-name="패스 662" d="M34.263,0A34.263,34.263,0,1,1,0,34.263,34.263,34.263,0,0,1,34.263,0Z" fill="#fff"/>
+            <g id="Search" transform="translate(14.263 14.263)" clip-path="url(#clip-path)">
+                <rect id="사각형_693" data-name="사각형 693" width="40" height="40" transform="translate(0.001)" fill="none"/>
+                <path id="패스_208" data-name="패스 208" d="M39.833,36.326l-8.267-8.267a17.153,17.153,0,0,0,3.507-10.522A17.429,17.429,0,0,0,17.537,0,17.429,17.429,0,0,0,0,17.537,17.429,17.429,0,0,0,17.537,35.073a17.153,17.153,0,0,0,10.522-3.507l8.267,8.267ZM5.01,17.537A12.4,12.4,0,0,1,17.537,5.01,12.4,12.4,0,0,1,30.063,17.537,12.4,12.4,0,0,1,17.537,30.063,12.4,12.4,0,0,1,5.01,17.537Z" transform="translate(0)" fill="#0057ff"/>
+            </g>
+            </svg>
+            <div class="btnText">검색</div>
         </div>
-    </div>
+        <div class="mainBtn mb-3" type="button" @click="goToMyPage()">
+            <svg id="Add" xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70">
+            <circle id="타원_226" data-name="타원 226" cx="35" cy="35" r="35" fill="#0057ff"/>
+            <g id="Heart" transform="translate(13.099 18.673)">
+                <path id="Heart-2" data-name="Heart" d="M40.326,3.526a11.769,11.769,0,0,0-16.752,0L21.926,5.174,20.278,3.526A11.845,11.845,0,0,0,3.526,20.278l18.4,18.4,18.4-18.4a11.769,11.769,0,0,0,0-16.752" transform="translate(-0.025 -0.025)" fill="#fff" fill-rule="evenodd"/>
+            </g>
+            </svg>
+            <div class="btnText">마이페이지</div>
+        </div>
     </div>
 </template>
 
@@ -29,12 +42,6 @@
     data: () => ({
         myPageHover : false,
         nowRouter : null,
-        icons : [
-            {title: '마이페이지', router : 'MyPage', translate : '(14.099 11.303)', path : 'M-.9,35.4V29.848c0-6.1,7.155-11.1,15.9-11.1s15.9,4.993,15.9,11.1V35.4ZM5.5,7.5A9.5,9.5,0,1,1,15,17,9.5,9.5,0,0,1,5.5,7.5Z'},
-            {title: '검색', router : 'Search', translate : '(12 12)', path : 'M35.9,32.739l-7.451-7.451a15.459,15.459,0,0,0,3.161-9.483A15.708,15.708,0,0,0,15.805,0,15.708,15.708,0,0,0,0,15.805,15.708,15.708,0,0,0,15.805,31.61a15.459,15.459,0,0,0,9.483-3.161L32.739,35.9ZM4.516,15.805A11.18,11.18,0,0,1,15.805,4.516,11.18,11.18,0,0,1,27.094,15.805,11.18,11.18,0,0,1,15.805,27.094,11.18,11.18,0,0,1,4.516,15.805Z'},
-            {title: '좋아요 목록', router : 'Like', translate : '(12 16.94)', path : 'M33.147,2.9a9.673,9.673,0,0,0-13.768,0L18.025,4.257,16.671,2.9A9.735,9.735,0,0,0,2.9,16.671L18.025,31.793,33.147,16.671a9.673,9.673,0,0,0,0-13.768'},
-            {title: '메뉴', router : 'Menu', translate : '(15.001 17)', path : 'M0,26.429V21.637H18.75v4.792Zm0-9.737V10.819H30v5.873ZM0,5.873V0H30V5.873Z'},
-        ]
     }),
     methods: {
         getColor(router){
@@ -48,6 +55,16 @@
         goToMain(){
             this.$router.push({
                 name: 'Main'
+            })
+        },
+        goToSearch(){
+            this.$router.push({
+                name: 'Search'
+            })
+        },
+        goToMyPage(){
+            this.$router.push({
+                name: 'MyPage'
             })
         },
         goToRouter(router) {
@@ -65,16 +82,13 @@
 </script>
 
 <style scoped>
-.sideBarArea{
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #186EC5;
-}
 .sideBar{
     margin: auto;
-    width: 70%;
+    width: 100%;
     height: 100%;
+    font-size: 15px;
+    font-family: 'Noto Sans KR';
+    color:#0057FF;
     background-color: white;
 }
 .sideBar>div{
@@ -85,5 +99,8 @@
 }
 .v-tooltip__content{
     border-radius: 25px 25px 25px 25px;
+}
+.btnText{
+    margin-top: -5px;
 }
 </style>

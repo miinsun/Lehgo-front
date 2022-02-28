@@ -8,6 +8,7 @@ import courseStore from './modules/courseStore';
 import placeStore from './modules/placeStore';
 import placeListStore from './modules/placeListStore';
 import folderStore from './modules/folderStore';
+import categoryStore from './modules/categoryStore'
 Vue.use(Vuex)
 
 export const vuex = new Vuex.Store({
@@ -27,17 +28,16 @@ export const vuex = new Vuex.Store({
     courseStore : courseStore,
     placeStore : placeStore,
     placeListStore : placeListStore,
-    folderStore : folderStore
+    folderStore : folderStore,
+    categoryStore : categoryStore
   },
   plugins :[createPersistedState({
-    paths: ['userStore', 'courseStore'],
+    paths: ['userStore', 'courseStore', 'categoryStore'],
   })]
 })
 
 function setDefaultHeader(){
   const axios = Axios.create();
-  console.log('호출됨')
-  console.log(vuex.getters['userStore/getAccessToken'])
   axios.defaults.headers.common['authorization'] = vuex.getters['userStore/getAccessToken'];
   return axios;
 }

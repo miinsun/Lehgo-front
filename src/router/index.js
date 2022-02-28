@@ -9,6 +9,9 @@ import SocialSignUp from '../views/SignUp/SocialSignUp.vue'
 import Survey from '../views/SignUp/Survey.vue'
 import MyPage from '../views/MyPage.vue'
 import Search from '../views/Search.vue'
+import Place from '../views/Place.vue'
+import ShareCourse from '../views/Course/ShareCourse.vue'
+import CourseList from '../views/Course/CourseList.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +60,21 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: Search
+  },
+  {
+    path: '/course',
+    name: 'ShareCourse',
+    component: ShareCourse
+  },
+  {
+    path: '/courseList',
+    name: 'CourseList',
+    component: CourseList
+  },
+  {
+    path: '/place',
+    name: 'Place',
+    component: Place
   }
 ]
 

@@ -1,7 +1,9 @@
 <template>
-    <div class="profileCard text-center">
-        <i class="fas fa-user-circle fa-10x mb-5"></i>
-        <h3><a @click="openUserInfo" class="userNickName">{{userNickName}}</a>님, 안녕하세요.</h3>   
+    <div class="profileCard text-cleft">
+        <h3>
+        <a @click="openUserInfo" class="userNickName">{{userNickName}}</a> 님!<br>
+        좋은 하루 보내세요.</h3>   
+        <v-divider class="vDivider"></v-divider>
     </div>
 </template>
 
@@ -38,14 +40,19 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
 
 <style scoped>
 .profileCard{
-    height:30vh;
-    padding:30px;
+  padding:0px 10px;
+  margin-top: 30px;
+  font-family: 'Noto Sans KR';
 }
 .fa-user-circle{
     color: lightgray;
 }
 .userNickName{
   text-decoration: none;
-  color : #E65100;
+  color : #0057FF;
+}
+.vDivider{
+  margin-top: 20px;
+  border: #0057FF solid 1px;
 }
 </style>

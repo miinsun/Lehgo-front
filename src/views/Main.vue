@@ -1,63 +1,64 @@
 <template>
   <v-container fluid>
+      <div class="mainCourse"> <MainCourse/> </div>
       <v-row class="content">
-        <v-col cols="1"><SideBar/></v-col>
-        <v-col cols="5" class="text-center">
-            <div class="mainCourse"> <MainNav/> </div>
-            <div class="mainCategory" v-bar> <MainCategory/> </div>
-            <div class="placeInfo text-left" v-bar> <PlaceInfo/> </div>
-        </v-col>
-        <v-col cols="6">
+        <div class="sideBarArea"><SideBar/></div>
+        <div class="text-center mainArea lehgo-background">
+          <div class="lehgo-main"></div>
+            <div class="mainCategory"><MainCategory :categoryheight="getPlace != null ? '41vh' : '74vh'"/></div>
+            <transition name="placeInfoTransition">
+            <div class="placeInfo text-left" v-bar v-show="getPlace" > <PlaceInfo :infoCols="8" :titleImg="true"/> </div>
+            </transition>
+          </div>
+        <div>
             <div class="mapArea">
-                <Map :mapCol="0.5" :coursePlaceList="getNowCourse"/>
+                <Map :mapCol="0.416"/>
             </div>
-        </v-col>
+        </div>
       </v-row>
   </v-container>
 </template>
 
 <script>
   import Map from '../components/map/Map'
-  import MainNav from '../components/place/MainNav'
+  import MainCourse from '../components/place/MainCourse'
   import MainCategory from '../components/place/MainCategory'
   import PlaceInfo from '../components/place/PlaceInfo'
   import SideBar from '../components/SideBar'
-  import places from '@/assets/testPlaceData.js'
   import { createNamespacedHelpers } from "vuex";
-  const { mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
-  const { mapGetters : courseGetters } = createNamespacedHelpers("courseStore");
+  const { mapActions : categorymapActions } = createNamespacedHelpers("categoryStore");
+  const { mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
+  const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
+  const { mapGetters : courseGetters, mapActions : courseMapActions } = createNamespacedHelpers("courseStore");
 
   export default {
     name: 'Main',
     data:() =>({
-        openSide : false,
-        sideArea : '',
-        mapCol : 9,
-        mapAreaStyle : ''
     }),
     components: {
       Map,
-      MainNav,
+      MainCourse,
       MainCategory,
       PlaceInfo,
       SideBar
     },
     methods:{
-        openSideArea(value) {
-            this.openSide = true;
-            this.sideArea = value;
-            this.mapCol = 6
-        },
-        ...listMapActions(['setPlaceList'])
+      ...courseMapActions(['setCoursePage']),
+      ...listMapActions(['setListByAI', 'setCourse']),
+      ...categorymapActions(['setCategoryList', 'setCategoryInit'])
     },
     computed:{
-      ...courseGetters(['getNowCourse'])
+      ...placeMapGetters(['getPlace']),
+      ...listMapGetters(['getLoaded']),
+      ...courseGetters(['getMainCourse']),
     },
     mounted() {
+      // this.setListByAI()
+      this.setCoursePage(false);
+      this.setCourse(this.getMainCourse)
     },
     created(){
-      this.setPlaceList(places)
-    }
+    },
   }
 </script>
 
@@ -66,10 +67,31 @@
   padding: 0;
   height: 100vh;
 }
-.mainCourse{
-    height:10vh;
+.lehgo-background{
+  margin-left: -10px;
+  padding-left: 10px;
+}
+.sideBarArea{
+  width: 5vw;
+}
+.mainArea{
+  width: 53vw;
 }
 .mapArea{
-    overflow: disabled;
+  overflow: disabled;
+}
+.placeInfo{
+  height : 30vh;
+  overflow: hidden;
+  background-color:white;
+  border-radius: 20px;
+  padding: 20px 0px 0px 20px;
+  margin: 10px 20px 20px 20px;
+}
+.lehgo-main{
+  margin: 20px;
+  margin-bottom: 0px;
+  width: 150px;
+  height: 70px;
 }
 </style>

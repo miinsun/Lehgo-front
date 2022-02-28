@@ -36,6 +36,15 @@ const folderStore = {
                 commit('addFolder', res.data);
             })
         },
+        addPlaceToFolder: ({ rootState }, payload) => {
+            return new Promise(function() {
+                let api = rootState.domain + '/folder/place/new?place=' +  payload.place.placeId + '&folder=' + payload.fId
+                axios.get(api).then(() => {
+                }).catch(function(error){
+                    console.log(error.response.data.status)
+                });
+            })
+        },
     }
 }
 

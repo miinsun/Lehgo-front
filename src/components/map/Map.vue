@@ -1,18 +1,26 @@
 <template>
 <transition name="map">
   <div v-if="loaded">
-    <naver-maps :height="height" :width="width" :mapOptions="mapOptions" :initLayers="initLayers" @load="onLoad" @idle="checkMacker">
+    <div class="visitedPlaceArea">
+     <div class="visitedTitle">최근 본</div>
+     <div type="button" @click="onMarkerClicked(p.place)" class="ma-1 mt-3" v-for="p in getVisitedList" :key="'visited' + p.place.placeId">
+       <div :class="getCategory(p.place) + '-border placeImg'" v-if="p.place.img1" :style="'background-image : url(' + p.place.img1 + ');'"></div>
+        <div :class="getCategory(p.place) + '-border noImg'" v-if="!p.place.img1"><i class="far fa-image"></i> </div>
+        <div class="visitedText">{{p.place.placeName}}</div>
+     </div>
+     </div>
+    <naver-maps :height="height" :width="width" :mapOptions="mapOptions" :initLayers="initLayers" @load="onLoad">
         <div v-if="getLoaded">
         <naver-info-window class="info-window" @load="onWindowLoad" :isOpen="info" :marker="selectedMarker" :moreOptions="windowOptions">
-          <draggable class="list-group mainCourse"  v-if="info" :list="[{place : selectedPlace}]"
+          <draggable class="list-group"  v-if="info" :list="[{place : selectedPlace}]"
             :group="{name : 'mainCourse', pull: 'clone', put: false }">
-            <v-btn text class="list-group-item placeTitleBtn" elevation="4">
+            <div :class="getCategory(selectedPlace) + '-background list-group-item placeTitleBtn'">
                 {{selectedPlace.placeName}}
-            </v-btn>
+            </div>
           </draggable>
         </naver-info-window>
         <naver-marker v-for="p, i in placeList" :key="'p' + i"
-          :lat="p.place.latitude" :lng="p.place.longitude" @click="onMarkerClicked(p.place)" @load="onMarkerLoaded(p.place, $event)"/>
+          :lat="p.place.latitude" :lng="p.place.longitude" @click="onMarkerClicked(p.place, $event)" @load="onMarkerLoaded(p.place, $event)"/>
         <naver-marker v-for="c, i  in coursePlaceList" :key="'c' + i"
           :lat="c.place.latitude" :lng="c.place.longitude" @click="onMarkerClicked(c.place)" @load="onCourseMarkerLoaded(c.place, $event)"/>
         <naver-marker 
@@ -32,22 +40,29 @@
 import draggable from 'vuedraggable'
 import courseService from '@/services/courseService';
 import { createNamespacedHelpers } from "vuex";
-const { mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
-const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore");
+const { mapGetters : placeMapGetters , mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
+const { mapGetters : listMapGetters,  mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
 
 //assets
-import selectMarkerIcon from '@/assets/marker-select.png'
-import courseMarker from '@/assets/marker-course.png'
+import restaurant from '@/assets/restaurant.png'
+import culture from '@/assets/culture.png'
+import sea from '@/assets/sea.png'
+import activity from '@/assets/activity.png'
+import cafe from '@/assets/cafe.png'
+import photospot from '@/assets/photospot.png'
+import healing from '@/assets/healing.png'
+import defaultMarker from '@/assets/default.png'
 
   export default {
     name: 'Map',
-    props: ['coursePlaceList', 'clickedPlace', 'mapCol', 'mapKey'],
+    props: ['mapCol', 'mapKey'],
     components:{
         draggable
     },
     data() {
       return {
         placeList : [],
+        coursePlaceList : [],
         placeMarkerList : {},
         loaded : false,
         width : 0,
@@ -80,20 +95,6 @@ import courseMarker from '@/assets/marker-course.png'
       onLoad(vue)
       {
         this.map = vue;
-        this.checkMacker();
-      },
-      checkMacker(){
-        for(let i in this.marker){
-          let lat = this.marker[i].position._lat;
-          let lng = this.marker[i].position._lng;
-          if(lat > this.map.getBounds()._max._lat || lat < this.map.getBounds()._min._lat ||
-            lng >  this.map.getBounds()._max._lng || lng < this.map.getBounds()._min._lng){
-              this.marker[i].onRemove()
-          }
-          else{
-            this.marker[i].onAdd()
-          }
-        }
       },
       cancelMarkerClicked(){
         this.info = false;
@@ -113,24 +114,50 @@ import courseMarker from '@/assets/marker-course.png'
       changeSelected(place){
         let length, i, c;
         for ((length=i=0); (c=place.placeName.charCodeAt(i++));(length+=c>>11?3:c>>7?2:1));
-        this.windowOptions.pixelOffset.x = (length < 15) ? -50 : length * (-3.3)
+        this.windowOptions.pixelOffset.x = -25 - (3 * length)
+        this.windowOptions.pixelOffset.y = -50
         this.setPlace(place)
         this.selectedPlace = place;
+        this.selectedMarker.setIcon(this.getIcon(this.getCategory(place)))
         this.selectedMarker.setPosition({y : place.latitude, x: place.longitude});
         this.selectedMarker.setVisible(true);
         this.info = true;
       },
       onWindowLoad(){
       },
+      getCategory(place){
+        if(place.attraction != null)
+        { return place.attraction.category.split(', ')[0] }
+        else if(place.restaurant != null)
+        {
+          if (place.restaurant.category.split(', ')[0] == '카페/디저트/술')
+          {  return '카페' }
+          else{ return place.restaurant.category.split(', ')[0] }
+        }
+        else{ return '기본' }
+      },
+      getIcon(category){
+          switch (category){
+            case '액티비티': { return activity }
+            case '힐링': { return healing }
+            case '바다': { return sea }
+            case '문화': { return culture }
+            case '포토스팟': { return photospot }
+            case '식당': { return restaurant }
+            case '카페': { return cafe }
+            default: return defaultMarker
+          }
+      },
       onMarkerLoaded(place, event) {
         let newMarker = event.marker;
         newMarker.setTitle(this.marker.length);
+        newMarker.setIcon(this.getIcon(this.getCategory(place)))
         this.placeMarkerList[place.placeId] = this.marker.length
         this.marker.push(event.marker);
       },
       onCourseMarkerLoaded(place, event) {
         let newMarker = event.marker;
-        newMarker.setIcon(courseMarker)
+        newMarker.setIcon(this.getIcon(this.getCategory(place)))
         newMarker.setTitle(this.marker.length);
         newMarker.setZIndex(10);
         this.placeMarkerList[place.placeId] = this.marker.length
@@ -138,8 +165,8 @@ import courseMarker from '@/assets/marker-course.png'
       },
       onSelectedMarkerLoaded(event){
         let newMarker = event.marker;
-        newMarker.setIcon(selectMarkerIcon);
         newMarker.setZIndex(20);
+        // newMarker.setIcon(defaultMarker)
         newMarker.setVisible(false);
         this.selectedMarker = newMarker;
       },
@@ -148,10 +175,9 @@ import courseMarker from '@/assets/marker-course.png'
         setTimeout(() =>(this.reLoad = true), 1);
       },
       setMapPlace(){
-        console.log(this.getPlaceList.length, this.getCoursePlaceList.length)
         this.marker = [];
         this.loaded = false;
-        if(this.getCoursePlaceList.length && this.getCoursePlaceList.length > 0 && this.getPlaceList.length > 0){
+        if(this.getCoursePlaceList && this.getPlaceList && this.getCoursePlaceList.length > 0 && this.getPlaceList.length > 0){
             this.selectedPlace = this.getCoursePlaceList[0].place
             this.mapOptions.lat = this.selectedPlace.latitude;
             this.mapOptions.lng = this.selectedPlace.longitude;
@@ -167,6 +193,7 @@ import courseMarker from '@/assets/marker-course.png'
         }
         setInterval(() => this.loaded = true, 100);
       },
+      ...listMapActions(['setVistiedList', 'addVisitedList']),
       ...placeMapActions(['setPlace'])
     },
     mounted() {
@@ -174,7 +201,8 @@ import courseMarker from '@/assets/marker-course.png'
         this.width = window.innerWidth * this.mapCol;
     },
     computed: {
-        ...listMapGetters(['getLoaded', 'getPlaceList', 'getCoursePlaceList'])
+        ...listMapGetters(['getLoaded', 'getPlaceList', 'getCoursePlaceList', 'getVisitedList']),
+        ...placeMapGetters(['getPlace'])
     },
     watch:{
         getCoursePlaceList: function(){
@@ -186,8 +214,9 @@ import courseMarker from '@/assets/marker-course.png'
             this.coursePlaceList = this.getCoursePlaceList;
             this.placeList = courseService.notCoursePlaceList(this.getPlaceList, this.getCoursePlaceList);
         },
-        clickedPlace: function(){
-          this.onMarkerClicked(this.clickedPlace);
+        getPlace: function(){
+          this.onMarkerClicked(this.getPlace);
+          this.setVistiedList();
         },
         mapCol : function(){
           this.map.setSize({width: window.innerWidth * this.mapCol, height: this.height})
@@ -195,6 +224,7 @@ import courseMarker from '@/assets/marker-course.png'
     },
     created() {
       this.setMapPlace();
+      this.setVistiedList();
     }
   }
 </script>
@@ -206,11 +236,68 @@ import courseMarker from '@/assets/marker-course.png'
   opacity: 0;
 }
 .placeTitleBtn {
-  border: none;
-  color: #000;
-  background-color: white;
+  font-weight: 400;
+  margin-bottom: 100px;
+  border-radius: 50px;
+  padding: 10px 30px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  max-width: 200px;
+  font-family: 'Noto Sans KR';
+  display:inline-block;
 }
 .courseMarker{
   z-index: 10;
+}
+.visitedPlaceArea{
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 100px;
+  height: 350px;
+  z-index: 1000;
+  padding: 10px;
+  border: #0057FF solid 3px;
+  border-radius: 10px;
+  background:white;
+  text-align: center;
+  font-family: 'Noto Sans KR';
+}
+.visitedTitle{
+  color : #0057FF;
+  font-size:15px;
+  font-weight: 800;
+}
+.visitedText{
+  width: 90px;
+  text-align: center;
+  padding-right: 20px;
+  overflow: hidden;
+  white-space : nowrap;
+  text-overflow: ellipsis;
+}
+.placeImg{
+  background-size: cover; 
+  background-position: center;
+  border-radius: 10px;
+  width: 3vw;
+  height: 3vw;
+  box-sizing: content-box;
+  border: gray solid 5px;
+}
+.noImg{
+  background-color: lightgray;
+  text-align: center;
+  border-radius: 10px;
+  width: 3vw;
+  height: 3vw;
+  box-sizing: content-box;
+  border: gray solid 5px;
+}
+.noImg i{
+  color: white;
+  font-size: 30px;
+  line-height: 3vw;
 }
 </style>
