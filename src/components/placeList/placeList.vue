@@ -70,6 +70,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
     components:{
     },
     data: () => ({
+      folderName : '',
       isPlaceAdded : false,
       folderMenu : [],
       selectedList : [],
@@ -85,6 +86,11 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
       },
     },
     methods: {
+      addFolderBtn(){
+        this.addFolder(this.folderName);
+        this.newFolder = false;
+        this.folderName = '';
+      },
       addPlaceToFolderBtn(index, place, folderId){
           this.addPlaceToFolder({place : place, fId : folderId});
           this.folderMenu[index] = false;

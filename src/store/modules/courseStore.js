@@ -48,6 +48,7 @@ const courseStore = {
         },
         setMainCourseInfo : (state, payload) => {
             state.mainCourse.courseId = payload.courseId;
+            state.mainCourse.courseName = payload.courseName;
             state.mainCourse.visibility = payload.visibility;
             state.mainCourse.editable = payload.editable;
             state.mainCourse.userId = payload.userId;
@@ -141,9 +142,16 @@ const courseStore = {
                 state.mainCourse.coursePlace[c].placeId = state.mainCourse.coursePlace[c].place.placeId
                 state.mainCourse.coursePlace[c].priority = Number(c) + 1
             }
+            let addCourse = { 
+                courseId : state.mainCourse.courseId,
+                courseName :  state.mainCourse.courseName,
+                editable : state.mainCourse.editable,
+                likeCount : 0,
+                userId : state.mainCourse.userId,
+                visibility : state.mainCourse.visibility
+            }
             let api = rootState.domain + '/course/update'
-            console.log(state.mainCourse)
-            axios.put(api, JSON.stringify(state.mainCourse), {
+            axios.put(api, JSON.stringify(addCourse), {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(() => { 

@@ -8,8 +8,8 @@
                당신의 유형은?
 
                <v-card class="resultCard">
-                   <div class="cardTitle">{{resultTypeList[resultType].title}}</div>
-                    <div class="cardContent">{{resultTypeList[resultType].content}}</div>
+                   <div class="cardTitle">{{resultTypeData[resultType].title}}</div>
+                    <div class="cardContent">{{resultTypeData[resultType].content}}</div>
                </v-card>
             <v-btn @click="goToMain()" class="startBtn" depressed>메인으로</v-btn>
         </div>
@@ -35,9 +35,9 @@
                 <span class="surveyTitle">
                     Q. {{data.title}}
                 </span>
-                <div class="YNArea mx-auto">
+                <div class="YNArea mx-auto pt-10">
                     <v-chip-group column>
-                        <v-chip class="mx-auto px-10" filter outlined @click="selectBtn(i, typeIdx)"
+                        <v-chip class="mx-auto px-10 mt-5" filter outlined @click="selectBtn(i, typeIdx)"
                             v-for="type, typeIdx in data.types" :key="i + '' + typeIdx">{{type}}</v-chip>
                     </v-chip-group>
                 <div v-if="i == (YNList.length  - 1)">
@@ -96,12 +96,13 @@ import 'hooper/dist/hooper.css';
         checked1 : '',
         checked2 : '',
         resultList : [-1, -1, -1, -1, -1, -1, -1, -1],
-        result : [0, 0, 0, 0],
+        resultTypeList : [[2, 3], [3, 4], [1, 3], [4, 1], [0, 0], [2, 3], [3, 0], [1, 2, 4]],
+        result : [0, 0, 0, 0, 0],
         resultType : null,
         YNList : null,
         reload : true,
         error : false,
-        resultTypeList : null,
+        resultTypeData : null,
     }),
     components: {
         Hooper,
@@ -128,46 +129,28 @@ import 'hooper/dist/hooper.css';
         },
         surveySubmit(){
             console.log(this.resultList)
+            let max = 0;
+            let maxIdx = 0;
             for (let i in this.resultList){
                 if(this.resultList[i] == -1){
                     this.error = true;
                     break;
                 }
+                else if(this.resultTypeList[i][this.resultList[i]] != 0){
+                    this.result[this.resultTypeList[i][this.resultList[i]]]++;
+                }
                 if(i == 7 && this.error == false){
-                    if(this.resultList[0] == 0) { this.result[1] += 1 }
-                    if(this.resultList[1] == 0) { this.result[3] += 1 }
-                    if(this.resultList[1] == 1) { this.result[0] += 1 }
-                    if(this.resultList[2] == 0) { this.result[2] += 1 }
-                    if(this.resultList[2] == 1) { this.result[3] += 1 }
-                    if(this.resultList[3] == 0) { this.result[0] += 1 }
-                    if(this.resultList[3] == 1) { this.result[2] += 1; this.result[3] += 1 }
-                    // if(this.resultList[4] == 0) {  }
-                    // if(this.resultList[4] == 1) {  }
-                    if(this.resultList[5] == 0) { this.result[1] += 1 }
-                    if(this.resultList[5] == 1) { this.result[3] += 1 }
-                    if(this.resultList[6] == 0) { this.result[3] += 1 }
-                    // if(this.resultList[6] == 1) {  }
-                    if(this.resultList[7] == 0) { this.result[2] += 1 }
-                    if(this.resultList[7] == 1) { this.result[1] += 1 }
-                    if(this.resultList[7] == 2) { this.result[0] += 1 }
-                    let max = 0;
-                    let maxIdx = -1;
                     for(let idx in this.result){
+                        console.log(this.result[idx])
                         if(this.result[idx] > max){
                             maxIdx = idx
                             max = this.result[idx]
                         }
                     }
-                    this.surveyArea = false;
-                    this.resultArea = true;
                     this.resultType = maxIdx;
-                    console.log(this.theres)
-                    switch(this.resultType){
-                        case 0 : this.setType(4); break;
-                        case 1 : this.setType(2); break;
-                        case 2 : this.setType(1); break;
-                        case 3 : this.setType(3); break;
-                    }
+                    this.surveyArea = false;
+                    setTimeout(() =>(this.resultArea = true), 1000);
+                    this.setType(maxIdx);
                 }
             }
             setTimeout(() =>(this.error = false), 1000);
@@ -178,7 +161,7 @@ import 'hooper/dist/hooper.css';
         this.explainData = surveyExplain;
         this.optionalList = optionalData;
         this.YNList = YNData;
-        this.resultTypeList = resultData;
+        this.resultTypeData = resultData;
         for(let i in this.explainData){
             setTimeout(() =>(this.explainData[i].load = true), 700 * i);
         }
@@ -198,7 +181,7 @@ import 'hooper/dist/hooper.css';
 }
 .surveyTitle{
     font-family: 'Noto Sans KR' !important;
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 600;
     color: #0052F2;
 }
@@ -216,7 +199,7 @@ import 'hooper/dist/hooper.css';
     margin-bottom: 20px;
 }
 .v-chip-group .v-chip{
-    font-size : 17px;
+    font-size : 20px;
     padding : 20px;
     border-radius: 50px;
 }
