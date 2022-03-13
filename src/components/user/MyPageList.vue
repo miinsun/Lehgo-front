@@ -45,7 +45,7 @@
             </template>
           <v-list-item v-for="f, i in getFolderList" :key="'folder' + i">
             <v-list-item-content @click="openFolderPlaceList(f.folderId)">
-                <v-list-item-title class="listItemTitle">{{f.folderName}}</v-list-item-title>
+                <v-list-item-title class="listItemTitle"><span class="listTitle">{{f.folderName}}</span></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item v-if="!newFolder">
@@ -101,7 +101,7 @@
         </v-list-group>
         <v-list-item class="text-right">
             <v-list-item-content @click="goToSurvey()">
-              <v-list-item-title>▶ 성향 조사 다시하기</v-list-item-title>
+              <v-list-item-title><span class="listTitle">▶ 성향 조사 다시하기</span></v-list-item-title>
             </v-list-item-content>
         </v-list-item>
         </v-list-item-group>

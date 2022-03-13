@@ -121,9 +121,9 @@ class userInfoService{
         })
     }
     
-    getUserInfo(userId) {
+    getUserInfo() {
         return new Promise(function(resolve, reject) {
-            let api = domain + '/users/' + userId
+            let api = domain + '/users/' + store.getters['userStore/getUserId'];
             axios.defaults.headers.common['authorization'] = store.getters['userStore/getAccessToken'];
             axios.get(api, {
                     headers: { 

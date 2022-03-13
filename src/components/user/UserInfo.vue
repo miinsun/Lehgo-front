@@ -155,7 +155,7 @@ const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
       ...mapActions(['postLogout'])
     },
     created() {
-      userInfoService.getUserInfo(this.getUserId)
+      userInfoService.getUserInfo()
         .then(userInfo => {
           this.id = userInfo.id
           this.printId = this.id

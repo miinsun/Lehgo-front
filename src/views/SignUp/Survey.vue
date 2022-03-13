@@ -122,6 +122,9 @@ import 'hooper/dist/hooper.css';
         },
         surveyStart(){
             this.explainArea = false;
+            for(let i in this.explainData){
+                this.explainData[i].load = false;
+            }
             setTimeout(() =>(this.surveyArea = true), 1000);
         },
         selectBtn(i, btnIdx){

@@ -26,6 +26,7 @@
   import PlaceInfo from '../components/place/PlaceInfo'
   import SideBar from '../components/SideBar'
   import { createNamespacedHelpers } from "vuex";
+  import userInfoService from '@/services/userInfoService';
   const { mapActions : categorymapActions } = createNamespacedHelpers("categoryStore");
   const { mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
   const { mapGetters : listMapGetters, mapActions : listMapActions } = createNamespacedHelpers("placeListStore");
@@ -56,6 +57,11 @@
       // this.setListByAI()
       this.setCoursePage(false);
       this.setCourse(this.getMainCourse)
+      userInfoService.getUserInfo().then().catch(
+        () => {
+            this.$router.push({ name: 'Login' })
+        }
+      )
     },
     created(){
     },
