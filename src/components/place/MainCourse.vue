@@ -288,12 +288,12 @@ div.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-pane
   font-weight: 400;
   padding: 22px 20px;
   border-radius: 10px;
-  background-color: #2256F2;
+  background-color: #333333;
   margin-left: 7px;
   color : white;
 }
 .courseArea .slide-group-item::after {
-    background-color: #2256F2;
+    background-color: #333333;
     width: 30px;
     height: 10px;
     border-radius: 10px;
@@ -383,12 +383,13 @@ div.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-pane
   background-color: #5D24FE;
 }
 .list-group-item.포토스팟, .slide-group-item.포토스팟::after{
-  background-color: #FE9C00;
+  color: black;
+  background-color: #FFE600;
 }
 .list-group-item.식당, .slide-group-item.식당::after{
   background-color: #D059DE;
 }
-.list-group-item.카페, .slide-group-item.카페::after{
-  background-color: #FFE600;
+.list-group-item.카페, .list-group-item.카페\/디저트\/술, .slide-group-item.카페::after, .slide-group-item.카페\/디저트\/술::after{
+  background-color: #FE9C00;
 }
 </style>

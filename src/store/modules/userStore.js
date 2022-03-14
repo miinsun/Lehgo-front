@@ -69,22 +69,24 @@ const userStore = {
         },
         socialLogin: ({ commit, rootState }, payload) => {
             delete axios.defaults.headers.common["authorization"];
+            let api = rootState.domain + '/oauth/' + payload.type + '/login?code=' + payload.code
             return new Promise((resolve) => {
-                let api = rootState.domain + '/oauth/' + payload.type + '/login?code=' + payload.code
                 axios.get(api).then(res => {
+                    axios.defaults.headers.common['authorization'] = res.headers.authorization;
+                    api = rootState.domain + '/user/keyword/isin?id=' + res.data.username;
+
+                    commit('setUserNickName',res.data.nickname);
                     commit('setLoginResult', true);
                     commit('setErrorMessage', '');
                     commit('setAccessToken', res.headers.authorization);
                     commit('setUserId', res.data.username);
-                    commit('setUserNickName',res.data.nickname);
-                    axios.defaults.headers.common['authorization'] = res.headers.authorization;
-                    api = rootState.domain + '/user/keyword/isin?id=' + res.data.username
+                }).then(() => {
                     axios.get(api)
-                .then(res => resolve(res.data))
+                    .then(res =>  resolve(res.data))
                 }).catch(function(error){
                     commit('setLoginResult', false);
                     commit('setErrorMessage', error.response.data.message);
-                });
+                }); 
             })
         },
         postLogout:({ commit }) => {

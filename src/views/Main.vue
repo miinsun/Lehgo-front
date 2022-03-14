@@ -12,7 +12,7 @@
           </div>
         <div>
             <div class="mapArea">
-                <Map :mapCol="0.416"/>
+                <Map :mapCol="0.3"/>
             </div>
         </div>
       </v-row>
@@ -81,7 +81,7 @@
   width: 5vw;
 }
 .mainArea{
-  width: 53vw;
+  width: 60vw;
 }
 .mapArea{
   overflow: disabled;

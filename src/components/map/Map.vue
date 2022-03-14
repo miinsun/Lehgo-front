@@ -108,6 +108,7 @@ import defaultMarker from '@/assets/default.png'
         else{
           this.info = false;
           this.map.morph({y : place.latitude, x: place.longitude})
+          this.selectedMarker.setIcon(this.getIcon(this.getCategory(place)))
           setTimeout(() => this.changeSelected(place), 500);
         }
       },
@@ -118,7 +119,6 @@ import defaultMarker from '@/assets/default.png'
         this.windowOptions.pixelOffset.y = -50
         this.setPlace(place)
         this.selectedPlace = place;
-        this.selectedMarker.setIcon(this.getIcon(this.getCategory(place)))
         this.selectedMarker.setPosition({y : place.latitude, x: place.longitude});
         this.selectedMarker.setVisible(true);
         this.info = true;
@@ -197,8 +197,9 @@ import defaultMarker from '@/assets/default.png'
       ...placeMapActions(['setPlace'])
     },
     mounted() {
-        setInterval(() => this.count++, 1000);
-        this.width = window.innerWidth * this.mapCol;
+      this.coursePlaceList = this.getCoursePlaceList;
+      setInterval(() => this.count++, 1000);
+      this.width = window.innerWidth * this.mapCol;
     },
     computed: {
         ...listMapGetters(['getLoaded', 'getPlaceList', 'getCoursePlaceList', 'getVisitedList']),
@@ -223,6 +224,7 @@ import defaultMarker from '@/assets/default.png'
         },
     },
     created() {
+      this.reRoadPath();
       this.setMapPlace();
       this.setVistiedList();
     }

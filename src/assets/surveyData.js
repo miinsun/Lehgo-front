@@ -1,25 +1,17 @@
-
-import store from '../store';
-let nickname = store.getters['userStore/getUserNickName']
-
 export const surveyExplain = [
     { 
-        text : nickname + '님, 안녕하세요!', 
         load : false,
         style : 'font-size : 40px; font-weight: 700;'
     },
     { 
-        text : nickname + '님이 어떤 사람인지 알려주세요.', 
         load : false ,
         style : 'font-size : 40px; font-weight: 700;'
     },
     { 
-        text : '설문은 총 8가지의 질문으로 이루어져 있어요.', 
         load : false ,
         style : 'font-size : 20px; font-weight: 500; margin-top: 50px;'
     },
     { 
-        text : nickname + '님과 가장 일치한다고 생각하는 문항을 선택해주세요.', 
         load : false ,
         style : 'font-size : 20px; font-weight: 500;'
     },

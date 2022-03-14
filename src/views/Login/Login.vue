@@ -103,6 +103,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 const { mapGetters, mapActions } = createNamespacedHelpers("userStore");
+const { mapGetters : categoryGetters, mapActions : categoryActions } = createNamespacedHelpers("categoryStore");
 const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore");
 
   export default {
@@ -124,6 +125,7 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
       }
     },
     computed :{
+      ...categoryGetters(['getKeyword']),
       ...mapGetters(['getLoginResult', 'getErrorMessage']),
     },
     methods: {
@@ -139,8 +141,11 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
       login : function(){
         const loginUser = { id : this.userId, password : this.userPw };
         this.postLogin(loginUser).
-        then(success => {
-          if(success){
+        then(res => {
+          if(res != 0){
+            if(res != this.getKeyword){
+              this.setCategoryList(res)
+            }
             this.initMainCourse()
             this.$router.push({ name: 'Main' })
           }
@@ -159,6 +164,7 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
       findPw : function(){
         this.$router.push({ name: 'FindPw' })
       },
+      ...categoryActions(['setCategoryList']),
       ...mapActions(['postLogin', 'initLogin', 'socialLogin']),
       ...courseMapActions(['initMainCourse'])
     },
@@ -167,8 +173,11 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
         this.socialLogin({
             type : this.$route.query.socialLoginType, 
             code : this.$route.query.code
-        }).then(success => {
-          if(success){
+        }).then(res => {
+          if(res != 0){
+            if(res != this.getKeyword){
+              this.setCategoryList(res)
+            }
             this.initMainCourse()
             this.$router.push({ name: 'Main' })
           }

@@ -1,28 +1,53 @@
 <template>
   <v-container>
     <v-row>
-      <v-col class="categoryArea" v-for="category, i in getCategoryList" :key="'category' + i">
-      <div elevation="0" :class="'categoryTitle ' + category.category">{{category.category}}</div>
-        <div class="categoryListArea" :style="'height :' + categoryheight" v-bar>
-          <div>
-            <div v-for="place in category.list" :key="'categoryPlace' + place.placeId">
-              <v-hover v-slot="{ hover }">
-              <v-sheet :class="category.category + '-border placeBtn ' + getHover(hover)" type="button" @click="clickedPlace(place)" outlined>
-                <v-row>
-                  <div :class="category.category + '-border placeImg rounded-circle'" v-if="place.img1" :style="'background-image : url(' + place.img1 + ');'"></div>
-                  <div :class="category.category + '-border noImg rounded-circle'" v-if="!place.img1"><i class="far fa-image"></i> </div>
-                  <div class="placeText mx-2 mt-3">
-                    <div class="placeName">{{place.placeName}}</div>
-                    <div class="placeInfo">{{place.tel}}</div>
-                    <div class="placeInfo">{{place.address}}</div>
-                    <div class="placeInfo">{{place.time}}</div>
-                  </div>
-                </v-row>
-              </v-sheet>
-              </v-hover>
-            </div>
+      <v-card e v-if="openCategoryCange" id="changeCategory">
+        <div id="cardTitle">카테고리 선택
+          <svg class="closeBtn" type="button" @click="openCategoryCange = false" width="15.121" height="15.121" viewBox="0 0 15.121 15.121">
+            <g transform="translate(1.061 1.061)">
+              <line x2="13" y2="13" fill="none" stroke="#fff" stroke-width="3"/>
+              <line y1="13" x2="13" fill="none" stroke="#fff" stroke-width="3"/>
+            </g>
+          </svg>
+        </div>
+        <v-row class="py-5 pa-3">
+          <v-col cols="6"  v-for="category, i in getCategoryList" :key="'category' + i">
+          <div type="button" @click="clickedCategory(i)" elevation="0" :class="'categoryTitleBtn categoryTitle ' + category.category">
+            {{category.category}}
+          </div>
+          </v-col>
+        </v-row>
+      </v-card>
+      <v-col class="categoryArea" v-for="category, i in categoryList" :key="'category' + i">
+      <div elevation="0" :class="'categoryTitle ' + category.category">
+        <svg type="button" @click="changeMainCategory(i)" class="categoryBtn" width="21.343" height="18.144" viewBox="0 0 21.343 18.144">
+          <g transform="translate(0.5 0.988)" fill="#fff">
+            <path d="M 15.04232025146484 16.66121864318848 L 15.04232025146484 16.16699981689453 L 15.04232025146484 14.10618877410889 L 13.52805995941162 14.10618877410889 C 11.24578952789307 14.10618877410889 9.133569717407227 12.81604862213135 8.015689849853516 10.73924922943115 L 5.897339820861816 6.693899154663086 L 5.894670009613037 6.688798904418945 L 5.892230033874512 6.683588981628418 C 5.378129959106445 5.581099033355713 4.218699932098389 4.868729114532471 2.938440084457397 4.868729114532471 L 0 4.868729114532471 L -0.25 4.868729114532471 L -0.25 4.618729114532471 L -0.25 2.310808897018433 L -0.25 2.060808897018433 L 0 2.060808897018433 L 2.938440084457397 2.060808897018433 C 5.223800182342529 2.060808897018433 7.337989807128906 3.350939035415649 8.455960273742676 5.427739143371582 L 10.57419967651367 9.470149040222168 L 10.57711029052734 9.475688934326172 L 10.57973003387451 9.481369018554688 C 11.08899021148682 10.58420848846436 12.2462797164917 11.29681873321533 13.52805995941162 11.29681873321533 L 15.04232025146484 11.29681873321533 L 15.04232025146484 9.236008644104004 L 15.04232025146484 8.741298675537109 L 15.4406099319458 9.034738540649414 L 20.14829063415527 12.50312900543213 L 20.42170906066895 12.70456886291504 L 20.14813041687012 12.90578937530518 L 15.44044971466064 16.36838912963867 L 15.04232025146484 16.66121864318848 Z M 2.938440084457397 14.10618877410889 L 0 14.10618877410889 L -0.25 14.10618877410889 L -0.25 13.85618877410889 L -0.25 11.54681873321533 L -0.25 11.29681873321533 L 0 11.29681873321533 L 2.938440084457397 11.29681873321533 C 3.914940118789673 11.29681873321533 4.682419776916504 10.98905849456787 5.353720188140869 10.32827854156494 L 5.620120048522949 10.06604862213135 L 5.760729789733887 10.41240882873535 L 6.219820022583008 11.54329299926758 C 6.312791347503662 11.6832971572876 6.388376712799072 11.82149219512939 6.455450057983398 11.9441385269165 C 6.557660102844238 12.13104915618896 6.645939826965332 12.29247856140137 6.764009952545166 12.40999889373779 L 6.955689907073975 12.60078907012939 L 6.750460147857666 12.77690887451172 C 5.751560211181641 13.634108543396 4.397759914398193 14.10618877410889 2.938440084457397 14.10618877410889 Z M 15.04232025146484 7.425818920135498 L 15.04232025146484 6.930988788604736 L 15.04232025146484 4.868729114532471 L 13.52805995941162 4.868729114532471 C 12.55828952789307 4.868729114532471 11.79049015045166 5.17634916305542 11.11176013946533 5.836819171905518 L 10.84574031829834 6.095678806304932 L 10.70584964752197 5.751868724822998 L 10.24684524536133 4.623817443847656 C 10.15382671356201 4.483760833740234 10.07826805114746 4.345203399658203 10.01121044158936 4.22222900390625 C 9.909159660339355 4.035079002380371 9.821029663085938 3.873458862304688 9.703669548034668 3.758079051971436 L 9.50963020324707 3.567318916320801 L 9.716119766235352 3.390099048614502 C 10.71492958068848 2.532888889312744 12.06871032714844 2.060808897018433 13.52805995941162 2.060808897018433 L 15.04232025146484 2.060808897018433 L 15.04232025146484 -1.045227008944494e-06 L 15.04232025146484 -0.4941010475158691 L 15.44040966033936 -0.2014210522174835 L 20.14809036254883 3.259728908538818 L 20.42170906066895 3.460898876190186 L 20.14833068847656 3.662389039993286 L 15.44064998626709 7.132228851318359 L 15.04232025146484 7.425818920135498 Z" stroke="none"/>
+            <path d="M 15.29232025146484 16.16699981689453 L 20 12.70439910888672 L 15.29232025146484 9.236008644104004 L 15.29232025146484 11.54681873321533 L 13.52805995941162 11.54681873321533 C 12.23283004760742 11.54681873321533 10.93741035461426 10.85227870941162 10.35276031494141 9.586178779602051 L 8.235830307006836 5.546238899230957 C 7.17726993560791 3.579808950424194 5.176239967346191 2.310808897018433 2.938440084457397 2.310808897018433 L 0 2.310808897018433 L 0 4.618729114532471 L 2.938440084457397 4.618729114532471 C 4.233860015869141 4.618729114532471 5.52908992767334 5.313279151916504 6.118810176849365 6.577929019927979 L 8.235830307006836 10.62075901031494 C 9.294300079345703 12.58718872070312 11.29533004760742 13.85618877410889 13.52805995941162 13.85618877410889 L 15.29232025146484 13.85618877410889 L 15.29232025146484 16.16699981689453 M 2.938440084457397 13.85618877410889 C 4.349760055541992 13.85618877410889 5.645080089569092 13.3960485458374 6.587649822235107 12.58718872070312 C 6.350699901580811 12.35133934020996 6.234799861907959 12.01129913330078 5.99783992767334 11.66112899780273 L 5.52908992767334 10.50644874572754 C 4.823480129241943 11.20099925994873 3.996809959411621 11.54681873321533 2.938440084457397 11.54681873321533 L 0 11.54681873321533 L 0 13.85618877410889 L 2.938440084457397 13.85618877410889 M 15.29232025146484 6.930988788604736 L 20 3.461148977279663 L 15.29232025146484 -1.045227008944494e-06 L 15.29232025146484 2.310808897018433 L 13.52805995941162 2.310808897018433 C 12.11684036254883 2.310808897018433 10.82141971588135 2.770948886871338 9.878939628601074 3.579808950424194 C 10.11590003967285 3.812768936157227 10.23169994354248 4.155698776245117 10.46875 4.505868911743164 L 10.93741035461426 5.657649040222168 C 11.64818000793457 4.965999126434326 12.46969032287598 4.618729114532471 13.52805995941162 4.618729114532471 L 15.29232025146484 4.618729114532471 L 15.29232025146484 6.930988788604736 M 14.79232025146484 17.15543937683105 L 14.79232025146484 14.35618877410889 L 13.52805995941162 14.35618877410889 C 11.15367031097412 14.35618877410889 8.957099914550781 13.01565933227539 7.795559883117676 10.85773849487305 L 7.792880058288574 10.85270881652832 L 5.66565990447998 6.789238929748535 C 5.192450046539307 5.774438858032227 4.121950149536133 5.118729114532471 2.938440084457397 5.118729114532471 L -0.5 5.118729114532471 L -0.5 1.810808897018433 L 2.938440084457397 1.810808897018433 C 5.315919876098633 1.810808897018433 7.51446008682251 3.151329040527344 8.676090240478516 5.309238910675049 L 8.678709983825684 5.314168930053711 L 10.80669975280762 9.376559257507324 C 11.27523040771484 10.39120864868164 12.34342956542969 11.04681873321533 13.52805995941162 11.04681873321533 L 14.79232025146484 11.04681873321533 L 14.79232025146484 8.246588706970215 L 20.84341049194336 12.70473861694336 L 14.79232025146484 17.15543937683105 Z M 2.938440084457397 14.35618877410889 L -0.5 14.35618877410889 L -0.5 11.04681873321533 L 2.938440084457397 11.04681873321533 C 3.845079898834229 11.04681873321533 4.556829929351807 10.76188850402832 5.178339958190918 10.15010929107666 L 5.711150169372559 9.625648498535156 L 6.442159652709961 11.42635345458984 C 6.534393310546875 11.56746482849121 6.608581066131592 11.70312690734863 6.674789905548096 11.82418918609619 C 6.7677001953125 11.99407863616943 6.847929954528809 12.14079856872559 6.940380096435547 12.23281860351562 L 7.323729991912842 12.61438941955566 L 6.913259983062744 12.96662902832031 C 5.869070053100586 13.86269855499268 4.457449913024902 14.35618877410889 2.938440084457397 14.35618877410889 Z M 14.79232025146484 7.920659065246582 L 14.79232025146484 5.118729114532471 L 13.52805995941162 5.118729114532471 C 12.62757968902588 5.118729114532471 11.91518020629883 5.403839111328125 11.28610992431641 6.015988826751709 L 10.75407028198242 6.533719062805176 L 10.02453327178955 4.740800380706787 C 9.93216609954834 4.599475383758545 9.857951164245605 4.46337366104126 9.791720390319824 4.341908931732178 C 9.699210166931152 4.172248840332031 9.61931037902832 4.025719165802002 9.528409957885742 3.93635892868042 L 9.14031982421875 3.554818868637085 L 9.553310394287109 3.200378894805908 C 10.59741973876953 2.304298877716064 12.00901031494141 1.810808897018433 13.52805995941162 1.810808897018433 L 14.79232025146484 1.810808897018433 L 14.79232025146484 -0.9882010221481323 L 20.84341049194336 3.460649013519287 L 14.79232025146484 7.920659065246582 Z" stroke="none" fill="#fff"/>
+          </g>
+        </svg>
+        <span>{{category.category}}</span>
+      </div>
+      <div class="categoryListArea" :style="'height :' + categoryheight" v-bar>
+        <div>
+          <div v-for="place in category.placeList" :key="'categoryPlace' + place.placeId">
+            <v-hover v-slot="{ hover }">
+            <v-sheet :class="category.category + '-border placeBtn ' + getHover(hover)" type="button" @click="clickedPlace(place)" outlined>
+              <v-row>
+                <div :class="category.category + '-border placeImg rounded-circle'" v-if="place.img1" :style="'background-image : url(' + place.img1 + ');'"></div>
+                <div :class="category.category + '-border noImg rounded-circle'" v-if="!place.img1"><i class="far fa-image"></i> </div>
+                <div class="placeText mx-2 mt-3">
+                  <div class="placeName">{{place.placeName}}</div>
+                  <div class="placeInfo">{{place.tel}}</div>
+                  <div class="placeInfo">{{place.address}}</div>
+                  <div class="placeInfo">{{place.time}}</div>
+                </div>
+              </v-row>
+            </v-sheet>
+            </v-hover>
           </div>
         </div>
+      </div>
       </v-col>
     </v-row>
   </v-container>
@@ -30,7 +55,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
-const { mapActions : categoryMapActions , mapGetters : categoryMapGetters } = createNamespacedHelpers("categoryStore");
+const { mapGetters : categoryMapGetters } = createNamespacedHelpers("categoryStore");
 const { mapActions : placeMapActions } = createNamespacedHelpers("placeStore");
 const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore");
 
@@ -41,7 +66,9 @@ const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore"
       name : '',
       address : '',
       resultAddress : '',
-      categoryList : [],
+      categoryList : [{}, {}, {}],
+      openCategoryCange : false,
+      clickedIndex : -1,
     }),
     methods: {
       getHover(hover){
@@ -55,17 +82,27 @@ const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore"
       clickedPlace(place){
           this.setPlace(place);
       },
+      clickedCategory(index){
+        this.categoryList[this.clickedIndex] = this.getCategoryList[index];
+        this.openCategoryCange = false;
+      },
+      changeMainCategory(index){
+        this.clickedIndex = index;
+        this.openCategoryCange = true
+      },
       ...placeMapActions(['setPlace', 'addUserPlace']),
-      ...categoryMapActions(['setCategoryList'])
     },
     mounted(){
     },
     created(){
-      this.setCategoryList(['식당', '바다', '액티비티'])
+      for(let i = 0; i < 3; i++){
+        this.categoryList[i] = this.getCategoryList[this.getMainCategory[i]];
+        console.log(this.categoryList[i]);
+      }
     },
     computed:{
       ...listMapGetters(['getPlaceList']),
-      ...categoryMapGetters(['getCategoryList'])
+      ...categoryMapGetters(['getCategoryList', 'getMainCategory'])
     }
   }
 </script>
@@ -97,6 +134,7 @@ div.v-card{
   box-sizing: content-box;
 }
 .noImg{
+  margin: 10px 5px 10px 16px;
   background-color: lightgray;
   text-align: center; 
   width: 4vw;
@@ -105,8 +143,8 @@ div.v-card{
 }
 .noImg i{
   color: white;
-  font-size: 50px;
-  margin-top: 35px
+  font-size: 30px;
+  line-height: 4vw;
 }
 .placeBtn{
   margin: 10px 2px;
@@ -155,6 +193,52 @@ div.v-card{
   max-width: 100%;
   min-height: 8.6vh;
   margin-bottom: 10px;
+  position: relative;
+}
+.categoryBtn{
+  position: absolute;
+  margin: 20px;
+  padding: 0;
+  z-index: 10;
+  right: 0;
+  top: 0;
+}
+#changeCategory{
+  position: absolute;
+  z-index: 10;
+  margin : 5vw 10vw;
+  align-content: center;
+  width : 33vw;
+  height : 500px;
+  border: #0057FF 1px solid;
+  font-size: 18px;
+  font-family: 'Noto Sans KR';
+}
+#cardTitle{
+  width: 100%;
+  height: 40px;
+  color:white;
+  background-color:#0057FF;
+  border-radius: 0%;
+  position: relative;
+}
+.closeBtn{
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+.categoryTitleBtn{
+  color: white;
+  line-height: 8.6vh;
+  font-size: 30px;
+  font-family: 'Noto Sans KR';
+  font-weight: 700;
+  background-size: contain;
+  margin-left:3px;
+  max-width: 90%;
+  min-height: 8.6vh;
+  margin-bottom: 10px;
+  margin: 0px 10px;
 }
 .categoryTitle.액티비티{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%234BEF82'/%3E%3C/svg%3E");
@@ -172,9 +256,9 @@ div.v-card{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%235D24FE'/%3E%3C/svg%3E");
 }
 .categoryTitle.포토스팟{
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FE9C00'/%3E%3C/svg%3E");
-}
-.categoryTitle.카페{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FFE600'/%3E%3C/svg%3E");
+}
+.categoryTitle.카페\/디저트\/술{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FE9C00'/%3E%3C/svg%3E");
 }
 </style>

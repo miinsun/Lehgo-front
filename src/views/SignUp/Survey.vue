@@ -165,6 +165,10 @@ import 'hooper/dist/hooper.css';
         this.optionalList = optionalData;
         this.YNList = YNData;
         this.resultTypeData = resultData;
+        this.explainData[0].text = this.getUserNickName + '님, 안녕하세요!';
+        this.explainData[1].text = this.getUserNickName + '님이 어떤 사람인지 알려주세요.';
+        this.explainData[2].text = '설문은 총 8가지의 질문으로 이루어져 있어요.';
+        this.explainData[3].text = this.getUserNickName + '님과 가장 일치한다고 생각하는 문항을 선택해주세요.';
         for(let i in this.explainData){
             setTimeout(() =>(this.explainData[i].load = true), 700 * i);
         }
