@@ -1,19 +1,19 @@
 export const surveyExplain = [
     { 
         load : false,
-        style : 'font-size : 40px; font-weight: 700;'
+        style : 'font-size : 2vw; font-weight: 700;'
     },
     { 
         load : false ,
-        style : 'font-size : 40px; font-weight: 700;'
+        style : 'font-size : 2vw; font-weight: 700;'
     },
     { 
         load : false ,
-        style : 'font-size : 20px; font-weight: 500; margin-top: 50px;'
+        style : 'font-size : 1.3vw; font-weight: 500; margin-top: 50px;'
     },
     { 
         load : false ,
-        style : 'font-size : 20px; font-weight: 500;'
+        style : 'font-size : 1.3vw; font-weight: 500;'
     },
 ]
 

@@ -45,25 +45,6 @@ html, body {
   left: 50%;
   margin: 50px 0px 0px -30px;
 }
-.word-box { 
-  text-align:center; 
-  color:#fff; 
-  width:500px; 
-  height:600px; 
-  margin:20px auto; 
-  background:url("https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=818&q=80"); 
-  background-size:100%; 
-  font-size:12px; 
-} 
-.word-box h2 { 
-  font-size:20px; 
-  margin:20px 0 0 0; 
-} 
-.word-box h4 { 
-  text-align:right; 
-  font-size:14px; 
-  margin:0 20px 50px 0; 
-} 
 .vb > .vb-dragger { 
   z-index: 5; 
   width: 12px; 
@@ -130,24 +111,24 @@ html, body {
 .문화-chip-1{ color: #5D24FE !important; border: #5D24FE solid 1px !important; } 
 .문화-fill{ fill : #5D24FE; }
 .문화-background{  color: white; background : #5D24FE; }
-.포토스팟-text{ color: #FE9C00 !important; } 
-.포토스팟-border{ border: #FE9C00 solid 5px !important; } 
-.포토스팟-border-1{ border: #FE9C00 solid 1px !important; } 
-.포토스팟-chip-1{ color: #FE9C00 !important; border: #FE9C00 solid 1px !important; } 
-.포토스팟-chip-1{ color: #FE9C00 !important; border: #FE9C00 solid 1px !important; } 
-.포토스팟-fill{ fill : #FE9C00; }
-.포토스팟-background{ background : #FE9C00; }
+.포토스팟-text{ color: #FFE600 !important; } 
+.포토스팟-border{ border: #FFE600 solid 5px !important; } 
+.포토스팟-border-1{ border: #FFE600 solid 1px !important; } 
+.포토스팟-chip-1{ color: #FFE600 !important; border: #FFE600 solid 1px !important; } 
+.포토스팟-chip-1{ color: #FFE600 !important; border: #FFE600 solid 1px !important; } 
+.포토스팟-fill{ fill : #FFE600; }
+.포토스팟-background{ background : #FFE600; }
 .식당-text{ color: #D059DE !important; } 
 .식당-border{ border: #D059DE solid 5px !important; } 
 .식당-border-1{ border: #D059DE solid 1px !important; } 
 .식당-chip-1{ color: #D059DE !important; border: #D059DE solid 1px !important; } 
 .식당-fill{  fill : #D059DE; }
 .식당-background{ color: white; background : #D059DE; }
-.카페-text{ color: #FFE600 !important; } 
-.카페-border{ border: #FFE600 solid 5px !important; } 
-.카페-border-1{ border: #FFE600 solid 1px !important; } 
-.카페-chip-1{ color: #FFE600 !important; border: #FFE600 solid 1px !important; } 
-.카페-fill{ fill : #FFE600; }
-.카페-background{ background : #FFE600; }
+.카페-text, .카페\/디저트\/술-text{ color: #FE9C00 !important; } 
+.카페-border, .카페\/디저트\/술-border{ border: #FE9C00 solid 5px !important; } 
+.카페-border-1, .카페\/디저트\/술-border-1{ border: #FE9C00 solid 1px !important; } 
+.카페-chip-1, .카페\/디저트\/술-chip-1{ color: #FE9C00 !important; border: #FE9C00 solid 1px !important; } 
+.카페-fill, .카페\/디저트\/술-fill{ fill : #FE9C00; }
+.카페-background, .카페\/디저트\/술-background{ background : #FE9C00; }
 .기본-background{ color: white; background : #333333; }
 </style>

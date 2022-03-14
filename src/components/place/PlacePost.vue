@@ -9,6 +9,7 @@
             <v-divider></v-divider>
             <div>{{getText(p.description)}}</div>
         </div>
+        <div class="my-5"></div>
     </div>
   </div>
 </template>
@@ -42,7 +43,7 @@
   overflow-y: scroll;
 }
 .postArea{
-  margin: 0px 0px 10px 10px;
+  margin: 0px 5px 10px 10px;
   padding: 10px;
   border-radius: 5px;
   font-family: 'Noto Sans KR';

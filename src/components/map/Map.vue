@@ -14,7 +14,8 @@
         <naver-info-window class="info-window" @load="onWindowLoad" :isOpen="info" :marker="selectedMarker" :moreOptions="windowOptions">
           <draggable class="list-group"  v-if="info" :list="[{place : selectedPlace}]"
             :group="{name : 'mainCourse', pull: 'clone', put: false }">
-            <div :class="getCategory(selectedPlace) + '-background list-group-item placeTitleBtn'">
+            <div :class="getCategory(selectedPlace) + '-background list-group-item placeTitleBtn'"
+              :style="'width:' + btnWidth + 'px;'">
                 {{selectedPlace.placeName}}
             </div>
           </draggable>
@@ -55,7 +56,7 @@ import defaultMarker from '@/assets/default.png'
 
   export default {
     name: 'Map',
-    props: ['mapCol', 'mapKey'],
+    props: ['mapKey'],
     components:{
         draggable
     },
@@ -65,13 +66,14 @@ import defaultMarker from '@/assets/default.png'
         coursePlaceList : [],
         placeMarkerList : {},
         loaded : false,
-        width : 0,
+        width : window.innerWidth * 0.4,
         height: window.innerHeight,
         info: false,
         marker: [],
         count: 1,
         map: null,
         isCTT: false,
+        btnWidth : 0,
         mapOptions: {
           lat: 35.12193161669285, 
           lng: 129.06362730078128,
@@ -115,7 +117,10 @@ import defaultMarker from '@/assets/default.png'
       changeSelected(place){
         let length, i, c;
         for ((length=i=0); (c=place.placeName.charCodeAt(i++));(length+=c>>11?3:c>>7?2:1));
-        this.windowOptions.pixelOffset.x = -25 - (3 * length)
+        console.log(length)
+        length = length < 10 ? 0 : length - 10;
+        this.btnWidth = 60 + (6 * length)
+        this.windowOptions.pixelOffset.x = - (this.btnWidth / 2) -30
         this.windowOptions.pixelOffset.y = -50
         this.setPlace(place)
         this.selectedPlace = place;
@@ -199,7 +204,6 @@ import defaultMarker from '@/assets/default.png'
     mounted() {
       this.coursePlaceList = this.getCoursePlaceList;
       setInterval(() => this.count++, 1000);
-      this.width = window.innerWidth * this.mapCol;
     },
     computed: {
         ...listMapGetters(['getLoaded', 'getPlaceList', 'getCoursePlaceList', 'getVisitedList']),
@@ -239,13 +243,11 @@ import defaultMarker from '@/assets/default.png'
 }
 .placeTitleBtn {
   font-weight: 400;
-  margin-bottom: 100px;
   border-radius: 50px;
   padding: 10px 30px;
   text-align: center;
-  font-size: 18px;
+  font-size: 1vw;
   font-weight: 700;
-  max-width: 200px;
   font-family: 'Noto Sans KR';
   display:inline-block;
 }
@@ -257,7 +259,7 @@ import defaultMarker from '@/assets/default.png'
   bottom: 30px;
   right: 30px;
   width: 100px;
-  height: 350px;
+  height: 340px;
   z-index: 1000;
   padding: 10px;
   border: #0057FF solid 3px;
@@ -272,9 +274,9 @@ import defaultMarker from '@/assets/default.png'
   font-weight: 800;
 }
 .visitedText{
-  width: 90px;
+  width: 100px;
   text-align: center;
-  padding-right: 20px;
+  padding-right: 30px;
   overflow: hidden;
   white-space : nowrap;
   text-overflow: ellipsis;
@@ -283,8 +285,8 @@ import defaultMarker from '@/assets/default.png'
   background-size: cover; 
   background-position: center;
   border-radius: 10px;
-  width: 3vw;
-  height: 3vw;
+  width: 55px;
+  height: 55px;
   box-sizing: content-box;
   border: gray solid 5px;
 }
@@ -292,8 +294,8 @@ import defaultMarker from '@/assets/default.png'
   background-color: lightgray;
   text-align: center;
   border-radius: 10px;
-  width: 3vw;
-  height: 3vw;
+  width: 55px;
+  height: 55px;
   box-sizing: content-box;
   border: gray solid 5px;
 }

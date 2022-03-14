@@ -1,16 +1,16 @@
 <template>
   <v-container>
     <v-row>
-      <v-card e v-if="openCategoryCange" id="changeCategory">
-        <div id="cardTitle">카테고리 선택
-          <svg class="closeBtn" type="button" @click="openCategoryCange = false" width="15.121" height="15.121" viewBox="0 0 15.121 15.121">
+      <v-card v-if="openCategoryChange" id="changeCategoryCard">
+        <div class="cardTitle">카테고리 선택
+          <svg class="closeBtn" type="button" @click="openCategoryChange = false" width="15.121" height="15.121" viewBox="0 0 15.121 15.121">
             <g transform="translate(1.061 1.061)">
               <line x2="13" y2="13" fill="none" stroke="#fff" stroke-width="3"/>
               <line y1="13" x2="13" fill="none" stroke="#fff" stroke-width="3"/>
             </g>
           </svg>
         </div>
-        <v-row class="py-5 pa-3">
+        <v-row class="categoryBtnArea">
           <v-col cols="6"  v-for="category, i in getCategoryList" :key="'category' + i">
           <div type="button" @click="clickedCategory(i)" elevation="0" :class="'categoryTitleBtn categoryTitle ' + category.category">
             {{category.category}}
@@ -36,7 +36,7 @@
               <v-row>
                 <div :class="category.category + '-border placeImg rounded-circle'" v-if="place.img1" :style="'background-image : url(' + place.img1 + ');'"></div>
                 <div :class="category.category + '-border noImg rounded-circle'" v-if="!place.img1"><i class="far fa-image"></i> </div>
-                <div class="placeText mx-2 mt-3">
+                <div class="placeText mt-3">
                   <div class="placeName">{{place.placeName}}</div>
                   <div class="placeInfo">{{place.tel}}</div>
                   <div class="placeInfo">{{place.address}}</div>
@@ -67,7 +67,7 @@ const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore"
       address : '',
       resultAddress : '',
       categoryList : [{}, {}, {}],
-      openCategoryCange : false,
+      openCategoryChange : false,
       clickedIndex : -1,
     }),
     methods: {
@@ -84,11 +84,11 @@ const { mapGetters : listMapGetters } = createNamespacedHelpers("placeListStore"
       },
       clickedCategory(index){
         this.categoryList[this.clickedIndex] = this.getCategoryList[index];
-        this.openCategoryCange = false;
+        this.openCategoryChange = false;
       },
       changeMainCategory(index){
         this.clickedIndex = index;
-        this.openCategoryCange = true
+        this.openCategoryChange = true
       },
       ...placeMapActions(['setPlace', 'addUserPlace']),
     },
@@ -117,16 +117,18 @@ div.v-card{
   margin: 10px 0px;
 }
 .categoryArea{
+  width: 16.1vw;
   background : white;
   border-radius: 20px;
-  margin: 20px 15px;
+  margin: 1vw 0 1vw 1.5vw;
 }
 .categoryListArea{
   overflow: auto;
   overflow-y: scroll;
 }
 .placeImg{
-  margin: 10px 5px 10px 16px;
+  margin: 0.8vw;
+  margin-top: 0.6vw;
   background-size: cover; 
   background-position: center;
   width: 4vw;
@@ -134,7 +136,8 @@ div.v-card{
   box-sizing: content-box;
 }
 .noImg{
-  margin: 10px 5px 10px 16px;
+  margin: 0.8vw;
+  margin-top: 0.6vw;
   background-color: lightgray;
   text-align: center; 
   width: 4vw;
@@ -148,7 +151,7 @@ div.v-card{
 }
 .placeBtn{
   margin: 10px 2px;
-  padding : 12px 5px;
+  padding : 0.5vw 0.25vw;
   border-radius: 10px;
   height: 6vw;
   transition: background-color .4s ease-in-out;
@@ -161,11 +164,12 @@ div.v-card{
 }
 .placeText{
   width: 8vw;
+  overflow: hidden;
 }
 .placeName{
   width: 100%;
   text-align: left;
-  font-size: 17px;
+  font-size: 0.9vw;
   font-family: 'Noto Sans KR';
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -174,9 +178,9 @@ div.v-card{
   text-overflow: ellipsis;
 }
 .placeInfo{
-  font-size: 11px;
+  width: 100%;
+  font-size: 0.6vw;
   text-align: left;
-  width : 7.3vw;
   overflow: hidden;
   white-space : nowrap;
   text-overflow: ellipsis;
@@ -184,14 +188,13 @@ div.v-card{
 }
 .categoryTitle{
   color: white;
-  line-height: 8.6vh;
-  font-size: 40px;
+  font-size: 2vw;
+  text-align: center;
   font-family: 'Noto Sans KR';
   font-weight: 700;
   background-size: contain;
-  margin-left:3px;
   max-width: 100%;
-  min-height: 8.6vh;
+  line-height: 4.6vw;
   margin-bottom: 10px;
   position: relative;
 }
@@ -203,24 +206,29 @@ div.v-card{
   right: 0;
   top: 0;
 }
-#changeCategory{
+#changeCategoryCard{
   position: absolute;
   z-index: 10;
-  margin : 5vw 10vw;
+  margin : 10vh 10vw;
   align-content: center;
-  width : 33vw;
-  height : 500px;
+  width : 35vw;
+  height : 28vw;
   border: #0057FF 1px solid;
-  font-size: 18px;
   font-family: 'Noto Sans KR';
 }
-#cardTitle{
+.cardTitle{
   width: 100%;
-  height: 40px;
+  height: 6vh;
   color:white;
+  text-align: center;
+  line-height: 6vh;
+  font-size: 2.5vh;
   background-color:#0057FF;
   border-radius: 0%;
   position: relative;
+}
+.categoryBtnArea{
+  padding: 3vh 2vw;
 }
 .closeBtn{
   position: absolute;
@@ -229,36 +237,41 @@ div.v-card{
 }
 .categoryTitleBtn{
   color: white;
-  line-height: 8.6vh;
   font-size: 30px;
   font-family: 'Noto Sans KR';
   font-weight: 700;
   background-size: contain;
   margin-left:3px;
-  max-width: 90%;
-  min-height: 8.6vh;
-  margin-bottom: 10px;
-  margin: 0px 10px;
+  max-width: 100%;
+  line-height: 4.3vw;
+  margin: 0;
 }
 .categoryTitle.액티비티{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%234BEF82'/%3E%3C/svg%3E");
 }
 .categoryTitle.힐링{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FC178B'/%3E%3C/svg%3E");
 }
 .categoryTitle.바다{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%2339C2FF'/%3E%3C/svg%3E");
 }
 .categoryTitle.식당{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23D059DE'/%3E%3C/svg%3E");
 }
 .categoryTitle.문화{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%235D24FE'/%3E%3C/svg%3E");
 }
 .categoryTitle.포토스팟{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FFE600'/%3E%3C/svg%3E");
 }
 .categoryTitle.카페\/디저트\/술{
+  background-size: contain;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='77.838' viewBox='0 0 260 77.838'%3E%3Cpath d='M11,77.838a11,11,0,0,1-11-11V18.469a11,11,0,0,1,11-11H23.862V6a6,6,0,0,1,6-6H77.008a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469h17.014V6a6,6,0,0,1,6-6h47.146a6,6,0,0,1,6,6V7.469H249a11,11,0,0,1,11,11v48.37a11,11,0,0,1-11,11Z' fill='%23FE9C00'/%3E%3C/svg%3E");
 }
 </style>

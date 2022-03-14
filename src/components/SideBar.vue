@@ -86,7 +86,7 @@
     margin: auto;
     width: 100%;
     height: 100%;
-    font-size: 15px;
+  font-size: 0.75vw;
     font-family: 'Noto Sans KR';
     color:#0057FF;
     background-color: white;

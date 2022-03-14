@@ -2,7 +2,7 @@
   <v-container>
       <v-form ref="form" v-model="isFormValid">
       <v-row>
-        <v-col cols="11 mx-auto">
+        <v-col cols="11 mx-auto mt-5">
         <v-text-field class="mb-5" color="#0057FF" hide-details="auto" maxlength="20" required
           label="아이디" v-model="printId" :readonly="true" :disabled="true"></v-text-field>
         <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required

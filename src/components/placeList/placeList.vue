@@ -8,14 +8,19 @@
         <v-hover v-slot="{ hover }">
         <v-sheet :class="'placeBtn ' + getHover(hover)" type="button" @click="clickedPlace(p.place)" outlined>
           <v-row>
+            <v-col cols="3">
             <div :class="getCategory(p.place) + '-border placeImg'" v-if="p.place.img1" :style="'background-image : url(' + p.place.img1 + ');'"></div>
             <div :class="getCategory(p.place) + '-border noImg'" v-if="!p.place.img1"><i class="far fa-image"></i> </div>
-            <div class="placeText mx-2 mt-3">
+            </v-col>
+            <v-col cols="7">
+            <div class="placeText">
               <div class="placeName">{{p.place.placeName}}</div>
               <div class="placeInfo">{{p.place.tel}}</div>
               <div class="placeInfo">{{p.place.address}}</div>
               <div class="placeInfo">{{p.place.time}}</div>
             </div>
+            </v-col>
+            <v-col cols="2">
             <div>
               <div :class="getCategory(p.place) + '-text buttonArea'">
               <v-row class="topButtonArea">
@@ -44,6 +49,7 @@
               <v-btn :class="getCategory(p.place) + '-chip-1 courseBtn'" text smal @click="addPlaceToCourseBtn(p.place)">코스 추가</v-btn>
               </div>
             </div>
+            </v-col>
           </v-row>
         </v-sheet>
         </v-hover>
@@ -165,21 +171,19 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
   text-align: center;
 }
 .placeImg{
-  margin: 10px 5px 10px 16px;
   background-size: cover; 
   background-position: center;
   border-radius: 10px;
-  width: 19%;
+  width: 100%;
   height: 4.5vw;
   box-sizing: content-box;
   border: gray solid 5px;
 }
 .noImg{
-  margin: 10px 5px 10px 16px;
   background-color: lightgray;
   text-align: center; 
   border-radius: 10px;
-  width: 19%;
+  width: 100%;
   height: 4.5vw;
   box-sizing: content-box;
   border: gray solid 5px;
@@ -190,8 +194,8 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
   line-height:  4.5vw;
 }
 .placeBtn{
-  margin: 10px 2px;
-  padding : 12px 5px;
+  margin: 0.5vw 0.2vw;
+  padding : 0.5vw 0.2vw;
   border-radius: 10px;
   border: 0;
   height: 6vw;
@@ -204,32 +208,29 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
   background: #b8b8b8;
 }
 .buttonArea{
-  width: 5%;
   text-align: left;
-  height: 90%;
   position: relative;
-  margin-left: 90px;
 }
 .folderBtn{
   position: absolute;
-  right: 20px;
+  right: 10px;
   font-size: 18px;
 }
 .courseBtn{
   position: absolute;
-  right: 10px;
-  bottom: 0;
-  width: 80px;
+  margin-top: 3vw;
+  right: 0.05vw;
+  width: 4vw;
+  font-size:0.7vw;
   font-family: 'Noto Sans KR';
 }
 .placeText{
-  width: 50%;
   font-family: 'Noto Sans KR';
 }
 .placeName{
   width: 100%;
   text-align: left;
-  font-size: 20px;
+  font-size: 1.1vw;
   font-family: 'Noto Sans KR';
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -238,13 +239,12 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
   text-overflow: ellipsis;
 }
 .placeInfo{
-  font-size: 11px;
+  font-size: 0.6vw;
   text-align: left;
-  width : 100%;
+  width : 92%;
   overflow: hidden;
   white-space : nowrap;
   text-overflow: ellipsis;
-  margin-top: 2 px;
 }
 .categoryTitle{
   color: white;
@@ -264,7 +264,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
 .checkbox{
   position: absolute;
   top: 0px;
-  right: 70px;
+  right: 60px;
   width: 0px !important;
   height: 0px !important;
   min-width: 0px !important;

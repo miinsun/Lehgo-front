@@ -197,31 +197,30 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
 <style scoped>
 .leftArea{
   width : 100%;
-  height : 100%;
-  padding : 200px;
+  height : 100vh;
+  padding : 7vw 10vw;
   font-family: Noto Sans KR;
-  font-size: 50px;
+  font-size: 2.6vw;
   line-height: (172 / 117);
   font-weight: 700;
   color: #fff;
   /* background-image: linear-gradient(to right top, #186ec5, #006bd6, #0066e5, #0060f3, #0057ff); */
 }
 .loginContainer{
-  width : 450px;
+  width : 25vw;
   margin: auto;
-  margin-top: 25%;
+  margin-top: 5vw;
 }
 .loginBtn, .signUpBtn{
-  width : 225px;
-  height: 60px;
+  width : 50%;
   color : white;
   font-size: 14px;
   border-radius: 0%;
 }
 .socialLoginBtnArea{
   width : 100%;
-  padding : 0px 40px;
-  margin: 20px 20px;
+  padding : 0px 2vw;
+  margin: 1vw;
 }
 .submitBtn{
   font-size: 14px;
@@ -236,13 +235,13 @@ const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore")
   margin: 50px 0px 30px 0px;
  }
 #idInput .v-text-field >>> input {
-  font-size: 13px;
+  font-size: 1vw;
   color : #0057FF;
   font-weight: 500;
 }
 #pwInput .v-text-field >>> input {
   color : #0057FF;
-  font-size: 16px;
+  font-size: 1vw;
   font-weight: 900;
   letter-spacing: 0.5px;
   font-family: 'Open Sans', sans-serif;

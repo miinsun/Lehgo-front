@@ -41,9 +41,9 @@
                             v-for="type, typeIdx in data.types" :key="i + '' + typeIdx">{{type}}</v-chip>
                     </v-chip-group>
                 <div v-if="i == (YNList.length  - 1)">
-                    <v-btn @click="surveySubmit()" class="startBtn mt-10 my-5" depressed>완료</v-btn>
+                    <v-btn @click="surveySubmit()" class="startBtn mt-8 my-2" depressed>완료</v-btn>
                     <transition name="errorMessage">
-                        <div v-if="error">선택되지 않은 항목이 있습니다.</div>
+                        <div style="font-size: 0.9vw;" v-if="error">선택되지 않은 항목이 있습니다.</div>
                     </transition>
                 </div>
                 </div>
@@ -68,7 +68,7 @@
                     </g>
                 </svg>
             </hooper-navigation>
-            <hooper-progress slot="hooper-addons">hello</hooper-progress>
+            <hooper-progress slot="hooper-addons"></hooper-progress>
         </hooper>
     </transition>
         </v-card>
@@ -188,26 +188,25 @@ import 'hooper/dist/hooper.css';
 }
 .surveyTitle{
     font-family: 'Noto Sans KR' !important;
-    font-size: 40px;
+    font-size: 2vw;
     font-weight: 600;
     color: #0052F2;
 }
 .btnArea{
     width : 700px;
     height : 500px;
-    margin: 50px;
+    margin: 2vw;
 }
 .YNArea{
-    width : 600px;
-    height : 500px;
-    margin: 50px;
+    width : 30vw;
+    margin: 2vh;
 }
 .YNArea .v-chip{
-    margin-bottom: 20px;
+    margin-bottom: 1vw;
 }
 .v-chip-group .v-chip{
-    font-size : 20px;
-    padding : 20px;
+    font-size : 1vw;
+    padding : 1.3vw;
     border-radius: 50px;
 }
 .v-chip-group--column{
@@ -281,7 +280,7 @@ import 'hooper/dist/hooper.css';
 	position:relative;
 }
 .hooper-progress{
-    top: 55px;
+    top: 2.5vw;
     height: 10px;
     background-color: #e3e7ee;
     border-radius: 10px;
@@ -307,17 +306,18 @@ div.hooper-progress-inner::after{
     padding-left: 0px !important;
 }
 .hooper-pagination{
-    top: 20px;
+    top: 2.5vw;
+    margin-top: -30px;
     right: 10px;
     color: #0052F2;
 }
 .hooper-slide{
-    margin-top: 150px;
+    margin-top: 17vh;
     color: #0052F2;
 }
 .hooper-navigation{
     position: relative;
-    bottom: 100px;
+    bottom: 12vh;
 }
 .surveyContainer{
     max-width:100vw;

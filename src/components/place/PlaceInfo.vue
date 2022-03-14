@@ -1,15 +1,5 @@
 <template>
   <v-container v-if="getPlace != null">
-    <!-- (사용X) 이미지 슬라이더 -->
-    <div v-show="false">
-    <hooper v-if="getImgList.length != 0" >
-        <slide class="hooperImg" v-for="img, i in getImgList" :key="i">
-            <img :src="img">
-        </slide>
-        <navigation slot="hooper-addons"></navigation>
-    </hooper>
-    </div>
-    <!-- (사용X) 이미지 슬라이더 -->
     <v-row class="placeInfoContainer">
         <v-col cols="3" v-if="titleImg">
             <div :class="getFirstCategory + '-border placeImg'" v-if="getImg1" :style="bgImg()"></div>
@@ -18,9 +8,9 @@
             </div>
         </v-col>
         <v-col :cols="infoCols">
-        <div class="mainInfo ml-3">
-            <v-row class="mr-5">
-                <v-col cols="10"> <div class=" placeTitle">{{getPlace.placeName}}</div> </v-col>
+        <div class="mainInfo">
+            <v-row>
+                <v-col cols="10"> <div class="placeTitle">{{getPlace.placeName}}</div> </v-col>
                 <v-col cols="1" :class="getFirstCategory + '-text placeButton'">
                     <div>
                     <v-menu offset-y v-model="folderMenu" :close-on-content-click="false">
@@ -76,17 +66,17 @@
             </v-row>
             <div class="in"><i class="fas fa-map-marker-alt"></i><span class="infoTitle">{{getPlace.address}}</span></div>
         </div>
-        <v-chip-group column class="ml-5 mt-3">
-            <v-chip outlined small v-for="category in getCategory" :key="category" :class="categoryText(category) + '-chip-1'"> {{ category }}</v-chip>
+        <v-chip-group column class="mt-1">
+            <v-chip outlined small v-for="category in getCategory" :key="category" :class="categoryText(category) + '-chip-1 categoryText'"> {{ category }}</v-chip>
           </v-chip-group>
         </v-col>
         <v-col cols="1" v-if="infoCols==8" class="morePlaceInfo text-center">
-            <a :href="'http://localhost:8081/place?pId=' + getPlace.placeId">
+            <div type="button" @click="placeInfo(getPlace.placeId)">
             <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
             <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
             </svg>
-            </a>
             더보기
+            </div>
         </v-col>
     </v-row>
     <v-snackbar v-model="isPlaceAdded">
@@ -103,17 +93,9 @@ const { mapActions : placeMapActions, mapGetters : placeMapGetters } = createNam
 const { mapGetters : folderGetters , mapActions : folderActions } = createNamespacedHelpers("folderStore");
 const { mapGetters : courseGetters , mapActions : courseActions } = createNamespacedHelpers("courseStore");
 
-import { Hooper, Slide, Navigation  } from 'hooper';
-import 'hooper/dist/hooper.css';
-
   export default {
     name: 'PlaceInfo',
     props: ['infoCols', 'titleImg'],
-    components:{
-        Hooper,
-        Slide,
-        Navigation
-    },
     data: () => ({
         liked : false,
         folderMenu : false,
@@ -159,6 +141,9 @@ import 'hooper/dist/hooper.css';
             this.isPlaceAdded = true;
             setTimeout(() => this.isPlaceAdded = false, 1500);
         },
+        placeInfo(placeId){
+            window.location.href='http://localhost:8081/place?pId=' + placeId;
+        },
         ...folderActions(['setFolderList', 'addFolder']),
         ...courseActions(['setCourseList', 'addCourse']),
         ...placeMapActions(['setPlace', 'likePlace', 'dislikePlace', 'addPlaceToFolder', 'addPlaceToCourse']),
@@ -189,31 +174,18 @@ import 'hooper/dist/hooper.css';
 .placeInfoContainer{
     margin-bottom: -40px;
 }
-.hooperImg img{
-    border-radius: 5%;
-    height : 30vh;
-    width : 90%;
-    /* margin-left: 6.5vw;
-    margin-right: 8.5vw; */
-}
-.hooper{
-    height : 50vh;
-    width: 100%;
-    /* margin-left: -2vw; */
-}
 .mainInfo{
     font-family: 'Noto Sans KR';
-    margin-top: 10px;
 }
 .placeTitle{
-    font-size: 30px;
+    font-size: 1.5vw;
     font-weight: 700;
     font-family: 'Noto Sans KR';
 }
 .mainInfo .content{
-    font-size: 18px;
+    font-size: 1vw;
     font-weight: 700;
-    margin: 0px -5px 30px 10px;
+    margin: -5px -5px 1vw 10px;
     padding-right: 10px;
     width : 90%;
     overflow: hidden;
@@ -222,7 +194,7 @@ import 'hooper/dist/hooper.css';
 }
 .mainInfo .in{
     margin: 2px 0px;
-    font-size: 12px;
+    font-size: 0.65vw;
 }
 .infoTitle{
     margin: 0px 10px 0px 7px;
@@ -230,18 +202,20 @@ import 'hooper/dist/hooper.css';
 .placeImg{
     background-size: cover; 
     background-position: center; 
-    width: 100%;
-    padding-bottom: 100%;
+    width: 90%;
+    padding-bottom: 90%;
     border-radius: 20px;
     box-sizing: content-box;
+    margin-bottom: 1vw;
 }
 .noImg{
     background-color: lightgray;
     text-align: center; 
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
     border-radius: 20px;
     box-sizing: content-box;
+    margin-bottom: 1vw;
     border: lightgray solid 5px !important;
 }
 .noImg i{
@@ -269,12 +243,15 @@ import 'hooper/dist/hooper.css';
 }
 .morePlaceInfo{
     padding-top: 10%;
-    font-size: 16px;
+    font-size: 1vw;
     padding-left: 0px;
     margin-left: -10px;
     font-family: 'Noto Sans KR';
 }
 .placeButton{
-    font-size: 19px;
+    font-size: 1vw;
+}
+.categoryText{
+    font-size: 0.6vw !important;
 }
 </style>

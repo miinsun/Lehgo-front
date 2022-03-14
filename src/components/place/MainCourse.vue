@@ -5,7 +5,7 @@
   </v-snackbar>
   <v-overlay :value="overlay">
     <v-card v-if="changeCourseStatus" class="changeCard" light elevation="2">
-      <v-card-text id="changeCardText">저장되지 않은 변경사항은 사라집니다. <br> 정말 코스를 변경하시겠습니까?</v-card-text>
+      <v-card-text id="v">저장되지 않은 변경사항은 사라집니다. <br> 정말 코스를 변경하시겠습니까?</v-card-text>
     <v-btn class="mx-2" color="primary" @click="changeCourseSubmit()">변경</v-btn>
     <v-btn class="mx-2" color="#226AB3" text @click="overlay = false">취소</v-btn>
     </v-card>
@@ -283,7 +283,7 @@ div.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-pane
   margin-left: -5px;
 }
 .courseArea .slide-group-item{
-  font-size: 20px;
+  font-size: 1vw;
   font-family: 'Noto Sans KR';
   font-weight: 400;
   padding: 22px 20px;
@@ -334,6 +334,8 @@ div.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-pane
 .changeCard {
   padding: 30px 50px 50px 50px;
   text-align: center;
+  font-weight: 400;
+  font-family: 'Noto Sans KR' !important;
 }
 .saveCourseCard{
   padding : 30px;
@@ -342,9 +344,10 @@ div.v-expansion-panels:not(.v-expansion-panels--accordion):not(.v-expansion-pane
   font-size:18px;
 }
 #changeCardText{
-  font-size: 18px;
   line-height: 30px;
   padding: 50px 0px 30px 0px;
+  font-weight: 400;
+  font-family: 'Noto Sans KR' !important;
   color : black;
 }
 .btn-gray {

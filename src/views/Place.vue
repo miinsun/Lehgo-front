@@ -1,14 +1,14 @@
 <template>
   <v-container fluid>
       <div class="mainCourse"> <MainCourse/> </div>
-      <v-row class="content">
+      <v-row class="content lehgo-background">
         <div class="sideBarArea"><SideBar/></div>
-        <div class="text-center mainArea lehgo-background">
-            <div class="placeInfoArea text-left" v-bar>
+        <div class="mainArea">
+            <div class="placeInfoArea">
                 <div v-if="getPlace">
                 <div class="topArea">
                     <PlaceInfo :infoCols="9" titleImg="true"/>
-                    <v-divider class="mt-5"></v-divider>
+                    <v-divider></v-divider>
                 </div>
                 <div class="bottomArea">
                     <v-row>
@@ -31,10 +31,8 @@
                 </div>
             </div>
         </div>
-        <div>
-            <div class="mapArea">
-                <Map :mapCol="0.416"/>
-            </div>
+        <div class="mapArea">
+            <Map/>
         </div>
       </v-row>
   </v-container>
@@ -94,32 +92,32 @@
   padding: 0;
   height: 100vh;
 }
-.lehgo-background{
-  margin-left: -10px;
-  padding-left: 10px;
-}
 .sideBarArea{
   width: 5vw;
 }
 .mainArea{
-  width: 53vw;
+  width: 54vw;
 }
 .mapArea{
-  overflow: disabled;
+  position:absolute;
+  right:0;
+  height: 100vh;
+  width: 40vw;
+  overflow: hidden;
 }
 .placeInfoArea{
-  overflow: hidden;
   background-color:white;
   border-radius: 20px;
-  margin: 25px;
+  margin: 1.5vw;
+  overflow: hidden;
 }
 .topArea{
-    height: 30vh;
-    padding: 20px;
+  height: 30vh;
+  padding: 1vw 0px 0px 1vw;
 }
 .bottomArea{
-    height: 64vh;
-    padding: 20px 30px 50px 50px;
+  height: 64vh;
+  padding: 1.5vw 2vw 2vw 2vw;
 }
 .contentArea{
   height: 60vh;

@@ -1,10 +1,9 @@
 <template>
   <v-container fluid>
     <div class="mainCourse"> <MainCourse/> </div>
-    <v-row class="content">
+    <v-row class="content lehgo-background">
       <div class="sideBarArea"><SideBar/></div>
-      <div class="contentArea" :style="'width:' + mainWidth">
-      <v-row class="lehgo-background">
+      <v-row>
       <div class="mainArea">
         <div>
           <ProfileCard @openUserInfo="openUserInfo"/>
@@ -15,19 +14,16 @@
             @openFolderPlaceList="openFolderPlaceList"/>
         </div>
       </div>
-      <div class="sideArea" v-if="openSide">
-          <div v-if="openSide">
-            <UserInfo v-if="isUserInfo"/>
-            <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
-            <VisitedList @clickedPlace="clickedPlace" v-if="isVisitedList"/>
-            <FolderPlaceList @clickedPlace="clickedPlace" v-if="isFolderPlaceList"/>
-            <CoursePlaceList @clickedPlace="clickedPlace" v-if="isCoursePlaceList" :courseEditable="true"/>
-          </div>
+      <div class="sideArea">
+        <UserInfo v-if="isUserInfo"/>
+        <LikedList @clickedPlace="clickedPlace" v-if="isLikedList"/>
+        <VisitedList @clickedPlace="clickedPlace" v-if="isVisitedList"/>
+        <FolderPlaceList @clickedPlace="clickedPlace" v-if="isFolderPlaceList"/>
+        <CoursePlaceList @clickedPlace="clickedPlace" v-if="isCoursePlaceList" :courseEditable="true"/>
       </div>
       </v-row>
-      </div>
       <div id="mapArea">
-        <Map :mapCol="mapCol / 12" :key="mapKey"/>
+        <Map :key="mapKey"/>
       </div>
     </v-row>
     <v-bottom-sheet v-model="sheet">
@@ -59,16 +55,13 @@
     name: 'MyPage',
 
     data:() =>({
-      mainWidth : '22vw',
-      openSide : false,
-      isUserInfo : false,
+      isUserInfo : true,
       isVisitedList : false,
       isLikedList : false,
       isCoursePlaceList : false,
       isFolderPlaceList : false,
       sheet : false,
       newPlace : null,
-      mapCol : 8.7,
       mapKey : 0,
     }),
     components: {
@@ -79,15 +72,12 @@
     },
     methods:{
       openSideArea() {
-        this.openSide = true;
         this.isUserInfo = false;
         this.isVisitedList = false;
         this.isCoursePlaceList = false;
         this.isFolderPlaceList = false;
         this.isLikedList = false;
         this.setCoursePage(false);
-        this.mainWidth = '49vw';
-        this.mapCol = 5.4;
       },
       openUserInfo(){
           this.openSideArea();
@@ -147,39 +137,32 @@
   height: 100vh;
 }
 #listArea{
-    height:70vh;
-    overflow: auto;
+  height:70vh;
+  overflow: auto;
 }
 #mapArea{
-    height: 100vh;
-    overflow: hidden;
+  height: 100vh;
+  width: 40vw;
+  overflow: hidden;
 }
 .sideBarArea{
   width: 5vw;
 }
 .mainArea{
-  width: 20vw;
+  width: 25vw;
   height: 95vh;
-  overflow: hidden;
   overflow: hidden;
   background-color:white;
   border-radius: 20px;
-  margin: 30px 30px 30px 30px;
+  margin: 30px 1.5vw 30px 2vw;
   padding: 0px 20px;
 }
 .sideArea{
   width: 25vw;
   height: 95vh;
   overflow: hidden;
-  overflow: hidden;
   background-color:white;
   border-radius: 20px;
-  margin: 30px 25px 30px 0px;
-}
-.content{
-  width: 100vw;
-}
-.contentArea{
-  overflow: hidden;
+  margin: 30px 0px 30px 0px;
 }
 </style>

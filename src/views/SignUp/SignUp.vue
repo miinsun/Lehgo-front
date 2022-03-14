@@ -20,39 +20,39 @@
       <v-form ref="form" class="loginForm">
         <hooper class="hooper">
         <slide>
-            <v-col cols="9 offset-1" class="ml-10 pl-10" id="idInput">
-            <v-text-field class="mb-5" color="#0057FF" hide-details="auto" maxlength="20" required
+            <v-col cols="10 offset-1" id="idInput">
+            <v-text-field color="#0057FF" hide-details="auto" maxlength="20" required
             label="아이디" v-model="id" :rules="[validation.firstError('id'), validation.firstError('existId')]"></v-text-field>
-            <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
+            <v-text-field color="#0057FF" hide-details="auto" maxlength="20" required
                 label="비밀번호" v-model="pw" :type="'password'" :rules="[validation.firstError('pw')]"></v-text-field>
-            <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
+            <v-text-field color="#0057FF" hide-details="auto" maxlength="20" required
                 label="비밀번호 확인" v-model="pwCheck" :type="'password'" :rules="[validation.firstError('pwCheck')]"></v-text-field>
-            <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
+            <v-text-field color="#0057FF" hide-details="auto" maxlength="20" required
                 label="이름" v-model="name" :rules="[validation.firstError('name')]"></v-text-field>
-            <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="50" required
-                label="이메일" v-model="email" :type="'email'" :rules="[validation.firstError('email'), validation.firstError('existEmail')]"></v-text-field>
             </v-col>
         </slide>
         <slide>
-            <v-col cols="9 offset-1" class="ml-10 pl-10" id="idInput">
+            <v-col cols="10 offset-1" id="idInput">
+            <v-text-field color="#0057FF" hide-details="auto" maxlength="50" required
+                label="이메일" v-model="email" :type="'email'" :rules="[validation.firstError('email'), validation.firstError('existEmail')]"></v-text-field>
             <v-text-field class="my-5"  color="#0057FF" hide-details="auto" maxlength="20" required
                 label="닉네임" v-model="nickname" :rules="[validation.firstError('nickname'), validation.firstError('existNickname')]"></v-text-field>
             <v-row>
             <v-col cols="2 my-auto">성별</v-col>
             <v-col cols="10">
             <v-radio-group row class="justify-space-between" v-model="gender" :rules="[validation.firstError('gender')]">
-                <v-radio label="여성" color="#0057FF" value="female" class="mr-10"></v-radio>
+                <v-radio label="여성" color="#0057FF" value="female" class="mr-5"></v-radio>
                 <v-radio label="남성" color="#0057FF" value="male"></v-radio>
             </v-radio-group>
             </v-col>
             </v-row>
-            <v-row class="my-auto">
-            <v-col cols="2 my-5">생년</v-col>
-            <v-col cols="6">
-                <v-combobox color="#0057FF" hide-details="auto" maxlength="4" required
-                v-model="age" :items="ageList" :rules="[validation.firstError('age')]" soutlined>
-                </v-combobox>
-            </v-col>
+            <v-row style="margin-top:-2vw;">
+              <v-col cols="2 my-10">생년</v-col>
+              <v-col cols="6">
+                  <v-combobox color="#0057FF" hide-details="auto" maxlength="4" required
+                  v-model="age" :items="ageList" :rules="[validation.firstError('age')]" soutlined>
+                  </v-combobox>
+              </v-col>
             </v-row>
            </v-col>
         </slide>
@@ -229,23 +229,22 @@ import 'hooper/dist/hooper.css';
 <style scoped>
 .leftArea{
   width : 100%;
-  height : 100%;
-  padding : 200px;
+  height : 100vh;
+  padding : 7vw 10vw;
   font-family: Noto Sans KR;
-  font-size: 50px;
+  font-size: 2.6vw;
   line-height: (172 / 117);
   font-weight: 700;
   color: #fff;
   /* background-image: linear-gradient(to right top, #186ec5, #006bd6, #0066e5, #0060f3, #0057ff); */
 }
 .loginContainer{
-  width : 450px;
+  width : 25vw;
   margin: auto;
-  margin-top: 25%;
+  margin-top: 5vw;
 }
 .loginBtn, .signUpBtn{
-  width : 225px;
-  height: 60px;
+  width : 50%;
   color : white;
   font-size: 14px;
   border-radius: 0%;
@@ -265,17 +264,17 @@ import 'hooper/dist/hooper.css';
   margin: -10px 0px;
 }
  .loginForm{
-  width : 460px;
-  margin: 50px 0px 30px 0px;
+  height: 20vw;
+  margin: 1vw 0px 1vw 0px;
  }
 #idInput .v-text-field >>> input {
-  font-size: 13px;
+  font-size: 0.9vw;
   color : #186EC5;
   font-weight: 500;
 }
 #pwInput .v-text-field >>> input {
   color : #186EC5;
-  font-size: 16px;
+  font-size: 0.9vw;
   font-weight: 900;
   letter-spacing: 0.5px;
   font-family: 'Open Sans', sans-serif;
@@ -293,10 +292,10 @@ import 'hooper/dist/hooper.css';
   font-family: 'Noto Sans KR' !important;
 }
 .hooper{
-    margin-top: -15vh;
+    margin-top: -9vw;
     margin-left: -2vh;
-    height: 50vh;
-    width: 50vh;
+    height: 30vw;
+    width: 27vw;
 }
 .leftArea>div>span{
   color: #0057FF;
@@ -311,5 +310,8 @@ import 'hooper/dist/hooper.css';
   margin-bottom: 0px;
   width: 130px;
   height: 70px;
+}
+.v-text-field{
+  padding-top: 1.5vw;
 }
 </style>

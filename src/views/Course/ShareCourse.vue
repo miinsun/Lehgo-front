@@ -7,48 +7,46 @@
       </v-card>
     </v-overlay>
     <div class="mainCourse" v-if="getCourse"> <MainCourse v-if="courseEditable"/> </div>
-    <v-row class="content">
+    <v-row class="lehgo-background">
       <div class="sideBarArea"><SideBar/></div>
-      <div class="contentArea" :style="'width:' + mainWidth">
-      <v-row class="lehgo-background">
+      <v-row class="content">
       <div class="mainArea">
-        <div class="profileCard text-cleft">
+        <div class="profileCard">
             <h3>
             <a class="blueText">{{userId}}</a> 님이<br>
             공유한 <a class="blueText">{{courseName}}</a> 코스</h3>   
             <v-divider class="vDivider"></v-divider>
-            <div class="placeInfoArea" v-if="getPlace">
-            <PlaceInfo/>
-              <v-row class="buttonArea">
-                <div class="morePlaceInfo">더보기</div>
-                <a :href="'http://localhost:8081/place?pId=' + getPlace.placeId">
-                <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
-                <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
-                </svg>
-                </a>
-            </v-row>
-            <v-row class="contentArea">
-                  <v-col cols="6">
-                  <div class="imageArea" v-bar>
-                  <div>
-                      <div class="placeImage" v-for="img in getImgList" :key="img" :style="bgImg(img)"/>
-                      <div class="placeImage" v-for="img in getNaverImg" :key="img" :style="bgImg(img.thumbnail)"/>
-                  </div>
-                  </div></v-col>
-                  <v-col cols="6" class="postArea">
-                      <PlacePost/>
-                  </v-col>
-              </v-row>
-            </div>
+        </div>
+        <div class="placeInfoArea" v-if="getPlace">
+        <PlaceInfo/>
+          <v-row class="buttonArea">
+            <div class="morePlaceInfo">더보기</div>
+            <a :href="'http://localhost:8081/place?pId=' + getPlace.placeId">
+            <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
+            <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
+            </svg>
+            </a>
+        </v-row>
+        <v-row class="contentArea">
+              <v-col cols="6">
+              <div class="imageArea" v-bar>
+              <div>
+                  <div class="placeImage" v-for="img in getImgList" :key="img" :style="bgImg(img)"/>
+                  <div class="placeImage" v-for="img in getNaverImg" :key="img" :style="bgImg(img.thumbnail)"/>
+              </div>
+              </div></v-col>
+              <v-col cols="6" class="postArea">
+                  <PlacePost/>
+              </v-col>
+          </v-row>
         </div>
       </div>
       <div class="sideArea">
-            <CoursePlaceList @clickedPlace="clickedPlace" :courseEditable="courseEditable"/>
+        <CoursePlaceList @clickedPlace="clickedPlace" :courseEditable="courseEditable"/>
       </div>
       </v-row>
-      </div>
       <div id="mapArea">
-        <Map :mapCol="mapCol / 12" :key="mapKey"/>
+        <Map :key="mapKey"/>
       </div>
     </v-row>
   </v-container>
@@ -70,7 +68,6 @@
     name: 'MyPage',
 
     data:() =>({
-      mainWidth : '49vw',
       isCoursePlaceList : false,
       sheet : false,
       newPlace : null,
@@ -138,18 +135,18 @@
   height: 100vh;
 }
 #listArea{
-    height:70vh;
-    overflow: auto;
+  height:70vh;
+  overflow: auto;
 }
 #mapArea{
-    height: 100vh;
-    overflow: hidden;
+  height: 100vh;
+  overflow: hidden;
 }
 .sideBarArea{
   width: 5vw;
 }
 .mainArea{
-  width: 22vw;
+  width: 24vw;
   height: 95vh;
   overflow: hidden;
   overflow: hidden;
@@ -159,7 +156,7 @@
   padding: 0px 20px;
 }
 .sideArea{
-  width: 23vw;
+  width: 25vw;
   height: 95vh;
   overflow: hidden;
   overflow: hidden;
@@ -167,19 +164,26 @@
   border-radius: 20px;
   margin: 30px 25px 30px 0px;
 }
+.placeInfoArea{
+  padding:0px 10px;
+}
 .content{
-  width: 100vw;
+  width: 55vw;
+}
+.imageArea{
+  height: 50%;
 }
 .contentArea{
   overflow: hidden;
 }
 .profileCard{
   padding:0px 10px;
-  margin-top: 30px;
+  margin-top: 1.5vw;
+  font-size: 0.7vw;
   font-family: 'Noto Sans KR';
 }
 .fa-user-circle{
-    color: lightgray;
+  color: lightgray;
 }
 .blueText{
   text-decoration: none;
@@ -188,18 +192,23 @@
 .vDivider{
   margin-top: 20px;
   border: #0057FF solid 1px;
+  background-color:#0057FF;
 }
 .mapArea{
-  overflow: disabled;
+  position:absolute;
+  right:0;
+  height: 100vh;
+  width: 40vw;
+  overflow: hidden;
 }
 .placeImage{
-    width: 100%;
-    height: 10vw;
-    background-size: cover; 
-    background-position: center; 
-    box-sizing: content-box;
-    margin-bottom: 10px;
-    border-radius: 5px;
+  width: 100%;
+  height: 10vw;
+  background-size: cover; 
+  background-position: center; 
+  box-sizing: content-box;
+  margin-bottom: 10px;
+  border-radius: 5px;
 }
 .buttonArea{
   justify-content: right;

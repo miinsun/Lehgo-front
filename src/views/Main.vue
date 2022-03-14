@@ -1,21 +1,19 @@
 <template>
   <v-container fluid>
-      <div class="mainCourse"> <MainCourse/> </div>
-      <v-row class="content">
-        <div class="sideBarArea"><SideBar/></div>
-        <div class="text-center mainArea lehgo-background">
-          <div class="lehgo-main"></div>
-            <div class="mainCategory"><MainCategory :categoryheight="getPlace != null ? '41vh' : '74vh'"/></div>
-            <transition name="placeInfoTransition">
-            <div class="placeInfo text-left" v-bar v-show="getPlace" > <PlaceInfo :infoCols="8" :titleImg="true"/> </div>
-            </transition>
-          </div>
-        <div>
-            <div class="mapArea">
-                <Map :mapCol="0.3"/>
-            </div>
-        </div>
-      </v-row>
+    <div class="mainCourse"> <MainCourse/> </div>
+    <v-row class="content lehgo-background">
+      <div class="sideBarArea"><SideBar/></div>
+      <div class="mainArea">
+        <div class="lehgo-main"></div>
+        <div class="mainCategory"><MainCategory :categoryheight="getPlace != null ? '41vh' : '74vh'"/></div>
+        <transition name="placeInfoTransition">
+        <div class="placeInfo text-left" v-bar v-show="getPlace" > <PlaceInfo :infoCols="8" :titleImg="true"/> </div>
+        </transition>
+      </div>
+      <div class="mapArea">
+        <Map/>
+      </div>
+    </v-row>
   </v-container>
 </template>
 
@@ -69,35 +67,42 @@
 </script>
 
 <style scoped>
-.col{
+.content{
   padding: 0;
   height: 100vh;
-}
-.lehgo-background{
-  margin-left: -10px;
-  padding-left: 10px;
+  overflow: hidden;
 }
 .sideBarArea{
   width: 5vw;
 }
 .mainArea{
-  width: 60vw;
+  display:flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  margin: -12px;
+  width: 55vw;
+  height: 95vh;
 }
 .mapArea{
-  overflow: disabled;
+  width: 40vw;
+  overflow: hidden;
+}
+.mainCategory{
+  margin-left: 0.5vw;
 }
 .placeInfo{
-  height : 30vh;
+  height : 28vh;
+  width: 53vw;
   overflow: hidden;
   background-color:white;
   border-radius: 20px;
-  padding: 20px 0px 0px 20px;
-  margin: 10px 20px 20px 20px;
+  padding: 1vw 0px 0px 1vw;
+  margin: 0px 2vw;
 }
 .lehgo-main{
-  margin: 20px;
+  margin: 30px;
   margin-bottom: 0px;
   width: 150px;
-  height: 70px;
+  height: 8vh;
 }
 </style>

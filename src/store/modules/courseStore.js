@@ -94,14 +94,24 @@ const courseStore = {
         setMainCourseById : ({ commit, state, rootState, dispatch }, payload) => {
             commit('setLoaded', false);
             let api = rootState.domain + '/course?cid=' + payload
+            let mainCourse;
             axios.get(api, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
-                commit('setMainCourse', res.data);
-                if(!state.coursePage){
-                  dispatch('placeListStore/setCourse', res.data, {root : true})
-                }
+                mainCourse = res.data
+                api = rootState.domain + '/course/detail?cid=' + payload
+                axios.get(api, {
+                    headers: { "Content-Type": 'application/json'
+                    }
+                })
+                .then(res => { 
+                    mainCourse.coursePlace = res.data;
+                    commit('setMainCourse', mainCourse);
+                    if(!state.coursePage){
+                      dispatch('placeListStore/setCourse', mainCourse, {root : true})
+                    }
+                })
             }).catch(function(error){
                 console.log(error.response.data.message);
             });

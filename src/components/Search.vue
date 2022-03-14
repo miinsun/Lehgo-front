@@ -140,17 +140,22 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
   font-size: 14px;
   font-weight: 500;
   color : #0057FF;
+  font-family: 'Noto Sans KR' !important;
 }
 .searchOption .v-btn{
   font-size: 12px;
   width: 50px;
   margin-top: -7px;
   color : #0057FF;
+  font-weight: 300;
+  font-family: 'Noto Sans KR' !important;
 }
-.searchOption .v-list-item__title{
-  font-size: 12px;
+.v-list-item__title {
+  font-size: 0.9vw !important;
   color: gray;
   text-align: center;
+  font-weight: 300;
+  font-family: 'Noto Sans KR' !important;
 }
 .placeListArea{
   margin-top: 20px;
