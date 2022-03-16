@@ -211,7 +211,8 @@ import defaultMarker from '@/assets/default.png'
     },
     watch:{
         getCoursePlaceList: function(){
-          this.coursePlaceList = this.getCoursePlaceList;
+          this.coursePlaceList = [];
+          setTimeout(() =>(this.coursePlaceList = this.getCoursePlaceList), 1);
           this.placeList = courseService.notCoursePlaceList(this.getPlaceList, this.getCoursePlaceList);
           this.reRoadPath()
         },

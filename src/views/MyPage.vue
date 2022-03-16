@@ -137,7 +137,7 @@
   height: 100vh;
 }
 #listArea{
-  height:70vh;
+  height:78vh;
   overflow: auto;
 }
 #mapArea{
