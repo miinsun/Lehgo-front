@@ -84,7 +84,7 @@ html, body {
   background-size: cover;
 }
 .lehgo-main{
-  background-image: url('~@/assets/LOGO.png');
+  background-image: url('~@/assets/logo.png');
   background-size: contain;
 }
 .액티비티-text{ color: #4BEF82 !important; } 
