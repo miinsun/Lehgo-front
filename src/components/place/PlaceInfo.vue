@@ -45,7 +45,7 @@
             <div class="content">{{getPlace.content}}</div>
             <v-menu offset-y :close-on-content-click="false" v-if="getPlace.content && getPlace.content.length > 20" >
             <template v-slot:activator="{ on, attrs }">
-                <i type="button"  class="fas fa-caret-down mt-2" v-bind="attrs" v-on="on"></i>
+                <i type="button"  class="fas fa-caret-down" v-bind="attrs" v-on="on"></i>
             </template>
             <v-list>
                 {{getPlace.content}}
@@ -55,9 +55,9 @@
             <div class="in"><i class="fas fa-phone-alt"></i><span class="infoTitle">전화번호</span>{{getTel}}</div>
             <v-row class="pa-3">
                 <div class="in placeTime"><i class="far fa-clock"></i><span class="infoTitle">영업시간</span>{{getPlace.time}}</div>
-                <v-menu offset-y :close-on-content-click="false" v-if="getPlace.time && getPlace.time.length > 30" >
+                <v-menu offset-y :close-on-content-click="false" v-if="getPlace.time && getPlace.time.length > 50" >
                 <template v-slot:activator="{ on, attrs }">
-                    <i type="button"  class="fas fa-caret-down mt-2" v-bind="attrs" v-on="on"></i>
+                    <i type="button"  class="fas fa-caret-down" v-bind="attrs" v-on="on"></i>
                 </template>
                 <v-list>
                     {{getPlace.time}}
@@ -71,7 +71,7 @@
           </v-chip-group>
         </v-col>
         <v-col cols="1" v-if="infoCols==8" class="morePlaceInfo text-center">
-            <div type="button" @click="placeInfo(getPlace.placeId)">
+            <div type="button" @click="goToPlace(getPlace.placeId)">
             <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
             <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
             </svg>
@@ -141,8 +141,10 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
             this.isPlaceAdded = true;
             setTimeout(() => this.isPlaceAdded = false, 1500);
         },
-        placeInfo(placeId){
-            window.location.href='http://localhost:8081/place?pId=' + placeId;
+        goToPlace(placeId){
+            this.$router.push({
+                name: 'Place', query: {pId: placeId}
+            })
         },
         ...folderActions(['setFolderList', 'addFolder']),
         ...courseActions(['setCourseList', 'addCourse']),
@@ -227,7 +229,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
     margin-right: 5px;
 }
 .placeTime{
-    width : 250px;
+    width: 90%;
     overflow: hidden;
     white-space : nowrap;
     text-overflow: ellipsis;

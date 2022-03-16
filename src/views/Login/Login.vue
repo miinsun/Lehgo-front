@@ -54,7 +54,7 @@
     </v-row>
     <v-row class="socialLoginBtnArea">
       <v-col cols="4">
-        <a href="http://localhost:8080/oauth/kakao">
+        <a :href="$store.state.domain + '/oauth/kakao'">
         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
           <g id="facebook" transform="translate(-0.054 0.317)">
             <circle cx="28" cy="28" r="28" transform="translate(0.054 -0.317)" fill="#ffdf00"/>
@@ -70,7 +70,7 @@
         </a>
       </v-col>
       <v-col cols="4">
-        <a href="http://localhost:8080/oauth/google">
+        <a :href="$store.state.domain + '/oauth/google'">
         <svg width="56" height="56" viewBox="0 0 56 56">
           <defs>
             <clipPath id="clip-path">
@@ -90,7 +90,7 @@
         </a>
       </v-col>
       <v-col cols="4">
-        <a href="http://localhost:8080/oauth/naver/">
+        <a :href="$store.state.domain + '/oauth/naver'">
         <img type="button" src="@/assets/naverIco.png" height="56" width="56" id="naverBtn"/>
         </a>
       </v-col>

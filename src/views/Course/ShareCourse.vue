@@ -19,26 +19,36 @@
         </div>
         <div class="placeInfoArea" v-if="getPlace">
         <PlaceInfo/>
-          <v-row class="buttonArea">
+          <div class="buttonArea" type="button" @click="goToPlace(getPlace.placeId)">
             <div class="morePlaceInfo">더보기</div>
-            <a :href="'http://localhost:8081/place?pId=' + getPlace.placeId">
-            <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
-            <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
+            <svg class="morePlaceInfoSvg" width="43" height="25.705" viewBox="0 0 43 25.705">
+              <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
             </svg>
-            </a>
-        </v-row>
-        <v-row class="contentArea">
-              <v-col cols="6">
-              <div class="imageArea" v-bar>
+        </div>
+        <v-row class="contentArea mt-5">
+          <v-col cols="6">
+          <div class="imageArea" v-bar>
+          <div>
+              <div class="placeImage" v-for="img in getImgList" :key="img" :style="bgImg(img)"/>
+              <div class="placeImage" v-for="img in getNaverImg" :key="img" :style="bgImg(img.thumbnail)"/>
+          </div>
+          </div></v-col>
+          <v-col cols="6" class="postArea">
+            <div class="postListArea" v-bar>
               <div>
-                  <div class="placeImage" v-for="img in getImgList" :key="img" :style="bgImg(img)"/>
-                  <div class="placeImage" v-for="img in getNaverImg" :key="img" :style="bgImg(img.thumbnail)"/>
+                  <!-- <v-progress-circular v-if="!getLoaded" :size="50" :width="7" indeterminate color="#2699fb"></v-progress-circular> -->
+                  <div v-for="p, i in getPostList.items" :key="i" :class="getFirstCategory + '-border-1 postArea'"> 
+                      <h3>{{getText(p.title)}}</h3>
+                      <div class="text-right">{{getText(p.postdate).replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')}}</div>
+                      <a :href="p.link"><div class="text-right">{{getText(p.bloggername)}}</div></a>
+                      <v-divider></v-divider>
+                      <div>{{getText(p.description)}}</div>
+                  </div>
+                  <div class="my-5"></div>
               </div>
-              </div></v-col>
-              <v-col cols="6" class="postArea">
-                  <PlacePost/>
-              </v-col>
-          </v-row>
+            </div>
+          </v-col>
+        </v-row>
         </div>
       </div>
       <div class="sideArea">
@@ -58,7 +68,6 @@
   import Map from '../../components/map/Map'
   import CoursePlaceList from '../../components/placeList/CoursePlaceList'
   import PlaceInfo from '../../components/place/PlaceInfo'
-  import PlacePost from '../../components/place/PlacePost'
   import { createNamespacedHelpers } from "vuex";
   const { mapActions : courseMapActions } = createNamespacedHelpers("courseStore");
   const { mapActions : placeMapActions, mapGetters : placeMapGetters } = createNamespacedHelpers("placeStore");
@@ -81,7 +90,7 @@
     components: {
       SideBar, MainCourse,
       CoursePlaceList,
-      Map, PlaceInfo, PlacePost
+      Map, PlaceInfo
     },
     methods:{
       clickedPlace(place){
@@ -99,9 +108,17 @@
       bgImg(src) {
           return 'background-image : url("' + src + '");'
       },
+      getText(text){
+        return text.replace(/<b>/g, '').replace(/<\/b>/g, '')
+      },
       goToMain(){
         this.$router.push({
             name: 'Login'
+        })
+      },
+      goToPlace(placeId){
+        this.$router.push({
+            name: 'Place', query: {pId: placeId}
         })
       },
       ...placeMapActions(['setPlace']),
@@ -109,7 +126,7 @@
       ...listMapActions(['setPlaceList', 'setListByLiked', 'setListByVisited', 'setListByFolder', 'setListByCourse'])
     },
     computed: {
-      ...placeMapGetters(['getPlace', 'getCategory', 'getImgList', 'getNaverImg', 'getFirstCategory']),
+      ...placeMapGetters(['getPlace', 'getPostList', 'getCategory', 'getImgList', 'getNaverImg', 'getFirstCategory']),
       ...listMapGetters(['getLoaded', 'getPlaceList', 'getCoursePlaceList', 'getCourse'])
     },
     created() {
@@ -171,7 +188,18 @@
   width: 55vw;
 }
 .imageArea{
-  height: 50%;
+  height: 55%;
+}
+.postListArea{
+  height: 55%;
+  overflow: auto;
+  overflow-y: scroll;
+}
+.postArea{
+  margin-bottom: 10px;
+  padding: 0px 10px 10px 10px;
+  border-radius: 5px;
+  font-family: 'Noto Sans KR';
 }
 .contentArea{
   overflow: hidden;
@@ -211,14 +239,21 @@
   border-radius: 5px;
 }
 .buttonArea{
-  justify-content: right;
+  position: relative;
   padding-right: 20px;
-  margin-top: -20px;
+  margin-top: -2vw;
+  margin-bottom: 2.5vw;
 }
 .morePlaceInfo{
+  position: absolute;
+  right: 45px;
   font-size: 16px;
   line-height: 25px;
   padding-right: 10px;
+}
+.morePlaceInfoSvg{
+  position: absolute;
+  right: 0;
 }
 .errorCard{
   padding: 50px;

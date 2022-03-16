@@ -66,8 +66,8 @@
         {{getCourse.courseName}}
       </v-col>
       <v-col cols="2">
-        <div v-if="!likedCourse" class="likeButton" type="button" @click="likeCourseBtn()">{{getCourse.likeCount}}</div>
-        <div v-if="likedCourse" class="dislikeButton" type="button"  @click="dislikeCourseBtn()">{{getCourse.likeCount}}</div>
+        <div v-if="!likedCourse" class="likeButton" type="button" @click="likeCourseBtn()">{{likeCount}}</div>
+        <div v-if="likedCourse" class="dislikeButton" type="button"  @click="dislikeCourseBtn()">{{likeCount}}</div>
       </v-col>
     </v-row>
     <v-row><div class="distance">총 <span>{{distance}}</span> km</div></v-row>
@@ -92,6 +92,7 @@ const { mapGetters : listMapGetters, mapActions : listMapActions } = createNames
       zIndex : 1000,
       overlay : false,
       likedCourse : false,
+      likeCount : 0,
       editCourseStatus : false,
       settingCourseStatus : false,
       deleteCourseStatus : false,
@@ -109,7 +110,7 @@ const { mapGetters : listMapGetters, mapActions : listMapActions } = createNames
       },
       shareCourseBtn(){
         const urlInput = document.getElementById("urlInput");
-        urlInput.value = "http://localhost:8081/course?cId=" + this.getCourse.courseId
+        urlInput.value = window.location.origin + "/course?cId=" + this.getCourse.courseId
         urlInput.select();
         document.execCommand("copy");
         urlInput.value = ''
@@ -191,10 +192,12 @@ const { mapGetters : listMapGetters, mapActions : listMapActions } = createNames
       },
       dislikeCourseBtn(){
         this.likedCourse = false;
+        this.likeCount--;
         this.dislikeCourse()
       },
       likeCourseBtn(){
         this.likedCourse = true;
+        this.likeCount++;
         this.likeCourse()
       },
       ...listMapActions(['setListByCourse', 'setCourseList', 'editCourse', 'deleteCourse', 'deletePlaceFromCourse', 'likeCourse', 'dislikeCourse']),
@@ -205,8 +208,12 @@ const { mapGetters : listMapGetters, mapActions : listMapActions } = createNames
     mounted(){
       this.setCourseInfo()
     },
+    created(){
+      this.likeCount = this.getCourse.likeCount;
+    },
     watch: {
       getCourse : function(){
+        this.likeCount = this.getCourse.likeCount;
         this.setCourseInfo()
       }
     }

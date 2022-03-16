@@ -9,14 +9,12 @@
           </div>
           <div class="placeInfoArea" v-if="getPlace">
               <PlaceInfo/>
-              <v-row class="buttonArea">
-                  <div type="button" @click="placeInfo(getPlace.placeId)" class="morePlaceInfo">더보기</div>
-                  <a :href="'http://localhost:8081/place?pId=' + getPlace.placeId">
-                  <svg class="mb-2" width="43" height="25.705" viewBox="0 0 43 25.705">
+              <div class="buttonArea" type="button" @click="goToPlace(getPlace.placeId)">
+                <div class="morePlaceInfo">더보기</div>
+                <svg class="morePlaceInfoSvg" width="43" height="25.705" viewBox="0 0 43 25.705">
                   <path d="M11.148,0,8.811,2.337l8.846,8.846H-19v3.338H17.657L8.811,23.368,11.148,25.7,24,12.852Z" transform="translate(19)" :class="getFirstCategory + '-fill'"/>
-                  </svg>
-                  </a>
-              </v-row>
+                </svg>
+            </div>
               <v-row class="contentArea">
                 <v-col cols="6">
                 <div class="imageArea" v-bar>
@@ -67,8 +65,10 @@
       bgImg(src) {
           return 'background-image : url("' + src + '");'
       },
-      placeInfo(placeId){
-          window.location.href='http://localhost:8081/place?pId=' + placeId;
+      goToPlace(placeId){
+        this.$router.push({
+            name: 'Place', query: {pId: placeId}
+        })
       },
       ...courseMapActions(['setCoursePage']),
       ...listMapActions(['setPlaceList'])
@@ -116,7 +116,7 @@
   overflow: disabled;
 }
 .contentArea{
-  height: 60vh;
+  height: 65vh;
   padding: 20px;
   overflow: hidden;
 }
@@ -134,13 +134,20 @@
   border-radius: 5px;
 }
 .buttonArea{
-  justify-content: right;
+  position: relative;
   padding-right: 20px;
-  margin-top: -20px;
+  margin-top: -2vw;
+  margin-bottom: 2vw;
 }
 .morePlaceInfo{
-  font-size: 1vw;
-  line-height: 1vw;
-  padding: 5px 10px;
+  position: absolute;
+  right: 55px;
+  font-size: 16px;
+  line-height: 25px;
+  padding-right: 10px;
+}
+.morePlaceInfoSvg{
+  position: absolute;
+  right: 10px;
 }
 </style>

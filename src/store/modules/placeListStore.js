@@ -348,8 +348,8 @@ const placeListStore = {
         },
         dislikeCourse: ({ commit, state, rootState, rootGetters }) => {
             return new Promise(function() {
-                let api = rootState.domain + '/course/like?cid=' + state.courseId
-                axios.delete(api, JSON.stringify({
+                let api = rootState.domain + '/course/dislike?cid=' + state.courseId
+                axios.post(api, JSON.stringify({
                         id : rootGetters["userStore/getUserId"]
                     }), {
                         headers: { "Content-Type": 'application/json'
