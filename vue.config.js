@@ -1,7 +1,7 @@
 module.exports = {
     //SpringBoot 서버 접속 주소
     devServer: {
-        proxy: "http://localhost:8080"
+        proxy: "http://localhost:9999"
     },
 
     chainWebpack: config => {  
