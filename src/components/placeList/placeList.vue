@@ -162,7 +162,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
 
 <style scoped>
 .resultArea{
-  height: 90vh;
+  height: 85vh;
   overflow: scroll;
 }
 .noResult{

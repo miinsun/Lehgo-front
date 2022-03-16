@@ -29,7 +29,7 @@
       </v-form>
     </div>
     <div class="placeListArea">
-    <PlaceList :showCheck="false"/>
+      <PlaceList :showCheck="false"/>
     </div>
   </v-container>
 </template>
@@ -158,8 +158,6 @@ const { mapActions : listMapActions, mapGetters : listMapGetters } = createNames
   font-family: 'Noto Sans KR' !important;
 }
 .placeListArea{
-  margin-top: 20px;
-  height: 80vh;
   overflow: hidden;
   border-radius: 20px;
 }
