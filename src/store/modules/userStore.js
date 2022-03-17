@@ -46,8 +46,7 @@ const userStore = {
                 let api = rootState.domain + '/user'
                 axios.post(api, JSON.stringify({
                     id : payload.id,
-                    password : payload.password,
-                    nickname : ''
+                    password : payload.password
                 }), {
                 headers: { "Content-Type": 'application/json'
                 }
