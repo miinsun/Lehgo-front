@@ -104,6 +104,11 @@
               <v-list-item-title><span class="listTitle">▶ 성향 조사 다시하기</span></v-list-item-title>
             </v-list-item-content>
         </v-list-item>
+        <v-list-item class="text-right">
+            <v-list-item-content @click="goToLogout()">
+              <v-list-item-title><span class="listTitle">로그아웃</span></v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
         </v-list-item-group>
       </v-list>
     </div>
@@ -112,6 +117,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
+const { mapActions } = createNamespacedHelpers("userStore");
 const { mapGetters : folderGetters , mapActions : folderActions } = createNamespacedHelpers("folderStore");
 const { mapGetters : courseGetters , mapActions : courseActions } = createNamespacedHelpers("courseStore");
 
@@ -145,6 +151,12 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
                 name: 'Survey'
             })
         },
+        goToLogout() {
+          this.postLogout();
+          this.$router.push({
+              name: 'Login'
+          })
+        },
         addFolderBtn(){
           this.addFolder(this.folderName);
           this.newFolder = false;
@@ -153,6 +165,7 @@ const { mapGetters : courseGetters , mapActions : courseActions } = createNamesp
           this.addCourse(this.courseName);
           this.newCourse = false;
         },
+        ...mapActions(['postLogout']),
         ...folderActions(['setFolderList', 'addFolder']),
         ...courseActions(['setCourseList', 'addCourse'])
     },
