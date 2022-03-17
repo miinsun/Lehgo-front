@@ -44,10 +44,10 @@ const userStore = {
             delete axios.defaults.headers.common["authorization"];
             return new Promise((resolve) => {
                 let api = rootState.domain + '/user'
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                     id : payload.id,
                     password : payload.password
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
                 }).then(res => {
