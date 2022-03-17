@@ -97,9 +97,9 @@ const placeStore = {
                     .then(res => {
                         payload.isInMyFolder = res.data;
                         let api = rootState.domain + '/place/mylist/'
-                        axios.post(api, JSON.stringify({
+                        axios.post(api, {
                                 id : rootGetters["userStore/getUserId"]
-                            }), {
+                            }, {
                                 headers: { "Content-Type": 'application/json'
                             }
                         }).then(res => {
@@ -115,9 +115,9 @@ const placeStore = {
                             dispatch('setPostList');
                             dispatch('setNaverImg');
                             let api = rootState.domain + '/place/visited/add?id=' + payload.placeId
-                            axios.post(api, JSON.stringify({
+                            axios.post(api, {
                                 id : rootGetters["userStore/getUserId"]
-                            }), {
+                            }, {
                                 headers: { "Content-Type": 'application/json' } 
                             })
                         })
@@ -131,9 +131,9 @@ const placeStore = {
         likePlace: ({ commit, rootState, rootGetters }, payload) => {
             return new Promise(function() {
                 let api = rootState.domain + '/place/mylist/like?id=' + payload
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                         id : rootGetters["userStore/getUserId"]
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                     }
                 }).then(() => {
@@ -146,9 +146,9 @@ const placeStore = {
         dislikePlace: ({ commit, rootState, rootGetters }, payload) => {
             return new Promise(function() {
                 let api = rootState.domain + '/place/mylist/delete?id=' + payload
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                         id : rootGetters["userStore/getUserId"]
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                     }
                 }).then(() => {
@@ -198,14 +198,14 @@ const placeStore = {
                 .then(res => {
                     let api = rootState.domain  + '/place/new?id=' + rootGetters["userStore/getUserId"]
                     console.log(res.data.addresses[0].x)
-                    axios.post(api, JSON.stringify({
+                    axios.post(api, {
                         userId : rootGetters["userStore/getUserId"],
                         placeName : payload.name,
                         address : payload.address,
                         content : payload.content,
                         latitude : res.data.addresses[0].y,
                         longitude : res.data.addresses[0].x
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                         }
                     }).then(res => {

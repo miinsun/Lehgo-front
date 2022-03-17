@@ -118,9 +118,9 @@ const courseStore = {
         },
         addCourse: ({ commit, rootState, rootGetters, dispatch }, payload) => { //새로운 코스를 DB에 저장
             let api = rootState.domain + '/course/new?name=' + payload.courseName
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -161,7 +161,7 @@ const courseStore = {
                 visibility : state.mainCourse.visibility
             }
             let api = rootState.domain + '/course/update'
-            axios.put(api, JSON.stringify(addCourse), {
+            axios.put(api, addCourse, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(() => { 
@@ -174,7 +174,7 @@ const courseStore = {
                         priority : Number(c) + 1,
                         place : cp.place 
                     }
-                    axios.put(api, JSON.stringify(place), {
+                    axios.put(api, place, {
                         headers: { "Content-Type": 'application/json'
                         }
                     }).catch(() => { status = false; })

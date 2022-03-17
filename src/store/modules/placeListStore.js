@@ -71,9 +71,9 @@ const placeListStore = {
         setListByLiked: ({ commit, rootState, rootGetters }) => {
             commit('initList');
             let api = rootState.domain + '/place/mylist'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -153,9 +153,9 @@ const placeListStore = {
         setListByVisited : ({ commit, rootState, rootGetters }) => {
             commit('initList');
             let api = rootState.domain + '/place/visited'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -208,9 +208,9 @@ const placeListStore = {
         setListByAI: ({ commit, rootState, rootGetters }) => {
             commit('initList');
             let api = rootState.domain + '/ai'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -235,9 +235,9 @@ const placeListStore = {
         },
         setVistiedList : ({ commit, rootState, rootGetters }) => {
             let api = rootState.domain + '/place/visited'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -255,7 +255,7 @@ const placeListStore = {
             commit('initList');
             commit('setCourseId', payload);
             let api = rootState.domain + '/course/update'
-            axios.put(api, JSON.stringify( payload ), {
+            axios.put(api,  payload, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(() => {
@@ -264,9 +264,9 @@ const placeListStore = {
         },
         deleteCourse: ({ state, rootState, rootGetters }) => {
             let api = rootState.domain + '/course/delete?cid=' + state.courseId
-            axios.delete(api, JSON.stringify({
+            axios.delete(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             })
@@ -275,18 +275,18 @@ const placeListStore = {
         //selectedFolder
         editFolder: ({ state, rootState, rootGetters }, payload) => {
             let api = rootState.domain + '/folder/update?id='+ state.folderId + '&name=' + payload
-            axios.put(api, JSON.stringify({
+            axios.put(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             });
         },
         deleteFolder: ({ state, rootState, rootGetters }) => {
             let api = rootState.domain + '/folder/delete?id=' + state.folderId
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             })
@@ -309,9 +309,9 @@ const placeListStore = {
         },
         deletePlaceFromLiked: ({ rootGetters, rootState, dispatch }, paylaod) => {
             let api = rootState.domain + '/place/mylist/delete?id=' + paylaod
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(() => {
@@ -320,9 +320,9 @@ const placeListStore = {
         },
         deletePlaceFromVisited: ({ rootGetters, rootState, dispatch }, paylaod) => {
             let api = rootState.domain + '/place/visited/delete?id=' + paylaod
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(() => {
@@ -334,9 +334,9 @@ const placeListStore = {
         likeCourse: ({ commit, state, rootState, rootGetters }) => {
             return new Promise(function() {
                 let api = rootState.domain + '/course/like?cid=' + state.courseId
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                         id : rootGetters["userStore/getUserId"]
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                     }
                 }).then(() => {
@@ -349,9 +349,9 @@ const placeListStore = {
         dislikeCourse: ({ commit, state, rootState, rootGetters }) => {
             return new Promise(function() {
                 let api = rootState.domain + '/course/dislike?cid=' + state.courseId
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                         id : rootGetters["userStore/getUserId"]
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                     }
                 }).then(() => {

@@ -101,9 +101,9 @@ const userStore = {
         setType: ({ rootState, rootGetters }, payload) => {
             return new Promise(function() {
                 let api = rootState.domain + '/users/type?type=' + payload
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                         id : rootGetters["userStore/getUserId"]
-                    }), {
+                    }, {
                         headers: { "Content-Type": 'application/json'
                     }
                 }).then(() => {

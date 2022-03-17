@@ -36,9 +36,9 @@ const courseStore = {
             let categoryList = state.categoryList;
             for (let i = 0; i < 2; i++){
                 let api = rootState.domain + '/ai?category=' + state.categoryList[i].category;
-                axios.post(api, JSON.stringify({
+                axios.post(api, {
                     id : rootGetters['userStore/getUserId']
-                    }), {
+                    }, {
                     headers: { "Content-Type": 'application/json'
                     }
                 }).then(res => {

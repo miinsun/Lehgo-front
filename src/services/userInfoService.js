@@ -7,9 +7,9 @@ class userInfoService{
     checkId(userId) {
         return new Promise(function(resolve) {
             let api = domain + '/exists/id/' + userId
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                     userId : userId
-                }), {
+                }, {
                     headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -23,9 +23,9 @@ class userInfoService{
     checkEmail(email) {
         return new Promise(function(resolve) {
             let api = domain + '/exists/email/' + email
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 email : email
-                }), {
+                }, {
                     headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -39,9 +39,9 @@ class userInfoService{
     checkNickname(nickname) {
         return new Promise(function(resolve) {
             let api = domain + '/exists/nickname/' + nickname
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 nickname : nickname
-                }), {
+                }, {
                     headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
@@ -56,7 +56,7 @@ class userInfoService{
     signUp(newUser){
         return new Promise(function(resolve) {
             let api = domain + '/users/new'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : newUser.id, 
                 password : newUser.password,
                 name : newUser.name,
@@ -64,7 +64,7 @@ class userInfoService{
                 nickname : newUser.nickname,
                 gender : (newUser.gender == 'female') ? 0 : 1,
                 age : new Date().getFullYear() - newUser.age + 1
-            }),{
+            },{
                 headers: { "Content-Type": 'application/json'
             }
             })
@@ -79,10 +79,10 @@ class userInfoService{
     checkIdPw(user){
         return new Promise(function(resolve, reject) {
             let api = domain + '/user'
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : user.id, 
                 password : user.password,
-            }),{
+            },{
                 headers: { "Content-Type": 'application/json'
                 }
             })
@@ -98,7 +98,7 @@ class userInfoService{
         return new Promise(function(resolve) {
             let api = domain + '/users?id=' + updateUser.id
             axios.defaults.headers.common['authorization'] = store.getters['userStore/getAccessToken'];
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : updateUser.id,
                 password : updateUser.password,
                 name : updateUser.name,
@@ -106,7 +106,7 @@ class userInfoService{
                 nickname : updateUser.nickname,
                 gender : (updateUser.gender == 'female') ? 0 : 1,
                 age : new Date().getFullYear() - updateUser.age + 1
-            }),{
+            },{
                 headers: { "Content-Type": 'application/json'
             }
             })
@@ -160,10 +160,10 @@ class userInfoService{
     resetPw(userId, newPw){
         return new Promise(function(resolve, reject) {
             let api = domain + '/users/resetpw'
-            axios.put(api, JSON.stringify({
+            axios.put(api, {
                 id : userId,
                 password : newPw
-            }),{
+            },{
                 headers: { "Content-Type": 'application/json'
             }
             }).then(() => {

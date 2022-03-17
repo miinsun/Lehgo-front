@@ -27,9 +27,9 @@ const folderStore = {
         },
         addFolder: ({ commit, rootState, rootGetters }, payload) => {
             let api = rootState.domain + '/folder/new?name=' + payload
-            axios.post(api, JSON.stringify({
+            axios.post(api, {
                 id : rootGetters['userStore/getUserId']
-                }), {
+                }, {
                 headers: { "Content-Type": 'application/json'
                 }
             }).then(res => {
