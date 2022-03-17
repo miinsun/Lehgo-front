@@ -13,7 +13,7 @@ Vue.use(Vuex)
 
 export const vuex = new Vuex.Store({
   state: {
-    domain : 'http://localhost:8080',
+    domain : "http://localhost:9999",
     pageLoaded : true
   },
   getters : {
