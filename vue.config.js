@@ -1,6 +1,7 @@
 module.exports = {
     //SpringBoot 서버 접속 주소
     devServer: {
+        disableHostCheck: true,
         proxy: "http://3.37.127.183:9999"
     },
 
